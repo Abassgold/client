@@ -1,72 +1,41 @@
-import { Calendar, Home, Banknote, Bitcoin, Settings, Gift, Hash } from "lucide-react"
-
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import Link from "next/link"
+'use client'
+import { useState } from "react";
+import Link from "next/link";
+import { Home, Banknote, Calendar, Bitcoin, Gift, Hash, File } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 const items = [
-  {
-    title: "Overview",
-    url: "/dasboard",
-    icon: Home,
-  },
-  {
-    title: "Utility Payments",
-    url: "/utilities",
-    icon: Banknote,
-  },
-  {
-    title: "Recharge & Subscriptions",
-    url: "/recharge",
-    icon: Calendar,
-  },
-  {
-    title: "Sell Crypto",
-    url: "/crypto",
-    icon: Bitcoin,
-  },
-  {
-    title: "Gift Cards",
-    url: "/giftcards",
-    icon: Gift,
-  },
-  {
-    title: "Virtual Numbers",
-    url: "/virtualnumbers",
-    icon: Hash,
-  },
-]
+  { title: "Overview", url: "/dashboard", icon: Home },
+  { title: "Utility Payments", url: "/utilities", icon: Banknote },
+  { title: "Recharge & Subscriptions", url: "/recharge", icon: Calendar },
+  { title: "Sell Crypto", url: "/crypto", icon: Bitcoin },
+  { title: "Gift Cards", url: "/giftcards", icon: Gift },
+  { title: "Virtual Numbers", url: "/virtual-number", icon: Hash },
+  { title: "Esim", url: "/esim", icon: File },
+];
 
-export function AppSidebar() {
+export function ResponsiveSidebar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const path = usePathname()
+  
+
   return (
-    <Sidebar className="h-full">
-      <SidebarContent className="bg-[#1f2937] text-white">
-        <SidebarGroup >
-          <SidebarGroupLabel className="text-3xl text-white py-6 mb-4">FloZap</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <Link href={item.url} className="py-6 hover:bg-gray-800">
-                      <item.icon   className=" text-teal-500"/>
-                      <p className="text-[1rem]">{item.title}</p>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-    </Sidebar>
-  )
+    <>
+      <aside className="bg-[#1F2937] text-white p-2 hidden md:block max-w-64 ">
+        <h2 className="text-3xl font-bold mb-6 p-4 cursor-pointer">FloZap</h2>
+        <nav className="flex flex-col space-y-3">
+          {items.map(({ title, url, icon: Icon }) => (
+            <Link
+              key={title}
+              href={url}
+              className="flex items-center space-x-3 hover:bg-white hover:text-gray-800 rounded p-2"
+            >
+              <Icon size={24} />
+              <span>{title}</span>
+            </Link>
+          ))}
+        </nav>
+      </aside>
+    </>
+  );
 }

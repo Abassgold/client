@@ -6,7 +6,7 @@ import React from 'react'
 
 const Dashboard = () => {
   return (
-    <section>
+    <section className='w-full'>
       <OverviewHero/>
       <RecentTransaction/>
       <ExploreServices/>

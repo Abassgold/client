@@ -6,6 +6,7 @@ const PasswordReset = () => {
         <section className="p-4 h-screen">
             <div className="max-w-xl mx-auto h-full flex items-center">
                 <div className="w-full">
+                    <h1 className="mb-4 text-3xl">LOGO</h1>
                     <h1 className="text-gray-600 text-xl font-semibold md:text-3xl mb-3 capitalize">reset password!</h1>
                     <div className="h-1 bg-teal-800 w-[48px] mb-6"></div>
                     <h3 className='text-gray-800 mb-4'>Your new password must be different from the previous ones</h3>
