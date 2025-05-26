@@ -1,48 +1,21 @@
 'use client'
-import { X } from "lucide-react";
+import { LogOut, X } from "lucide-react";
 import Link from "next/link";
+import { dasbhboardNavitems } from "../../DashboardAside";
 interface sidebarType {
     isOpen: boolean;
     toggleSidebar: () => void;
     activeSection: string;
     setActiveSection: (id: string) => void;
 }
-interface NavItem {
-    title: string;
-    url: string;
-}
+
 
 
 const Sidebar = ({ isOpen, toggleSidebar, activeSection, setActiveSection }: sidebarType) => {
-   const navItems: NavItem[] = [
-  {
-    title: "Overview",
-    url: "/dashboard/dashboard",
-  },
-  {
-    title: "Utility Payments",
-    url: "/dashboard/utilities",
-  },
-  {
-    title: "Recharge & Subscriptions",
-    url: "/dashboard/recharge",
-  },
-  {
-    title: "Sell Crypto",
-    url: "/dashboard/crypto",
-  },
-  {
-    title: "Gift Cards",
-    url: "/dashboard/giftcards",
-  },
-  {
-    title: "Virtual Numbers",
-    url: "/dashboard/virtualnumbers",
-  },
-]
+ 
     return (
         <aside
-            className={`fixed  top-0 left-0 h-screen w-64 bg-gray-800 text-white flex flex-col md:hidden transform ${isOpen ? "translate-x-0" : "-translate-x-full"
+            className={`fixed  top-0 left-0 h-screen w-full bg-gray-800 text-white flex flex-col md:hidden transform ${isOpen ? "translate-x-0" : "-translate-x-full"
                 } md:translate-x-0 transition-transform duration-300 z-20`}
         >
             <div className="p-4 flex justify-between items-center">
@@ -57,7 +30,7 @@ const Sidebar = ({ isOpen, toggleSidebar, activeSection, setActiveSection }: sid
             </div>
             <nav className="flex-1 p-4">
                 <ul className="space-y-2">
-                    {navItems.map((item) => (
+                    {dasbhboardNavitems.map((item) => (
                         <li key={item.title}>
                             <Link href={item.url}>
                             <button
@@ -65,11 +38,12 @@ const Sidebar = ({ isOpen, toggleSidebar, activeSection, setActiveSection }: sid
                                     setActiveSection(item.url);
                                     if (window.innerWidth < 768) toggleSidebar();
                                 }}
-                                className={`flex items-center w-full p-2 rounded-lg text-left ${activeSection === item.title
+                                className={`flex items-center gap-3 w-full p-2 rounded text-left ${activeSection === item.title
                                     ? "bg-gray-700"
                                     : "hover:bg-gray-700"
                                     }`}
                             >
+                                <item.icon size={24}/>
                                 {item.title}
                             </button>
                             </Link>
@@ -79,7 +53,8 @@ const Sidebar = ({ isOpen, toggleSidebar, activeSection, setActiveSection }: sid
             </nav>
             <div className="p-4">
                 <Link href="/logout">
-                    <button className="w-full text-left px-4 py-2 hover:bg-gray-700 rounded transition">
+                    <button className="flex items-center gap-3 w-full text-left px-4 py-2 hover:bg-gray-700 rounded transition">
+                        <LogOut size={24}/>
                         Logout
                     </button>
                 </Link>

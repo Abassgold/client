@@ -1,10 +1,11 @@
 import GiftcardHeader from '@/components/dashboard/giftcard/GiftcardHeader'
-import React from 'react'
+import GiftCardServices from '@/components/dashboard/giftcard/GiftCardServices'
 
 const Giftcards = () => {
     return (
         <>
             <GiftcardHeader />
+            <GiftCardServices/>
         </>
 
     )

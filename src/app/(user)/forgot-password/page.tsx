@@ -6,7 +6,6 @@ const Forgotpassword = () => {
         <section className="p-2 h-screen">
             <div className="max-w-xl mx-auto h-full flex items-center">
                 <div className="w-full">
-                    <h1 className="text-gray-600 text-xl font-semibold md:text-3xl mb-3">welcome Onboard!</h1>
                     <h1 className="text-gray-600 text-xl font-semibold md:text-3xl mb-3 capitalize">forgot password?</h1>
                     <div className="h-1 bg-teal-800 w-[48px] mb-6"></div>
                     <h3 className='text-gray-800 mb-4'>Enter your email address below</h3>

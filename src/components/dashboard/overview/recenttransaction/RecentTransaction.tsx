@@ -6,7 +6,7 @@ import { Eye, EyeOff } from 'lucide-react';
 
 const RecentTransaction = () => {
     const [isDepositOpen, setIsDepositOpen] = useState(false);
-    const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
+    // const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
     const [isBalanceVisible, setIsBalanceVisible] = useState(true);
     const walletBalance = 12345.67;
     const walletTransactions = [
@@ -40,16 +40,16 @@ const RecentTransaction = () => {
                     <div className="flex flex-col sm:flex-row gap-2">
                         <button
                             onClick={() => setIsDepositOpen(true)}
-                            className="bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500"
+                            className="bg-teal-600 cursor-pointer text-white py-2 px-4 rounded-lg hover:bg-teal-500"
                         >
-                            Deposit
+                            Fund Wallet
                         </button>
-                        <button
+                        {/* <button
                             onClick={() => setIsWithdrawOpen(true)}
                             className="bg-gray-200 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-300"
                         >
                             Withdraw
-                        </button>
+                        </button> */}
                     </div>
                 </div>
 
