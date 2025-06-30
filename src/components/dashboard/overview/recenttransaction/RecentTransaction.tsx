@@ -1,72 +1,126 @@
 'use client'
-import React, { useState } from 'react'
-import TransactionCard from './TransactionCard';
-import Link from 'next/link';
-import { Eye, EyeOff } from 'lucide-react';
+import React, { useEffect, useState } from 'react'
+import TransactionCard from './TransactionCard'
+import Link from 'next/link'
+import { Eye, EyeOff } from 'lucide-react'
+import axios from 'axios'
+import RecentTransactionSkeleton from './RecentTransactionSkelton'
+import { transactionType } from '../../transactions/TransactionList'
+
+
+
+export interface WalletResponse {
+    ok: boolean
+    msg?: string
+    balance?: number
+    transactions?: transactionType[]
+}
 
 const RecentTransaction = () => {
-    const [isDepositOpen, setIsDepositOpen] = useState(false);
-    // const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
-    const [isBalanceVisible, setIsBalanceVisible] = useState(true);
-    const walletBalance = 12345.67;
-    const walletTransactions = [
-        { description: "Deposit from Bank", amount: "5000.00", type: "credit" },
-        { description: "Utility Payment", amount: "45.00", type: "debit" },
-        { description: "Crypto Exchange", amount: "200.00", type: "credit" },
-    ];
+    const [loading, setLoading] = useState<boolean>(false)
+    const [isBalanceVisible, setIsBalanceVisible] = useState(true)
+    const [transactions, setTransactions] = useState<transactionType[]>([])
+    const [walletBalance, setWalletBalance] = useState<number>(0)
+
+    useEffect(() => {
+        const token = document.cookie
+            .split('; ')
+            .find((row) => row.startsWith('accessToken='))
+            ?.split('=')[1]
+
+        if (!token) return
+        setLoading(true);
+        const fetchDashboardData = async (): Promise<void> => {
+            try {
+                const { data } = await axios.get<WalletResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/wallet/`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+
+                if (!data.ok || data.transactions?.length == 0) {
+                    setTransactions([])
+                    setWalletBalance(0)
+                    return
+                }
+
+                setTransactions(data.transactions || [])
+                setWalletBalance(data.balance || 0)
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    console.error('Error fetching dashboard data:', error.message)
+                    return
+                }
+                console.error('Unknown Error:', error)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchDashboardData()
+    }, [])
+    if (loading) return <RecentTransactionSkeleton />
+
     return (
         <div className="mb-6">
+
             <h3 className="text-xl font-[600] mb-4 text-gray-800">Wallet Overview</h3>
             <div className="bg-white p-6 rounded-lg shadow-md">
                 <div className="flex justify-between items-center mb-6">
                     <div>
-                        <div className=' flex items-center gap-2 mb-1'>
-                        <h4 className="text-lg font-semibold text-gray-800">Wallet Balance</h4>
+                        <div className="flex items-center gap-2 mb-1">
+                            <h4 className="text-lg font-semibold text-gray-800">Wallet Balance</h4>
                             <button
                                 onClick={() => setIsBalanceVisible(!isBalanceVisible)}
-                                className="text-gray-500 hover:text-gray-700"
+                                className="text-gray-500 cursor-pointer hover:text-gray-700"
                             >
                                 {isBalanceVisible ? <Eye /> : <EyeOff />}
                             </button>
                         </div>
-                        <div className="flex justify-between  gap-2">
-                            <p className="text-3xl font-bold text-teal-600">
-                                {isBalanceVisible ? `$${walletBalance.toFixed(2)}` : '******'}
-                            </p>
-                            
-
-                        </div>
+                        <p className="text-2xl md:text-3xl font-bold text-teal-600">
+                            {isBalanceVisible
+                                ? `₦${walletBalance.toLocaleString('en-US', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                })}`
+                                : '******'}
+                        </p>
                     </div>
+
                     <div className="flex flex-col sm:flex-row gap-2">
-                        <button
-                            onClick={() => setIsDepositOpen(true)}
+                        <Link
+                            href='/deposit'
                             className="bg-teal-600 cursor-pointer text-white py-2 px-4 rounded-lg hover:bg-teal-500"
                         >
                             Fund Wallet
-                        </button>
-                        {/* <button
-                            onClick={() => setIsWithdrawOpen(true)}
-                            className="bg-gray-200 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-300"
-                        >
-                            Withdraw
-                        </button> */}
+                        </Link>
                     </div>
                 </div>
 
                 <div>
                     <h4 className="text-lg font-[600] mb-2 text-gray-800">Recent Wallet Transactions</h4>
                     <div className="space-y-2">
-                        {walletTransactions.map((t, index) => (
-                            <TransactionCard
-                                key={index}
-                                description={t.description}
-                                amount={t.amount}
-                                type={t.type}
-                            />
-                        ))}
-                        <Link href='/dashboard/transaction' className="text-teal-600 hover:underline text-sm mt-2 block">
-                            View All
-                        </Link>
+                        {transactions.length === 0 ? (
+                            <div className="text-center mt-6">
+                                <h3 className="text-xl font-semibold text-red-800 mb-2">No Recent Transactions</h3>
+                                <p className="text-gray-500">You haven’t made any transactions yet.</p>
+                            </div>
+                        ) : (
+                            transactions.slice(0, 3).map((t) => (
+                                <TransactionCard
+                                    key={t.reference}
+                                    description={t.remarks || t.serviceType}
+                                    amount={t.amount.toFixed(2)}
+                                    type={t.type}
+                                />
+                            ))
+                        )}
+                        {transactions.length > 0 && (
+                            <Link href="/transactions" className="text-teal-600 hover:underline text-sm mt-2 block ">
+                                View All
+                            </Link>
+                        )}
+
                     </div>
                 </div>
             </div>

@@ -7,10 +7,10 @@ import React from 'react'
 const Dashboard = () => {
   return (
     <section className='w-full'>
-      <OverviewHero/>
-      <RecentTransaction/>
-      <ExploreServices/>
-      <Quickactions/>
+      <OverviewHero />
+      <RecentTransaction />
+      <ExploreServices />
+      <Quickactions />
     </section>
   )
 }

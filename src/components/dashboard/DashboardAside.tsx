@@ -1,8 +1,8 @@
 'use client'
-import { useState } from "react";
 import Link from "next/link";
-import { Home, Banknote, Calendar, Bitcoin, Gift, Hash, File, Settings, LogOut, Barcode, FileDigit } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { Home, Bitcoin, Hash, File, Settings, LogOut, Barcode, FileDigit } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { Toaster } from "../ui/sonner";
 
 export const dasbhboardNavitems = [
   { title: "Overview", url: "/dashboard", icon: Home },
@@ -11,34 +11,53 @@ export const dasbhboardNavitems = [
   // { title: "Gift Cards", url: "/giftcards", icon: Gift },
   { title: "Sell Crypto", url: "/crypto", icon: Bitcoin },
   { title: "Virtual Numbers", url: "/virtual-number", icon: FileDigit },
+  { title: "Esim", url: "/esim", icon: FileDigit },
   { title: "Transactions", url: "/transactions", icon: Barcode },
-  { title: "Account", url: "/Account", icon: Settings },
-  // { title: "Esim", url: "/esim", icon: File },
+  { title: "Referral", url: "/referral", icon: Hash },
+  { title: "Deposit", url: "/deposit", icon: File },
+  { title: "Account", url: "/account", icon: Settings },
 ];
-
+// interface logOutTpe {
+//   ok: boolean;
+//   msg: string;
+// }
 export function ResponsiveSidebar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const path = usePathname()
-  
-
+  const router = useRouter();
+  const pathName = usePathname()
+  const logOut = async () => {
+    document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    router.push('/login')
+  }
   return (
     <>
-      <aside className="bg-[#1F2937] text-white p-2 hidden md:block xl:min-w-64 max-w-64 relative">
-        <h2 className="text-3xl font-bold mb-6 p-4 cursor-pointer">FloZap</h2>
-        <nav className="flex flex-col space-y-3">
+      <Toaster
+        richColors
+        position='top-center'
+        duration={200}
+      />
+      <aside className="bg-white text-gray-600 p-2 hidden md:flex md:flex-col xl:min-w-64 max-w-64 h-screen">
+        <h2 className="text-3xl font-bold mb-6 p-3 cursor-pointer border-b-2">FloZap</h2>
+
+        <nav className="flex-1 flex flex-col space-y-3">
           {dasbhboardNavitems.map(({ title, url, icon: Icon }) => (
             <Link
               key={title}
               href={url}
-              className="flex items-center space-x-3 hover:bg-white hover:text-gray-800 rounded p-2"
+              className={`flex ${pathName.startsWith(url) ? 'bg-teal-800 text-white' : 'bg-gray-200 text-gray-600'} hover:shadow-md items-center space-x-3 hover:bg-teal-800 hover:text-white duration-500 rounded p-2`}
             >
               <Icon size={24} />
               <span>{title}</span>
             </Link>
           ))}
-                  <button className="flex items-center gap-3 hover:bg-white hover:text-gray-800 rounded p-2"><LogOut size={24}/> Logout</button>
         </nav>
+
+        <button
+          onClick={logOut}
+          className="flex gap-2 bg-teal-600 hover:bg-teal-700 text-white hover:shadow-md items-center space-x-3 duration-500 rounded p-2 mt-4 cursor-pointer">
+          <LogOut size={24} /> Logout
+        </button>
       </aside>
+
     </>
   );
 }

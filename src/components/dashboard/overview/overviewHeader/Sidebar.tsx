@@ -2,17 +2,29 @@
 import { LogOut, X } from "lucide-react";
 import Link from "next/link";
 import { dasbhboardNavitems } from "../../DashboardAside";
+import { usePathname, useRouter } from "next/navigation";
 interface sidebarType {
     isOpen: boolean;
     toggleSidebar: () => void;
     activeSection: string;
     setActiveSection: (id: string) => void;
 }
+// type logOutTpe = {
+//     ok: boolean;
+//     msg: string;
+// }
 
 
+const Sidebar = ({ isOpen, toggleSidebar, setActiveSection }: sidebarType) => {
+    const pathName = usePathname();
+    const router = useRouter();
+    const logOut = async () => {
+        document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        toggleSidebar()
+        router.push('/login')
 
-const Sidebar = ({ isOpen, toggleSidebar, activeSection, setActiveSection }: sidebarType) => {
- 
+    }
+
     return (
         <aside
             className={`fixed  top-0 left-0 h-screen w-full bg-gray-800 text-white flex flex-col md:hidden transform ${isOpen ? "translate-x-0" : "-translate-x-full"
@@ -25,39 +37,42 @@ const Sidebar = ({ isOpen, toggleSidebar, activeSection, setActiveSection }: sid
                     onClick={toggleSidebar}
                     aria-label="Close sidebar"
                 >
-                    <X className=" cursor-pointer"/>
+                    <X className=" cursor-pointer" />
                 </button>
             </div>
             <nav className="flex-1 p-4">
                 <ul className="space-y-2">
-                    {dasbhboardNavitems.map((item) => (
-                        <li key={item.title}>
-                            <Link href={item.url}>
-                            <button
-                                onClick={() => {
-                                    setActiveSection(item.url);
-                                    if (window.innerWidth < 768) toggleSidebar();
-                                }}
-                                className={`flex items-center gap-3 w-full p-2 rounded text-left ${activeSection === item.title
-                                    ? "bg-gray-700"
-                                    : "hover:bg-gray-700"
-                                    }`}
-                            >
-                                <item.icon size={24}/>
-                                {item.title}
-                            </button>
-                            </Link>
-                        </li>
-                    ))}
+                    {dasbhboardNavitems.map((item) => {
+                        const isActive = pathName.startsWith(item.url)
+                        return (
+                            <li key={item.title}>
+                                <Link href={item.url}>
+                                    <button
+                                        onClick={() => {
+                                            setActiveSection(item.url);
+                                            if (window.innerWidth < 768) toggleSidebar();
+                                        }}
+                                        className={`cursor-pointer flex items-center gap-3 w-full p-2 rounded text-left ${isActive
+                                            ? "bg-gray-600"
+                                            : "hover:bg-gray-700"
+                                            }`}
+                                    >
+                                        <item.icon size={24} />
+                                        {item.title}
+                                    </button>
+                                </Link>
+                            </li>
+                        )
+                    })}
                 </ul>
             </nav>
             <div className="p-4">
-                <Link href="/logout">
-                    <button className="flex items-center gap-3 w-full text-left px-4 py-2 hover:bg-gray-700 rounded transition">
-                        <LogOut size={24}/>
-                        Logout
-                    </button>
-                </Link>
+                <button
+                    onClick={logOut}
+                    className="flex cursor-pointer items-center gap-3 w-full text-left px-4 py-2 hover:bg-gray-700 rounded transition">
+                    <LogOut size={24} />
+                    Logout
+                </button>
             </div>
         </aside>
     )

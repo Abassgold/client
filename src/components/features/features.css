@@ -6,3 +6,37 @@
     border-radius: 10px;
     transition: border-radius 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
+.slider {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  height: 150px; /* Adjust based on image height */
+}
+
+.slide-track {
+  display: flex;
+  width: calc(250px * 8); /* image width * number of images */
+  animation: scroll 20s linear infinite;
+}
+
+.slide {
+  width: 250px;
+  flex-shrink: 0;
+  padding: 0 10px;
+}
+
+.slide img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}

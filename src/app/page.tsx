@@ -3,15 +3,19 @@ import Features from "@/components/features/Features";
 import Footer from "@/components/footer/Footer";
 import Hero from "@/components/dashboard/hero/Hero";
 import NavHeader from "@/components/NavComponent";
+import FAQ from "@/components/faq/Faq";
+import Hero1 from "@/components/dashboard/hero/Hero1";
 
 export default function Home() {
   return (
-<>
-<NavHeader/>
-<Hero/>
-<Features/>
-<Contact/>
-<Footer/>
-</>
+    <div className="bg-gray-100">
+      <NavHeader />
+      <Hero />
+      <Hero1/>
+      <Features />
+      <Contact />
+      <FAQ />
+      <Footer />
+    </div>
   );
 }

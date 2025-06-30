@@ -1,7 +1,7 @@
 import VirtualNumber from '@/components/dashboard/virtualNumber/VirtualNumber'
 import VirtualNumberServies from '@/components/dashboard/virtualNumber/VirtualNumberServies'
 
-const page = () => {
+const Page = () => {
 
   return (
     <section className=''>
@@ -10,5 +10,4 @@ const page = () => {
     </section>
   )
 }
-
-export default page
+export default Page;
