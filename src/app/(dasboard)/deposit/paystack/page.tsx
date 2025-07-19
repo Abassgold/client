@@ -4,10 +4,11 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { addUser } from '@/redux/slice/auth';
 import { findUser } from '@/redux/type';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Toaster } from '@/components/ui/sonner';
+import { getToken } from '@/lib/Token';
 interface paymentType{
   ok: boolean;
   msg: string;
@@ -19,6 +20,7 @@ const DepositPage = () => {
   const [error, setError] = useState('');
   const user = useAppSelector((state) => state.auth.user.user);
   const dispatch = useAppDispatch();
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
 
@@ -30,10 +32,7 @@ const DepositPage = () => {
   setError('');
   setLoading(true);
 
-  const token = document.cookie
-    .split('; ')
-    .find((row) => row.startsWith('accessToken='))
-    ?.split('=')[1];
+  const token = getToken();
 
   try {
     const res = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/wallet/initialize-payment`, { amount }, {
@@ -45,6 +44,11 @@ const DepositPage = () => {
     if (res.status === 500) {
       setError('An error occurred while processing your payment. Please try again.');
       return;
+    }
+    if (res.status === 401) {
+      return redirect('/login')
+    }if (res.status === 403) {
+      return redirect('/account-suspended')
     }
 
     const { default: PayStackPop } = await import('@paystack/inline-js');
@@ -96,10 +100,7 @@ const DepositPage = () => {
     setError('');
   };
   useEffect(() => {
-    const token = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('accessToken='))
-      ?.split('=')[1]
+    const token = getToken();
 
     if (!token) return
     if (!token || !user || user.email === '') return;

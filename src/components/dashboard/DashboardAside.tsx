@@ -1,8 +1,10 @@
 'use client'
 import Link from "next/link";
-import { Home, Bitcoin, Hash, File, Settings, LogOut, Barcode, FileDigit } from "lucide-react";
+import { Home, Bitcoin,  File, Settings, LogOut, Barcode, FileDigit, User, History } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { Toaster } from "../ui/sonner";
+// import Image from "next/image";
+import { useAppSelector } from "@/redux/hooks";
 
 export const dasbhboardNavitems = [
   { title: "Overview", url: "/dashboard", icon: Home },
@@ -11,23 +13,26 @@ export const dasbhboardNavitems = [
   // { title: "Gift Cards", url: "/giftcards", icon: Gift },
   { title: "Sell Crypto", url: "/crypto", icon: Bitcoin },
   { title: "Virtual Numbers", url: "/virtual-number", icon: FileDigit },
-  { title: "Esim", url: "/esim", icon: FileDigit },
+  { title: "Sms History", url: "/sms-history", icon: History },
+  // { title: "Esim", url: "/esim", icon: FileDigit },
   { title: "Transactions", url: "/transactions", icon: Barcode },
-  { title: "Referral", url: "/referral", icon: Hash },
+  // { title: "Referral", url: "/referral", icon: Hash },
   { title: "Deposit", url: "/deposit", icon: File },
   { title: "Account", url: "/account", icon: Settings },
 ];
-// interface logOutTpe {
-//   ok: boolean;
-//   msg: string;
-// }
+
 export function ResponsiveSidebar() {
+  const user = useAppSelector(state => state.auth.user.user)
   const router = useRouter();
   const pathName = usePathname()
   const logOut = async () => {
     document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    sessionStorage.removeItem('numberInfo');
+    sessionStorage.removeItem('otp');
     router.push('/login')
+
   }
+
   return (
     <>
       <Toaster
@@ -36,8 +41,11 @@ export function ResponsiveSidebar() {
         duration={200}
       />
       <aside className="bg-white text-gray-600 p-2 hidden md:flex md:flex-col xl:min-w-64 max-w-64 h-screen">
-        <h2 className="text-3xl font-bold mb-6 p-3 cursor-pointer border-b-2">FloZap</h2>
-
+        <div className="py-3">
+            <Link href="#" className="text-xl md:text-3xl font-bold text-teal-800">
+              FloZap
+            </Link>
+          </div>
         <nav className="flex-1 flex flex-col space-y-3">
           {dasbhboardNavitems.map(({ title, url, icon: Icon }) => (
             <Link
@@ -49,13 +57,24 @@ export function ResponsiveSidebar() {
               <span>{title}</span>
             </Link>
           ))}
-        </nav>
 
-        <button
-          onClick={logOut}
-          className="flex gap-2 bg-teal-600 hover:bg-teal-700 text-white hover:shadow-md items-center space-x-3 duration-500 rounded p-2 mt-4 cursor-pointer">
-          <LogOut size={24} /> Logout
-        </button>
+        </nav>
+        <div>
+          {user && user.role === 'admin' && (
+            <Link
+              href='/admin'
+              className={`flex gap-2 bg-teal-900 hover:bg-teal-700 text-white hover:shadow-md items-center  duration-500 rounded p-2 mt-4 cursor-pointer`}
+            >
+              <User size={24}/>
+              <span>Admin</span>
+            </Link>
+          )}
+          <button
+            onClick={logOut}
+            className="w-full flex gap-2 bg-teal-600 hover:bg-teal-700 text-white hover:shadow-md items-center space-x-3 duration-500 rounded p-2 mt-4 cursor-pointer">
+            <LogOut size={24} /> Logout
+          </button>
+        </div>
       </aside>
 
     </>

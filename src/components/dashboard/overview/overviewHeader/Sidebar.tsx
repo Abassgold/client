@@ -1,28 +1,27 @@
 'use client'
-import { LogOut, X } from "lucide-react";
+import {  LogOut, User, X } from "lucide-react";
 import Link from "next/link";
 import { dasbhboardNavitems } from "../../DashboardAside";
 import { usePathname, useRouter } from "next/navigation";
+import { useAppSelector } from "@/redux/hooks";
 interface sidebarType {
     isOpen: boolean;
     toggleSidebar: () => void;
     activeSection: string;
     setActiveSection: (id: string) => void;
 }
-// type logOutTpe = {
-//     ok: boolean;
-//     msg: string;
-// }
-
 
 const Sidebar = ({ isOpen, toggleSidebar, setActiveSection }: sidebarType) => {
     const pathName = usePathname();
+    const user = useAppSelector(state => state.auth.user.user)
+
     const router = useRouter();
     const logOut = async () => {
         document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         toggleSidebar()
+        sessionStorage.removeItem('numberInfo');
+        sessionStorage.removeItem('otp');
         router.push('/login')
-
     }
 
     return (
@@ -31,7 +30,7 @@ const Sidebar = ({ isOpen, toggleSidebar, setActiveSection }: sidebarType) => {
                 } md:translate-x-0 transition-transform duration-300 z-20`}
         >
             <div className="p-4 flex justify-between items-center">
-                <h1 className="text-2xl font-bold">FloZap</h1>
+                <h1 className="text-2xl text-white px-2 font-semibold">FloZap</h1>
                 <button
                     className="md:hidden text-white"
                     onClick={toggleSidebar}
@@ -67,9 +66,23 @@ const Sidebar = ({ isOpen, toggleSidebar, setActiveSection }: sidebarType) => {
                 </ul>
             </nav>
             <div className="p-4">
+                {user && user.role === 'admin' && (
+                    <div>
+                        <Link href='/admin'>
+                            <button
+                                onClick={() => {
+                                    if (window.innerWidth < 768) toggleSidebar();
+                                }}
+                                className="flex cursor-pointer items-center gap-3 w-full text-left p-2  hover:bg-gray-700 rounded transition">
+                                <User size={24} />
+                                Admin
+                            </button>
+                        </Link>
+                    </div>
+                )}
                 <button
                     onClick={logOut}
-                    className="flex cursor-pointer items-center gap-3 w-full text-left px-4 py-2 hover:bg-gray-700 rounded transition">
+                    className="flex cursor-pointer items-center gap-3 w-full text-left  p-2 hover:bg-gray-700 rounded transition">
                     <LogOut size={24} />
                     Logout
                 </button>

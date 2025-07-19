@@ -35,10 +35,13 @@ const Account = () => {
                     return;
                 }
             } catch (err: unknown) {
-                if(err instanceof Error)
-                console.error('Failed to fetch user info:', err)
-            return;
-            console.error('Unknown error: ', err)
+                if (axios.isAxiosError(err)) {
+                    if(err.response?.status === 403) return router.push('/account-suspended')
+                    if(err.response?.status === 401) return router.push('/login')
+                } else {
+                    console.error('Unknown error:', err);
+                }
+
             }
         }
 

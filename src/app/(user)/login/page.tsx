@@ -10,6 +10,7 @@ import * as Yup from 'yup';
 import { useAppDispatch } from "@/redux/hooks";
 import { addUser } from "@/redux/slice/auth";
 import { findUser } from "@/redux/type";
+import Image from "next/image";
 
 interface loginType {
     email: string;
@@ -53,8 +54,8 @@ const Login = () => {
                     router.push('/dashboard');
                     return;
                 }
-                if(!data.ok && data.msg ==='not-verified'){
-                    document.cookie = `accessToken=${data.token}; path=/; max-age=86400*30; secure; samesite=strict`;
+                if (!data.ok && data.msg === 'not-verified') {
+                    document.cookie = `accessToken=${data.token}; path=/; max-age=${86400*30}; secure; samesite=strict`;
                     router.push('/verification-sent')
                     return;
                 }
@@ -68,7 +69,7 @@ const Login = () => {
         }
     })
     return (
-        <section className="p-4 h-screen">
+        <section className="p-4 h-screen bg-zinc-100">
             <Toaster
                 richColors
                 position='top-center'
@@ -76,7 +77,15 @@ const Login = () => {
             />
             <div className="max-w-xl mx-auto h-full flex items-center">
                 <div className="w-full">
-                    <h1 className="mb-4 text-3xl">LOGO</h1>
+                    <div className="flex justify-center">
+                        <Image
+                            src="/myflozap_logo.png"
+                            alt="floZap-logo"
+                            width={130}
+                            height={40}
+                            style={{ objectFit: 'contain' }}
+                        />
+                    </div>
                     <h1 className="text-gray-600 text-xl font-semibold md:text-3xl mb-3">welcome back!</h1>
                     <div className="h-1 bg-teal-800 w-[48px] mb-6"></div>
                     <form onSubmit={formik.handleSubmit}>

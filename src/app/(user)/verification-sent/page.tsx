@@ -4,6 +4,8 @@ import VerificationButton from './VerificationButton';
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 import { cookies } from 'next/headers';
+import Image from 'next/image';
+
 interface sentType {
   ok: boolean;
   msg?: string;
@@ -30,18 +32,26 @@ const Verification = async () => {
     return redirect('/')
   }
   return (
-    <section className="p-4 h-screen text-center">
+    <section className="p-4 h-screen text-center bg-zinc-100">
       <div className="max-w-xl mx-auto h-full flex items-center">
         <div className="w-full">
-          <h1 className="mb-4 text-3xl">LOGO</h1>
+          <div className="flex justify-center">
+            <Image
+              src="/myflozap_logo.png"
+              alt="floZap-logo"
+              width={130}
+              height={40}
+              style={{ objectFit: 'contain' }}
+            />
+          </div>
           <h1 className="font-semibold text-xl md:text-2xl text-gray-700">
             Please verify your email
           </h1>
           <p className="mt-4 mb-6 font-[500] text-gray-600">
-  We&apos;ve sent an email verification link to <span className="font-semibold">
-    <strong className='text-gray-800 italic'>{mail}</strong>
-  </span>. Kindly check your inbox or spam folder and click the link to activate your account.
-</p>
+            We&apos;ve sent an email verification link to <span className="font-semibold">
+              <strong className='text-gray-800 italic'>{mail}</strong>
+            </span>. Kindly check your inbox or spam folder and click the link to activate your account.
+          </p>
 
           <div>
             <Link
@@ -51,7 +61,7 @@ const Verification = async () => {
               Proceed to Sign In
             </Link>
             <p className="text-sm mt-4 text-gray-500">
-               Didn&apos;t get the email?{" "}
+              Didn&apos;t get the email?{" "}
               <VerificationButton>
                 resend
               </VerificationButton>

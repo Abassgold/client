@@ -5,6 +5,7 @@ import Hero from "@/components/dashboard/hero/Hero";
 import NavHeader from "@/components/NavComponent";
 import FAQ from "@/components/faq/Faq";
 import Hero1 from "@/components/dashboard/hero/Hero1";
+import Testimonials from "@/components/testimonials/Testimonials";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       <Hero />
       <Hero1/>
       <Features />
+      <Testimonials/>
       <Contact />
       <FAQ />
       <Footer />

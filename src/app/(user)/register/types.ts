@@ -3,6 +3,7 @@ export interface IUser {
     lastName: string;
     email: string;
     password: string;
+    telephone: string;
 }
 export interface findUser {
     ok: boolean;

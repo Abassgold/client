@@ -21,12 +21,12 @@ const Features = () => {
     },
     {
       title: "Crypto Trading",
-      description: "Easily sell your cryptocurrency to us at competitive rates with real-time market data.",
+      description: "Easily sell your USDT with competitive rates and receive payments through multiple local and international methods.",
       icon: "₿",
     },
     {
       title: "Virtual Number",
-      description: "Obtain a virtual phone number for SMS verifications on platforms like WhatsApp, Telegram, or other apps. Protect your privacy by using it for account creation, online services, and secure transactions without sharing your personal number.",
+      description: "Get instant access to phone numbers from over 100 countries. Perfect for verifications, business contacts, or maintaining privacy.",
       icon: "📞",
     },
     {

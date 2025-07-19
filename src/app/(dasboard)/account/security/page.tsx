@@ -7,7 +7,8 @@ import { addUser } from "@/redux/slice/auth"
 import * as Yup from 'yup'
 import axios, { AxiosError } from "axios"
 import { findUser } from "@/redux/type"
-import { toast, Toaster } from "sonner"
+import { toast } from "sonner"
+import { Toaster } from "@/components/ui/sonner"
 interface changePassword {
     oldPassword: string;
     newPassword: string;
@@ -79,7 +80,7 @@ const Security = () => {
             <Toaster
                 richColors
                 position='top-center'
-                duration={2000}
+                duration={3000}
             />
             <section className="min-h-full text-gray-800">
                 <div className="py-4">

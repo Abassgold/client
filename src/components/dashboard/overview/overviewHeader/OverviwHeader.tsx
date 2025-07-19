@@ -68,7 +68,7 @@ router.push('/login');
         </div>
         <div className="flex gap-4 justify-end items-center">
           <Bell fill="white" className="cursor-pointer" />
-          <span className="hidden sm:block">Welcome, {user?.firstName} {user?.lastName}</span>
+          <span className="hidden sm:block capitalize">Welcome, {user?.firstName} {user?.lastName}</span>
           <div className=" cursor-pointer me-4 w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
             {initials || 'NA'}
           </div>

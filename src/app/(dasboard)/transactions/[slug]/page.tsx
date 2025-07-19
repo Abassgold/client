@@ -1,8 +1,13 @@
 import { cookies } from 'next/headers';
 import React from 'react'
-import { fetchTransactions } from '../page';
-import DownloadReceipt from './DownloadReceipt';
+import DownloadReceipt, { myTransaction } from './DownloadReceipt';
 
+
+interface myResponseType {
+  ok: boolean;
+  msg?: string;
+  transaction: myTransaction
+}
 const TransactionId = async ({
   params,
 }: {
@@ -18,7 +23,7 @@ const TransactionId = async ({
         'Authorization': `Bearer ${token}`,
       },
     })
-  const data: fetchTransactions = await response.json();
+  const data :myResponseType= await response.json();
 
 
   if (!response.ok) {

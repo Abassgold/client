@@ -6,6 +6,7 @@ import { findUser } from "@/redux/type"
 import axios, { AxiosError } from "axios"
 import { useFormik } from "formik"
 import { MoveLeft } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -73,7 +74,7 @@ const PasswordReset = () => {
         }
     })
     return (
-        <section className="p-4 h-screen">
+        <section className="p-4 h-screen bg-zinc-100">
             <Toaster
                 richColors
                 position='top-center'
@@ -81,7 +82,15 @@ const PasswordReset = () => {
             />
             <div className="max-w-xl mx-auto h-full flex items-center">
                 <div className="w-full">
-                    <h1 className="mb-4 text-3xl">LOGO</h1>
+                    <div className="flex justify-center">
+                        <Image
+                            src="/myflozap_logo.png"
+                            alt="floZap-logo"
+                            width={130}
+                            height={40}
+                            style={{ objectFit: 'contain' }}
+                        />
+                    </div>
                     <h1 className="text-gray-600 text-xl font-semibold md:text-3xl mb-3 capitalize">reset password!</h1>
                     <div className="h-1 bg-teal-800 w-[48px] mb-6"></div>
                     <h3 className='text-gray-800 mb-4'>Your new password must be different from the previous ones</h3>

@@ -4,7 +4,7 @@ import VirtualNumberServies from '@/components/dashboard/virtualNumber/VirtualNu
 const Page = () => {
 
   return (
-    <section className=''>
+    <section className='w-full'>
       <VirtualNumber />
       <VirtualNumberServies />
     </section>

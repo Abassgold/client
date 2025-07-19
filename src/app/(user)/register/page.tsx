@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { findUser, IUser } from "./types";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import Image from "next/image";
 const Register = () => {
     const [loader, setLoader] = useState(false)
     const [show, setShow] = useState(false)
@@ -17,15 +18,17 @@ const Register = () => {
             firstName: '',
             lastName: '',
             email: '',
-            password: ''
+            password: '',
+            telephone: ''
         },
         validationSchema: Yup.object({
             firstName: Yup.string().required('Please enter your first name'),
             lastName: Yup.string().required('Please enter your last name'),
             email: Yup.string().email('Invalid email').test('no-spaces', 'Spaces are not allowed', (value) => !/\s/.test(value || '')).required('Please enter your email').lowercase(),
+            telephone: Yup.string().required('Please enter your phone number'),
             password: Yup.string()
                 .test('no-spaces', 'Spaces are not allowed', (value) => !/\s/.test(value || ''))
-                .min(6, 'Password must not be less than 6 characters')
+                .min(8, 'Password must not be less than 8 characters')
                 .max(12, 'Password must not exceed 12 characters')
                 .matches(/^[A-Z]/, "Must start with a capital letter.")
                 .matches(/[a-zA-Z]/, "Must contain at least one letter.")
@@ -43,7 +46,7 @@ const Register = () => {
                 })
                 const data: findUser = await response.json();
                 if (data?.ok) {
-                    document.cookie = `accessToken=${data.token}; path=/; max-age=86400*30; secure; samesite=strict`;
+                    document.cookie = `accessToken=${data.token}; path=/; max-age=${86400*30}; secure; samesite=strict`;
                     toast.success(data.msg);
                     router.push('/verification-sent');
                     return;
@@ -59,7 +62,7 @@ const Register = () => {
     })
 
     return (
-        <section className="p-4 h-screen">
+        <section className="p-4 h-screen bg-zinc-100">
             <Toaster
                 richColors
                 position='top-center'
@@ -67,35 +70,45 @@ const Register = () => {
             />
             <div className="max-w-xl mx-auto h-full flex items-center">
                 <div className="w-full">
-                    <h1 className="mb-4 text-3xl">LOGO</h1>
-                    <h1 className="text-gray-600 text-xl font-semibold md:text-3xl mb-3">welcome Onboard!</h1>
+                    <div className="flex justify-center">
+                        <Image
+                            src="/myflozap_logo.png"
+                            alt="floZap-logo"
+                            width={130}
+                            height={40}
+                            style={{ objectFit: 'contain' }}
+                        />
+                    </div>
+                    <h1 className="text-gray-600 text-xl font-semibold md:text-3xl mb-3 capitalize">welcome onboard!</h1>
                     <div className="h-1 bg-teal-800 w-[48px] mb-6"></div>
                     <form onSubmit={formik.handleSubmit}>
-                        <div className="mb-6">
-                            <label htmlFor="" className="mb-1 block text-gray-800">First Name</label>
-                            <input
-                                required
-                                name="firstName"
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                type="text" placeholder="Enter your First Name" className="block text-sm md:text-base text-gray-600 outline-none border-[0.5px] border-zinc-300 p-2 w-full rounded-md" />
-                            {formik.touched.firstName && formik.errors.firstName && (
-                                <p className="text-sm text-red-600">{formik.errors.firstName}</p>
-                            )}
+                        <div className="md:flex md:justify-between md:items-center">
+                            <div className="mb-4">
+                                <label htmlFor="" className="mb-1 block text-gray-800">First Name</label>
+                                <input
+                                    required
+                                    name="firstName"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    type="text" placeholder="Enter your First Name" className="block text-sm md:text-base text-gray-600 outline-none border-[0.5px] border-zinc-300 p-2 w-full rounded-md" />
+                                {formik.touched.firstName && formik.errors.firstName && (
+                                    <p className="text-sm text-red-600">{formik.errors.firstName}</p>
+                                )}
+                            </div>
+                            <div className="mb-4">
+                                <label htmlFor="" className="mb-1 block text-gray-800">Last Name</label>
+                                <input
+                                    required
+                                    name="lastName"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    type="text" placeholder="Enter your Last Name" className="block text-sm md:text-base text-gray-600 outline-none border-[0.5px] border-zinc-300 p-2 w-full rounded-md" />
+                                {formik.touched.lastName && formik.errors.lastName && (
+                                    <p className="text-sm text-red-600">{formik.errors.lastName}</p>
+                                )}
+                            </div>
                         </div>
-                        <div className="mb-6">
-                            <label htmlFor="" className="mb-1 block text-gray-800">Last Name</label>
-                            <input
-                                required
-                                name="lastName"
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                type="text" placeholder="Enter your Last Name" className="block text-sm md:text-base text-gray-600 outline-none border-[0.5px] border-zinc-300 p-2 w-full rounded-md" />
-                            {formik.touched.lastName && formik.errors.lastName && (
-                                <p className="text-sm text-red-600">{formik.errors.lastName}</p>
-                            )}
-                        </div>
-                        <div className="mb-6">
+                        <div className="mb-4">
                             <label htmlFor="" className="mb-1 block text-gray-800">Email</label>
                             <input
                                 required
@@ -107,7 +120,22 @@ const Register = () => {
                                 <p className="text-sm text-red-600">{formik.errors.email}</p>
                             )}
                         </div>
-                        <div className="mb-6 relative">
+                        <div className="mb-4">
+                            <label htmlFor="" className="mb-1 block text-gray-800">Telephone</label>
+                            <input
+                                required
+                                name="telephone"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                type="text"
+                                pattern="[0-9]*"
+                                inputMode="numeric"
+                                 placeholder="Enter your Phone Number" className="block text-sm md:text-base text-gray-600 outline-none border-[0.5px] border-zinc-300 p-2 w-full rounded-md" />
+                            {formik.touched.telephone && formik.errors.telephone && (
+                                <p className="text-sm text-red-600">{formik.errors.telephone}</p>
+                            )}
+                        </div>
+                        <div className="mb-4 relative">
                             <div className="flex justify-between items-center">
                                 <label htmlFor="" className="mb-1 block text-gray-800">Password</label>
 

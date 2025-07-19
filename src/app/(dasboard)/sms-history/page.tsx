@@ -1,0 +1,70 @@
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import React from 'react'
+type activationType = {
+    _id: string;
+    number: string;
+    name: string;
+    cost: string;
+    code: string;
+    country: string;
+    updatedAt: Date;
+}
+type responseType = {
+    ok: boolean;
+    msg?: string;
+    activation?: activationType[]
+}
+const Page = async () => {
+    const token = (await cookies()).get('accessToken')?.value
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/getActivationInfo`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+    });
+
+    if (res.status === 401) return redirect('/login')
+    if (res.status === 403) return redirect('/account-suspended')
+    const data: responseType = await res.json()
+    if (!data.ok) return (
+        <div className='text-center py-5  md:text-2xl text-gray-800'>
+            {data.msg}
+        </div>
+    )
+    return (
+        <div className="overflow-x-auto my-4">
+            <table className="w-full divide-y divide-gray-200">
+                <thead className="bg-teal-800">
+                    <tr>
+                        {['ReF', "Country", "Number", "Code", "Price"].map((header) => (
+                            <th key={header} className="px-4 py-2 text-left text-xs md:text-sm lg:text-base font-medium text-white uppercase tracking-wider">{header}</th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {data.activation?.map((item, index) => (
+                        <tr key={index} className={"bg-zinc-100"}>
+                            <td className="px-4 py-2 whitespace-nowrap text-xs md:text-sm lg:text-base">{item._id}</td>
+                            <td className="px-4 py-2 whitespace-nowrap text-xs md:text-sm lg:text-base">
+                                {item.country}
+                                <small>{item.name}</small>
+                            </td>
+                            <td className="px-4 py-2 whitespace-nowrap text-xs md:text-sm lg:text-base">{item.number}</td>
+                            <td className="px-4 py-2 whitespace-nowrap text-xs md:text-sm lg:text-base">
+                               <span className='bg-teal-800 rounded-md -1 text-white'>
+                                 {item.code}
+                               </span>
+                                </td>
+                            <td className="px-4 py-2 whitespace-nowrap text-xs md:text-sm lg:text-base">₦{item.cost}</td>
+                            <td className="px-4 py-2 whitespace-nowrap text-xs md:text-sm lg:text-base">{new Date(item.updatedAt).toLocaleDateString()}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    )
+}
+
+export default Page
