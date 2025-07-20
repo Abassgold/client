@@ -1,35 +1,36 @@
 'use client'
-import React, { useState } from 'react'
 
 const Page = () => {
-    const [number, setNumber] = useState<number | undefined>()
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState<string>('')
+    // const [number, setNumber] = useState<number | undefined>()
+    // const [loading, setLoading] = useState(false)
+    // const [error, setError] = useState<string>('')
 
-    const submitForm = (e: React.FormEvent) => {
-        e.preventDefault()
+    // const submitForm = (e: React.FormEvent) => {
+    //     e.preventDefault()
+    //     if (!number || number < 1750) {
+    //         setError('Minimum deposit amount is ₦1,000')
+    //         return
+    //     }
 
-        if (!number || number < 1750) {
-            setError('Minimum deposit amount is ₦1,000')
-            return
-        }
+    //     setError('')
+    //     setLoading(true)
 
-        setError('')
-        setLoading(true)
+    //     // TODO: call PayStack here
 
-        // TODO: call PayStack here
+    //     setLoading(false)
+    // }
 
-        setLoading(false)
-    }
-
-    const quickSelect = (amount: number) => {
-        setNumber(amount)
-        setError('')
-    }
+    // const quickSelect = (amount: number) => {
+    //     setNumber(amount)
+    //     setError('')
+    // }
 
     return (
         <>
-            <section className='mx-auto max-w-3xl p-4 bg-white rounded-lg shadow-md mt-10'>
+        <section>
+            <h1 className=' text-center py-5'>The payment feature is coming soon...</h1>
+        </section>
+            {/* <section className='mx-auto max-w-3xl p-4 bg-white rounded-lg shadow-md mt-10'>
                 <div>
                     <h1 className='text-xl font-bold text-gray-700 mb-4'>
                         Deposit with Crypto Gateway
@@ -84,7 +85,7 @@ const Page = () => {
                         </form>
                     </div>
                 </div>
-            </section>
+            </section> */}
         </>
     )
 }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { MenuIcon, XIcon } from 'lucide-react'
 
 const NavHeader = () => {
+  
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const navLink = [
     { name: 'Features', link: '#features' },
