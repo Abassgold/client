@@ -140,7 +140,7 @@ const TransactionsPage = () => {
           <table className="min-w-full bg-white rounded-md shadow-md whitespace-nowrap">
             <thead className="bg-teal-800 text-white">
               <tr>
-                <th className="px-2 py-3 text-left">Ref</th>
+                <th className="px-2 py-3 text-left">Ref ID</th>
                 <th className="px-2 py-3 text-left">User</th>
                 <th className="px-2 py-3 text-left">Amount</th>
                 <th className="px-2 py-3 text-left">Type</th>
@@ -160,19 +160,19 @@ const TransactionsPage = () => {
                 </tr>
               ) : transactions.map((tx) => (
                 <tr key={tx._id} className="border-t">
-                  <td className="px-2 py-2">{tx.reference}</td>
-                  <td className="px-2 py-2 capitalize">{tx.beneficiary}</td>
-                  <td className="px-2 py-2">₦{tx.amount.toFixed(2)}</td>
-                  <td className="px-2 py-2">{tx.type}</td>
-                  <td className={`px-2 py-2 font-medium ${
+                  <td className="px-2 py-3">{tx.reference}</td>
+                  <td className="px-2 py-3 capitalize">{tx.beneficiary}</td>
+                  <td className="px-2 py-3">₦{tx.amount.toFixed(2)}</td>
+                  <td className="px-2 py-3">{tx.type}</td>
+                  <td className={`px-2 py-3 font-medium ${
                     tx.status === 'completed' ? 'text-green-600' :
                     tx.status === 'pending' ? 'text-yellow-600' :
                     tx.status === 'refunded' ? 'text-blue-600' : 'text-red-600'
                   }`}>
                     {tx.status}
                   </td>
-                  <td className="px-2 py-2">{new Date(tx.createdAt).toLocaleString()}</td>
-                  <td className="px-2 py-2 flex gap-2">
+                  <td className="px-2 py-3">{new Date(tx.createdAt).toLocaleString()}</td>
+                  <td className="px-2 py-3 flex gap-2">
                     <Link href={`/admin/transactions/${tx._id}`} className="text-teal-700 hover:underline">
                     <Eye size={16}/>
                     </Link>

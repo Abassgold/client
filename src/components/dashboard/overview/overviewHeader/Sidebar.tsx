@@ -29,7 +29,7 @@ const Sidebar = ({ isOpen, toggleSidebar, setActiveSection }: sidebarType) => {
             className={`fixed  top-0 left-0 h-screen w-full bg-gray-800 text-white flex flex-col md:hidden transform ${isOpen ? "translate-x-0" : "-translate-x-full"
                 } md:translate-x-0 transition-transform duration-300 z-20`}
         >
-            <div className="p-4 flex justify-between items-center">
+            <div className="px-4 py-2 flex justify-between items-center">
                 <h1 className="text-2xl text-white px-2 font-semibold">FloZap</h1>
                 <button
                     className="md:hidden text-white"

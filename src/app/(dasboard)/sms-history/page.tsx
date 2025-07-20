@@ -6,7 +6,7 @@ type activationType = {
     number: string;
     name: string;
     cost: string;
-    code: string;
+    code?: string;
     country: string;
     updatedAt: Date;
 }
@@ -39,26 +39,26 @@ const Page = async () => {
                 <thead className="bg-teal-800">
                     <tr>
                         {['ReF', "Country", "Number", "Code", "Price"].map((header) => (
-                            <th key={header} className="px-4 py-2 text-left text-xs md:text-sm lg:text-base font-medium text-white uppercase tracking-wider">{header}</th>
+                            <th key={header} className="px-4 py-3 text-left text-xs md:text-sm lg:text-base font-medium text-white uppercase tracking-wider">{header}</th>
                         ))}
                     </tr>
                 </thead>
                 <tbody>
                     {data.activation?.map((item, index) => (
                         <tr key={index} className={"bg-zinc-100"}>
-                            <td className="px-4 py-2 whitespace-nowrap text-xs md:text-sm lg:text-base">{item._id}</td>
-                            <td className="px-4 py-2 whitespace-nowrap text-xs md:text-sm lg:text-base">
+                            <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">{item._id}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">
                                 {item.country}
                                 <small>{item.name}</small>
                             </td>
-                            <td className="px-4 py-2 whitespace-nowrap text-xs md:text-sm lg:text-base">{item.number}</td>
-                            <td className="px-4 py-2 whitespace-nowrap text-xs md:text-sm lg:text-base">
+                            <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">{item.number}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">
                                <span className='bg-teal-800 rounded-md -1 text-white'>
-                                 {item.code}
+                                 {item ? item.code : ''}
                                </span>
                                 </td>
-                            <td className="px-4 py-2 whitespace-nowrap text-xs md:text-sm lg:text-base">₦{item.cost}</td>
-                            <td className="px-4 py-2 whitespace-nowrap text-xs md:text-sm lg:text-base">{new Date(item.updatedAt).toLocaleDateString()}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">₦{item.cost}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">{new Date(item.updatedAt).toLocaleDateString()}</td>
                         </tr>
                     ))}
                 </tbody>

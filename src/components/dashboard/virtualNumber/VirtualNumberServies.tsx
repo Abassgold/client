@@ -132,6 +132,7 @@ const VirtualNumberServices = () => {
     } catch (error: unknown) {
       const err = error as AxiosError;
       if (err.status === 401) return router.push('/login');
+      if (err.status === 403) return router.push('/account-suspended');
       toast.error('Error occurred while trying to rent a number');
       setLoading(false);
     }
