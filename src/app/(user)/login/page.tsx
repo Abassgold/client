@@ -48,7 +48,7 @@ const Login = () => {
                 })
                 const data: findUser = await response.json();
                 if (data?.ok) {
-                    document.cookie = `accessToken=${data.token}; path=/; max-age=86400*30; secure; samesite=strict`;
+                    document.cookie = `accessToken=${data.token}; path=/; max-age=${86400*30}; secure; samesite=strict`;
                     toast.success(data.msg);
                     dispatch(addUser(data));
                     router.push('/dashboard');

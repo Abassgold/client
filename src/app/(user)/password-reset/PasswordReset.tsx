@@ -1,5 +1,6 @@
 'use client'
 import { Toaster } from "@/components/ui/sonner"
+import { getToken } from "@/lib/Token"
 import { useAppDispatch } from "@/redux/hooks"
 import { addUser } from "@/redux/slice/auth"
 import { findUser } from "@/redux/type"
@@ -43,10 +44,7 @@ const PasswordReset = () => {
                 .oneOf([Yup.ref('newPassword')], 'Passwords must match'),
         }),
         onSubmit: async (values: changePassword): Promise<findUser | void> => {
-            const token = document.cookie
-                .split('; ')
-                .find(row => row.startsWith('accessToken='))
-                ?.split('=')[1]
+            const token = getToken();
             setLoading(true)
             try {
                 const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/updatePassword`, values, {
