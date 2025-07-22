@@ -1,6 +1,28 @@
-'use client'
+// 'use client'
 
-const Page = () => {
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
+const Page = async () => {
+    const token = (await cookies()).get('accessToken')?.value
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/wallet/zixipay/generate-wallet`,
+        {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+                cache: 'no-store',
+            }
+        }
+    )
+    if (res.status === 401) redirect('/login')
+        
+
+
+
+
+
+
+
     // const [number, setNumber] = useState<number | undefined>()
     // const [loading, setLoading] = useState(false)
     // const [error, setError] = useState<string>('')
@@ -27,9 +49,9 @@ const Page = () => {
 
     return (
         <>
-        <section>
-            <h1 className=' text-center py-5'>The payment feature is coming soon...</h1>
-        </section>
+            <section>
+                <h1 className=' text-center py-5'>The payment feature is coming soon...</h1>
+            </section>
             {/* <section className='mx-auto max-w-3xl p-4 bg-white rounded-lg shadow-md mt-10'>
                 <div>
                     <h1 className='text-xl font-bold text-gray-700 mb-4'>

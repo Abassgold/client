@@ -88,8 +88,9 @@ const VirtualNumberServices = () => {
   const isFirstLoad = useRef(true);
   const [loading, setLoading] = useState(false);
   const [numberInfo, setNumberInfo] = useState<NumberInfo | null>(null);
-  const [otp, setOtp] = useState<string>('');
-  const [timeoutRemaining, setTimeoutRemaining] = useState<number | null>(null);
+  const otpRef = useRef<string | null>(null);
+  const [otp, setOtp] = useState<string | null>(null);
+  const [timeoutRemaining, setTimeoutRemaining] = useState<number | string | null>(null);
 
   const [countries, setCountries] = useState<CountryType[]>([]);
   const [searchCountries, setSearchCountries] = useState('');
@@ -124,7 +125,7 @@ const VirtualNumberServices = () => {
       sessionStorage.setItem('numberInfo', JSON.stringify(data.data));
 
       if (data.data) {
-        pollForSMS(data.data.activationId, data.data.provider);
+        await pollForSMS(data.data.activationId, data.data.provider);
       } else {
         setLoading(false);
       }
@@ -137,36 +138,113 @@ const VirtualNumberServices = () => {
       setLoading(false);
     }
   };
+  const delay = (ms:number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  const pollForSMS = (activationId: string, provider: string) => {
+  const cancelPolling = async (activationId: string, provider: string) => {
     const token = getToken();
-    const pollingDuration = 5 * 60 * 1000;
-    const pollStartTime = Date.now();
 
-    sessionStorage.setItem('pollStartTime', pollStartTime.toString());
-    setTimeoutRemaining(pollingDuration);
+    await delay(100000); // delay for 2 seconds before printing
 
+  console.log(token);
+    // try {
+    //   const { data } = await axios.get<OtpType>(
+    //     `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/activation/${activationId}`,
+    //     { headers: { Authorization: `Bearer ${token}` }, params: { provider } }
+    //   );
+    //   if (data.ok && data.status === 'completed') {
+    //     otpRef.current = data.code;
+    //     sessionStorage.setItem('otp', data.code);
+    //   } else if (data.status === 'cancelled') {
+    //     sessionStorage.removeItem('numberInfo');
+    //     sessionStorage.removeItem('otp');
+    //     sessionStorage.removeItem('pollStartTime');
+    //     toast.error('Activation cancelled. Please try again.');
+    //     setTimeoutRemaining(null);
+    //     setLoading(false);
+    //   }
+    // } catch (error) {
+
+    // }
+  }
+
+  const updateOtp = (code:string | null) => {
+  otpRef.current = code; // for synchronous logic
+  setOtp(code);          // for re-rendering UI
+};
+console.log(otpRef)
+
+  const pollForSMS = async(activationId: string, provider: string) => {
+    const token = getToken();
+    const pollingDuration = 1 * 60 * 1000;
+    let startTime = parseInt(sessionStorage.getItem('pollStartTime') || '0');
+
+    if (!startTime) {
+      startTime = Date.now();
+      sessionStorage.setItem('pollStartTime', startTime.toString());
+    }
+
+    let timeLeft = pollingDuration - (Date.now() - startTime);
+
+
+    // Countdown display function
+    const updateCountdownDisplay = (ms: number) => {
+      const totalSeconds = Math.floor(ms / 1000);
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      const formatted = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      setTimeoutRemaining(formatted);
+    };
+
+    // Initial display
+    updateCountdownDisplay(timeLeft);
+
+    // Countdown interval
+    const countdownInterval = setInterval(async() => {
+      timeLeft -= 1000;
+
+      if (timeLeft <= 0) {
+        updateCountdownDisplay(0); // show 0:00
+
+        // Stop polling when countdown ends
+        clearInterval(countdownInterval);
+        clearInterval(interval);
+        clearTimeout(timeout);
+         await cancelPolling(activationId, provider)
+        if (otpRef.current) return;
+        setNumberInfo(null);
+        sessionStorage.removeItem('numberInfo');
+        sessionStorage.removeItem('otp');
+        sessionStorage.removeItem('pollStartTime');
+        console.log('Timeout: No response after 5 minutes.')
+        setTimeoutRemaining(null);
+        setLoading(false);
+        toast.error('Timeout: No response after 5 minutes.');
+      } else {
+        updateCountdownDisplay(timeLeft);
+      }
+    }, 1000);
+
+    // Polling interval
     const interval = setInterval(async () => {
+      console.log('send polling')
+      if(!numberInfo || otpRef.current) return clearInterval(interval);
       try {
         const { data } = await axios.get<OtpType>(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/activation/${activationId}`,
           { headers: { Authorization: `Bearer ${token}` }, params: { provider } }
         );
 
-        if (data.ok && data.code === 'completed') {
-          setOtp(data.code);
+        if (data.ok && data.status === 'completed') {
+          updateOtp(data.code);
           sessionStorage.setItem('otp', data.code);
-          toast.success('Code received!');
           clearInterval(interval);
-          clearTimeout(timeout);
-          sessionStorage.removeItem('pollStartTime');
-          setTimeoutRemaining(null);
-          setLoading(false);
         } else if (data.status === 'cancelled') {
           sessionStorage.removeItem('numberInfo');
           sessionStorage.removeItem('otp');
           clearInterval(interval);
+          clearInterval(countdownInterval);
           clearTimeout(timeout);
+          updateOtp(null)
           sessionStorage.removeItem('pollStartTime');
           toast.error('Activation cancelled. Please try again.');
           setTimeoutRemaining(null);
@@ -176,7 +254,11 @@ const VirtualNumberServices = () => {
         sessionStorage.removeItem('numberInfo');
         sessionStorage.removeItem('otp');
         toast.error('Something went wrong');
+        console.log('Somethint wrong')
+        setNumberInfo(null);
+        updateOtp(null);
         clearInterval(interval);
+        clearInterval(countdownInterval);
         clearTimeout(timeout);
         sessionStorage.removeItem('pollStartTime');
         setTimeoutRemaining(null);
@@ -184,15 +266,33 @@ const VirtualNumberServices = () => {
       }
     }, 5000);
 
+    // Optional timeout as fallback safety (can remove since countdown handles it)
     const timeout = setTimeout(() => {
       clearInterval(interval);
-      sessionStorage.removeItem('numberInfo');
-      sessionStorage.removeItem('otp');
-      sessionStorage.removeItem('pollStartTime');
-      toast.error('Timeout: No response after 5 minutes.');
-      setTimeoutRemaining(null);
-      setLoading(false);
+      clearInterval(countdownInterval);
+
+      if (!otpRef.current) {
+        sessionStorage.removeItem('numberInfo');
+        sessionStorage.removeItem('otp');
+        sessionStorage.removeItem('pollStartTime');
+        toast.error('Timeout: No response after 5 minutes.');
+        console.log('Timeout: No response after 5 minutes.')
+        setNumberInfo(null);
+        updateOtp(null);
+        setTimeoutRemaining(null);
+        setLoading(false);
+      }
+
     }, pollingDuration);
+  };
+  const clearInfo = () => {
+    sessionStorage.removeItem('numberInfo');
+    sessionStorage.removeItem('otp');
+    sessionStorage.removeItem('pollStartTime');
+    setTimeoutRemaining(null);
+    setNumberInfo(null);
+    updateOtp(null);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -235,35 +335,39 @@ const VirtualNumberServices = () => {
     fetchOtherCountriesServices();
 
     if (savedOtp) {
-      setOtp(savedOtp);
+      updateOtp(savedOtp);
     }
 
     if (savedNumberStr) {
       try {
         const parsedNumber = JSON.parse(savedNumberStr) as NumberInfo;
         setNumberInfo(parsedNumber);
-
         const savedStartTime = sessionStorage.getItem('pollStartTime');
         const now = Date.now();
-        const pollingDuration = 5 * 60 * 1000;
-
+        const pollingDuration = 1 * 60 * 1000;
         if (savedStartTime) {
           const elapsed = now - parseInt(savedStartTime);
           const remainingTime = pollingDuration - elapsed;
 
           if (remainingTime > 0) {
-            setTimeoutRemaining(remainingTime);
+            const totalSeconds = Math.floor(remainingTime / 1000);
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            const formatted = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            setTimeoutRemaining(formatted);
+
             if (!savedOtp || savedOtp === '') {
               setLoading(true);
               pollForSMS(parsedNumber.activationId, parsedNumber.provider);
             }
           } else {
-            sessionStorage.removeItem('numberInfo');
-            sessionStorage.removeItem('otp');
-            sessionStorage.removeItem('pollStartTime');
-            setTimeoutRemaining(null);
+            // sessionStorage.removeItem('numberInfo');
+            // sessionStorage.removeItem('otp');
+            // sessionStorage.removeItem('pollStartTime');
+            setTimeoutRemaining('00:00');
           }
         }
+
       } catch {
         console.log('Error parsing saved number, clearing it...');
         sessionStorage.removeItem('numberInfo');
@@ -349,9 +453,9 @@ const VirtualNumberServices = () => {
         service={numberInfo?.name}
         country={numberInfo?.country}
         number={numberInfo?.number}
-        otp={otp}
+        otp={otpRef.current || ''}
         timeout={timeoutRemaining}
-        onClose={() => setLoading(false)}
+        onClose={() => clearInfo()}
       />}
 
       <div className='p-2 border border-zinc-200 rounded-md mb-2 bg-white'>

@@ -6,7 +6,7 @@ interface PurchaseNumberModalProps {
   country?: string;
   number?: string;
   otp?: string;
-  timeout: number | null;
+  timeout: number | null | string;
   onClose: () => void;
 }
 const PurchaseNumberModal = (
@@ -67,7 +67,7 @@ const PurchaseNumberModal = (
               <div className="flex justify-between items-center">
                 <span className="text-gray-900">Number:</span>
                 <span className="font-medium flex gap-1 items-center">
-                  +1{number}
+                  {number}
                   <button
                     onClick={() => copyToClipboard(number, 'number')}
                     className="mt-1  text-teal-800 cursor-pointer"
@@ -112,11 +112,11 @@ const PurchaseNumberModal = (
           </div>
 
           <button
-            disabled={otp !== ''}
+            disabled={otp === ''}
             onClick={done}
-            className="mt-6 text-[13px] w-full cursor-pointer bg-teal-800 text-white py-2 rounded-md"
+            className={`mt-6 text-[13px] w-full cursor-pointer ${otp ? 'bg-teal-800' : 'bg-teal-800 opacity-70'} text-white py-2 rounded-md`}
           >
-            Done
+            {otp ? 'Done' : 'Waiting for OTP...'}
           </button>
         </div>
       </div>
