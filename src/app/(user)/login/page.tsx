@@ -41,21 +41,19 @@ const Login = () => {
         onSubmit: async (values: loginType): Promise<findUser | void> => {
             setLoader(true)
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/login`, {
+                const response = await fetch(`/login/api/`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(values),
                 })
                 const data: findUser = await response.json();
                 if (data?.ok) {
-                    document.cookie = `accessToken=${data.token}; path=/; max-age=${86400*30}; secure; samesite=strict`;
                     toast.success(data.msg);
                     dispatch(addUser(data));
                     router.push('/dashboard');
                     return;
                 }
                 if (!data.ok && data.msg === 'not-verified') {
-                    document.cookie = `accessToken=${data.token}; path=/; max-age=${86400*30}; secure; samesite=strict`;
                     router.push('/verification-sent')
                     return;
                 }

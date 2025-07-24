@@ -6,7 +6,6 @@ import Link from 'next/link';
 import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { Toaster, toast } from 'sonner';
-import { getToken } from '@/lib/Token';
 import {
   Pagination,
   PaginationContent,
@@ -48,10 +47,9 @@ const TransactionsPage = () => {
 
   const fetchTransactions = async () => {
     setLoading(true);
-    const token = getToken();
     try {
       const { data } = await axios.get<FetchTransactionResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/users/transactions`, {
-        headers: { Authorization: `Bearer ${token}` },
+        withCredentials:true,
         params: {
           page,
           limit: 10,

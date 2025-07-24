@@ -45,7 +45,9 @@ const Page = async () => {
                 </thead>
                 <tbody>
                     {data.activation?.map((item, index) => (
-                        <tr key={index} className={"bg-zinc-100"}>
+                        <tr key={index} className={` hover:bg-gray-100 ${
+                            index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
+                          }`}>
                             <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">{item._id}</td>
                             <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">
                                 {item.country}

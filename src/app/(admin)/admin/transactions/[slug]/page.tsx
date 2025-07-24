@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getToken } from '@/lib/Token';
 // import ManipulateUserBalance from '../../users/[slug]/ManipulateUserBalance';
 
 type Transaction = {
@@ -39,12 +38,11 @@ const TransactionDetailPage = ({ params }: Props) => {
 
     const fetchDetails = async () => {
         try {
-            const token = getToken();
             const { slug } = await params;
 
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/users/transactions/${slug}`, {
+               credentials: 'include',
                 headers: {
-                    Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
                 cache: 'no-store',

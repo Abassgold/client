@@ -8,8 +8,7 @@ import { redirect, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Toaster } from '@/components/ui/sonner';
-import { getToken } from '@/lib/Token';
-interface paymentType{
+interface paymentType {
   ok: boolean;
   msg: string;
 }
@@ -20,76 +19,73 @@ const DepositPage = () => {
   const [error, setError] = useState('');
   const user = useAppSelector((state) => state.auth.user.user);
   const dispatch = useAppDispatch();
-  
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!amount || amount < 1000) {
-    setError('Minimum deposit amount is ₦1,000');
-    return;
-  }
+    if (!amount || amount < 1000) {
+      setError('Minimum deposit amount is ₦1,000');
+      return;
+    }
 
-  setError('');
-  setLoading(true);
+    setError('');
+    setLoading(true);
 
-  const token = getToken();
 
-  try {
-    const res = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/wallet/initialize-payment`, { amount }, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    try {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/wallet/initialize-payment`, { amount }, {
+        withCredentials: true
+      });
+
+      if (res.status === 500) {
+        setError('An error occurred while processing your payment. Please try again.');
+        return;
       }
-    });
+      if (res.status === 401) {
+        return redirect('/login')
+      } if (res.status === 403) {
+        return redirect('/account-suspended')
+      }
 
-    if (res.status === 500) {
-      setError('An error occurred while processing your payment. Please try again.');
-      return;
+      const { default: PayStackPop } = await import('@paystack/inline-js');
+
+      const popup = new PayStackPop();
+      popup.newTransaction({
+        key: process.env.NEXT_PUBLIC_PAYSTACK_KEY!,
+        email: user?.email || '',
+        amount: amount * 100,
+        reference: res.data.data.reference,
+        onSuccess: async (transaction) => {
+          const verifyPayment = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/wallet/verify-payment`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ reference: transaction.reference, email: user?.email }),
+          });
+
+          const verifyData: paymentType = await verifyPayment.json();
+          if (verifyData.ok) {
+            toast.success('Wallet funded successfully!');
+            router.push('/dashboard');
+          } else {
+            toast.error(verifyData.msg || 'Payment verification failed. Please try again.');
+          }
+        },
+        onCancel: () => {
+          setLoading(false);
+        },
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error during payment:', error.message);
+        setError('An error occurred while processing your payment. Please try again.');
+        return;
+      }
+      console.error('Unknown error: ', error);
+      setError('Unknown error');
+    } finally {
+      setLoading(false);
     }
-    if (res.status === 401) {
-      return redirect('/login')
-    }if (res.status === 403) {
-      return redirect('/account-suspended')
-    }
-
-    const { default: PayStackPop } = await import('@paystack/inline-js');
-
-    const popup = new PayStackPop();
-    popup.newTransaction({
-      key: process.env.NEXT_PUBLIC_PAYSTACK_KEY!,
-      email: user?.email || '',
-      amount: amount * 100,
-      reference: res.data.data.reference,
-      onSuccess: async (transaction) => {
-        const verifyPayment = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/wallet/verify-payment`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ reference: transaction.reference, email: user?.email }),
-        });
-
-        const verifyData: paymentType = await verifyPayment.json();
-        if (verifyData.ok) {
-          toast.success('Wallet funded successfully!');
-          router.push('/dashboard');
-        } else {
-          toast.error(verifyData.msg || 'Payment verification failed. Please try again.');
-        }
-      },
-      onCancel: () => {
-        setLoading(false);
-      },
-    });
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error('Error during payment:', error.message);
-      setError('An error occurred while processing your payment. Please try again.');
-      return;
-    }
-    console.error('Unknown error: ', error);
-    setError('Unknown error');
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
 
 
@@ -100,17 +96,13 @@ const DepositPage = () => {
     setError('');
   };
   useEffect(() => {
-    const token = getToken();
 
-    if (!token) return
-    if (!token || !user || user.email === '') return;
+    if (!user || user.email === '') return;
     const fetchUser = async () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/me`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            credentials: 'include'
           }
         );
         if (response.status === 401) {
@@ -119,9 +111,9 @@ const DepositPage = () => {
         const data: findUser = await response.json();
         dispatch(addUser(data))
       } catch (err: unknown) {
-        if(err instanceof Error){
-        console.error('Error fetching user:', err.message);
-        return;
+        if (err instanceof Error) {
+          console.error('Error fetching user:', err.message);
+          return;
         }
         console.error('Unknown error: ', err)
       }

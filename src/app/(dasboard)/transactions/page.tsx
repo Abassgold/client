@@ -6,7 +6,6 @@ import Link from 'next/link';
 import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { Toaster, toast } from 'sonner';
-import { getToken } from '@/lib/Token';
 import {
   Pagination,
   PaginationContent,
@@ -46,10 +45,9 @@ const TransactionsPage = () => {
 
   const fetchTransactions = async () => {
     setLoading(true);
-    const token = getToken();
     try {
       const { data } = await axios.get<FetchTransactionResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/transactions/me`, {
-        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
         params: {
           page,
           limit: 10,
@@ -145,8 +143,10 @@ const TransactionsPage = () => {
                 <tr>
                   <td colSpan={6} className="text-center p-4">No transactions found.</td>
                 </tr>
-              ) : transactions.map((tx) => (
-                <tr key={tx._id} className="border-t">
+              ) : transactions.map((tx, index) => (
+                <tr key={tx._id}  className={`border-t hover:bg-gray-100 ${
+                  index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
+                }`}>
                   <td className="px-2 py-3">{tx.reference}</td>
                   <td className="px-2 py-3">₦{tx.amount.toFixed(2)}</td>
                   <td className="px-2 py-3">{tx.type}</td>

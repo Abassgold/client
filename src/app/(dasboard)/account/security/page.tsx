@@ -44,17 +44,11 @@ const Security = () => {
 
         }),
         onSubmit: async (values: changePassword): Promise<findUser | void> => {
-            const token = document.cookie
-                .split('; ')
-                .find(row => row.startsWith('accessToken='))
-                ?.split('=')[1]
+            
             setLoading(true)
             try {
                 const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/updatePassword`, values, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
+                   withCredentials: true
                 })
                 const res: findUser = data
                 if (!res?.ok) {

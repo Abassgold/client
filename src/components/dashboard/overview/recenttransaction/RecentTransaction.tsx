@@ -26,22 +26,12 @@ const RecentTransaction = () => {
   const [balance, setBalance] = useState<number>(0);
 
   useEffect(() => {
-    const token = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('accessToken='))
-      ?.split('=')[1];
-
-    if (!token) return;
-    setLoading(true);
-
     const fetchDashboardData = async (): Promise<void> => {
       try {
         const { data } = await axios.get<WalletResponse>(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/wallet/`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            withCredentials: true
           }
         );
 

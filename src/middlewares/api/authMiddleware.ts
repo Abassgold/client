@@ -11,7 +11,6 @@ export const isAuthenticated = async (token: string) => {
                 'Authorization': `Bearer ${token}`
             },
         });
-
         // If suspended, backend returns 403
         if (res.status === 403) {
             return { authenticated: true, suspended: true };

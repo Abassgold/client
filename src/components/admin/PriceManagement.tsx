@@ -1,6 +1,5 @@
 'use client';
 
-import { getToken } from '@/lib/Token';
 import axios, { AxiosError } from 'axios';
 import { SaveIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -31,13 +30,10 @@ const PriceManagement: React.FC = () => {
   const handleSaveChanges = async () => {
     setLoading(true)
     try {
-      const token = getToken()
       const { data } = await axios.post<priceResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/set-price/ngn`,
         virtualNumber,
         {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+         withCredentials: true
         }
       )
       if (!data.ok) return toast.error(data.msg)
@@ -55,12 +51,9 @@ useEffect(()=>{
    const fetchPrices = async () => {
     setLoading(true)
     try {
-      const token = getToken()
       const { data } = await axios.get<fetchPriceResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/get-prices`,
         {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+         withCredentials: true
         }
       )
       if (!data.ok) return toast.error(data.msg)

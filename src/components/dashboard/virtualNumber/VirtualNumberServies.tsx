@@ -7,7 +7,6 @@ import PurchaseNumberModal from "./PuchaseNumberModal";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
-import { getToken } from "@/lib/Token";
 
 interface NumberInfo {
   number: string;
@@ -89,8 +88,11 @@ const VirtualNumberServices = () => {
   const [loading, setLoading] = useState(false);
   const [numberInfo, setNumberInfo] = useState<NumberInfo | null>(null);
   const otpRef = useRef<string | null>(null);
+  const isPollingActive = useRef(false);
   const [otp, setOtp] = useState<string | null>(null);
-  const [timeoutRemaining, setTimeoutRemaining] = useState<number | string | null>(null);
+  const [timeoutRemaining, setTimeoutRemaining] = useState<string>('00:00');
+  const pollingInterval = useRef<NodeJS.Timeout | null>(null);
+  const countdownInterval = useRef<NodeJS.Timeout | null>(null);
 
   const [countries, setCountries] = useState<CountryType[]>([]);
   const [searchCountries, setSearchCountries] = useState('');
@@ -106,13 +108,14 @@ const VirtualNumberServices = () => {
   const [priceLoading, setPriceLoading] = useState(false);
 
   const purchaseNumber = async (item: purchaseNumberType, index?: number) => {
-    const token = getToken();
     setLoading(true);
     try {
       const { data } = await axios.post<GetNumberResponse>(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/purchase/sms`,
         { ...item, index },
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          withCredentials: true
+        }
       );
 
       if (!data.ok) {
@@ -138,166 +141,157 @@ const VirtualNumberServices = () => {
       setLoading(false);
     }
   };
-  const delay = (ms:number) => new Promise((resolve) => setTimeout(resolve, ms));
+  const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  const cancelPolling = async (activationId: string, provider: string) => {
-    const token = getToken();
+  const updateOtp = (code: string | null) => {
+    otpRef.current = code;
+    setOtp(code);
+  };
+  const updateCountdownDisplay = (ms: number) => {
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    const formatted = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    setTimeoutRemaining(formatted);
+  };
 
-    await delay(100000); // delay for 2 seconds before printing
+  const pollForSMS = async (activationId: string, provider: string, initialRemainingTime?: number) => {
+    console.log('mmm');
 
-  console.log(token);
-    // try {
-    //   const { data } = await axios.get<OtpType>(
-    //     `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/activation/${activationId}`,
-    //     { headers: { Authorization: `Bearer ${token}` }, params: { provider } }
-    //   );
-    //   if (data.ok && data.status === 'completed') {
-    //     otpRef.current = data.code;
-    //     sessionStorage.setItem('otp', data.code);
-    //   } else if (data.status === 'cancelled') {
-    //     sessionStorage.removeItem('numberInfo');
-    //     sessionStorage.removeItem('otp');
-    //     sessionStorage.removeItem('pollStartTime');
-    //     toast.error('Activation cancelled. Please try again.');
-    //     setTimeoutRemaining(null);
-    //     setLoading(false);
-    //   }
-    // } catch (error) {
+    isPollingActive.current = true;
+    const pollingDuration = 1 * 60 * 1000; // 10 mins
+    const startTime = Date.now();
+    let endTime = startTime + pollingDuration;
 
-    // }
-  }
-
-  const updateOtp = (code:string | null) => {
-  otpRef.current = code; // for synchronous logic
-  setOtp(code);          // for re-rendering UI
-};
-console.log(otpRef)
-
-  const pollForSMS = async(activationId: string, provider: string) => {
-    const token = getToken();
-    const pollingDuration = 1 * 60 * 1000;
-    let startTime = parseInt(sessionStorage.getItem('pollStartTime') || '0');
-
-    if (!startTime) {
-      startTime = Date.now();
+    if (initialRemainingTime) {
+      endTime = startTime + initialRemainingTime;
+    } else {
       sessionStorage.setItem('pollStartTime', startTime.toString());
     }
 
-    let timeLeft = pollingDuration - (Date.now() - startTime);
-
-
-    // Countdown display function
-    const updateCountdownDisplay = (ms: number) => {
-      const totalSeconds = Math.floor(ms / 1000);
-      const minutes = Math.floor(totalSeconds / 60);
-      const seconds = totalSeconds % 60;
-      const formatted = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-      setTimeoutRemaining(formatted);
-    };
-
-    // Initial display
-    updateCountdownDisplay(timeLeft);
-
-    // Countdown interval
-    const countdownInterval = setInterval(async() => {
-      timeLeft -= 1000;
-
+    // Start countdown interval
+    if (countdownInterval.current) clearInterval(countdownInterval.current);
+    countdownInterval.current = setInterval(() => {
+      const now = Date.now();
+      const timeLeft = endTime - now;
       if (timeLeft <= 0) {
-        updateCountdownDisplay(0); // show 0:00
-
-        // Stop polling when countdown ends
-        clearInterval(countdownInterval);
-        clearInterval(interval);
-        clearTimeout(timeout);
-         await cancelPolling(activationId, provider)
-        if (otpRef.current) return;
-        setNumberInfo(null);
-        sessionStorage.removeItem('numberInfo');
-        sessionStorage.removeItem('otp');
-        sessionStorage.removeItem('pollStartTime');
-        console.log('Timeout: No response after 5 minutes.')
-        setTimeoutRemaining(null);
+        clearInterval(countdownInterval.current!);
+        clearPolling();
         setLoading(false);
-        toast.error('Timeout: No response after 5 minutes.');
+        setNumberInfo(null);
+        updateOtp(null);
+        sessionStorage.removeItem('numberInfo');
+        sessionStorage.removeItem('pollStartTime');
+        sessionStorage.removeItem('otp');
+        setTimeoutRemaining('00:00');
+        toast.error('Timeout: No response after 10 minutes.');
+        return;
       } else {
         updateCountdownDisplay(timeLeft);
       }
     }, 1000);
 
-    // Polling interval
-    const interval = setInterval(async () => {
-      console.log('send polling')
-      if(!numberInfo || otpRef.current) return clearInterval(interval);
+    const poll = async () => {
+      if (!isPollingActive.current) {
+        console.log('Polling stopped.');
+        return;
+      }
       try {
         const { data } = await axios.get<OtpType>(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/activation/${activationId}`,
-          { headers: { Authorization: `Bearer ${token}` }, params: { provider } }
+          {
+            withCredentials: true,
+            params: { provider }
+          }
         );
 
-        if (data.ok && data.status === 'completed') {
-          updateOtp(data.code);
+        if (data.status === 'completed') {
+          updateOtp(data.code)
           sessionStorage.setItem('otp', data.code);
-          clearInterval(interval);
+          clearPolling();
+          return;
         } else if (data.status === 'cancelled') {
+          clearPolling();
+          setLoading(false)
+          setNumberInfo(null)
+          updateOtp(null);
           sessionStorage.removeItem('numberInfo');
-          sessionStorage.removeItem('otp');
-          clearInterval(interval);
-          clearInterval(countdownInterval);
-          clearTimeout(timeout);
-          updateOtp(null)
           sessionStorage.removeItem('pollStartTime');
-          toast.error('Activation cancelled. Please try again.');
-          setTimeoutRemaining(null);
-          setLoading(false);
+          sessionStorage.removeItem('otp');
+          setTimeoutRemaining('00:00');
+          toast.error('Activation cancelled.');
+          setNumberInfo(null);
+          return;
+        } else {
+          console.log('Polling for code:', data.msg);
+          await delay(5000);
+          poll();
         }
-      } catch {
-        sessionStorage.removeItem('numberInfo');
-        sessionStorage.removeItem('otp');
-        toast.error('Something went wrong');
-        console.log('Somethint wrong')
-        setNumberInfo(null);
+      } catch (error) {
+        console.error('Polling error:', error);
+        clearPolling();
+        toast.error('Error polling for code.');
+        setLoading(false)
+        setNumberInfo(null)
         updateOtp(null);
-        clearInterval(interval);
-        clearInterval(countdownInterval);
-        clearTimeout(timeout);
-        sessionStorage.removeItem('pollStartTime');
-        setTimeoutRemaining(null);
-        setLoading(false);
-      }
-    }, 5000);
-
-    // Optional timeout as fallback safety (can remove since countdown handles it)
-    const timeout = setTimeout(() => {
-      clearInterval(interval);
-      clearInterval(countdownInterval);
-
-      if (!otpRef.current) {
         sessionStorage.removeItem('numberInfo');
-        sessionStorage.removeItem('otp');
         sessionStorage.removeItem('pollStartTime');
-        toast.error('Timeout: No response after 5 minutes.');
-        console.log('Timeout: No response after 5 minutes.')
-        setNumberInfo(null);
-        updateOtp(null);
-        setTimeoutRemaining(null);
-        setLoading(false);
+        sessionStorage.removeItem('otp');
+        setTimeoutRemaining('00:00');
       }
+    };
 
-    }, pollingDuration);
+    poll();
+  };
+  const clearPolling = () => {
+    isPollingActive.current = false;
+    if (pollingInterval.current) clearInterval(pollingInterval.current);
+    if (countdownInterval.current) clearInterval(countdownInterval.current);
+    pollingInterval.current = null;
+    countdownInterval.current = null;
   };
   const clearInfo = () => {
     sessionStorage.removeItem('numberInfo');
     sessionStorage.removeItem('otp');
     sessionStorage.removeItem('pollStartTime');
-    setTimeoutRemaining(null);
+    setTimeoutRemaining('00:00');
     setNumberInfo(null);
     updateOtp(null);
     setLoading(false);
   };
+  // const cancelPolling = async (activationId: string, provider: string) => {
 
+  //   await delay(100000); // delay for 2 seconds before printing
+
+  //   try {
+  //     const { data } = await axios.get<OtpType>(
+  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/activation/${activationId}`,
+  //       { 
+  //         withCredentials: true,
+  //          params: { provider } }
+  //     );
+  //     if (data.ok && data.status === 'completed') {
+  //       otpRef.current = data.code;
+  //       sessionStorage.setItem('otp', data.code);
+  //     } else if (data.status === 'cancelled') {
+  //       sessionStorage.removeItem('numberInfo');
+  //       sessionStorage.removeItem('otp');
+  //       sessionStorage.removeItem('pollStartTime');
+  //       toast.error('Activation cancelled. Please try again.');
+  //       setTimeoutRemaining('00:00');
+  //       setLoading(false);
+  //     }
+  //   } catch (error) {
+
+  //   }
+  // }
   useEffect(() => {
     const savedNumberStr = sessionStorage.getItem('numberInfo');
     const savedOtp = sessionStorage.getItem('otp');
+    const savedStartTime = sessionStorage.getItem('pollStartTime');
+    const pollingDuration = 1 * 60 * 1000;
+    const now = Date.now();
+
 
     const fetchCountries = async () => {
       const res = await fetch(`https://restcountries.com/v3.1/all?fields=name,flags,cca2,cca3`);
@@ -330,9 +324,6 @@ console.log(otpRef)
       if (data.ok) setOtherServices(data.result);
     };
 
-    fetchCountries();
-    fetchUSAServices();
-    fetchOtherCountriesServices();
 
     if (savedOtp) {
       updateOtp(savedOtp);
@@ -342,9 +333,7 @@ console.log(otpRef)
       try {
         const parsedNumber = JSON.parse(savedNumberStr) as NumberInfo;
         setNumberInfo(parsedNumber);
-        const savedStartTime = sessionStorage.getItem('pollStartTime');
-        const now = Date.now();
-        const pollingDuration = 1 * 60 * 1000;
+
         if (savedStartTime) {
           const elapsed = now - parseInt(savedStartTime);
           const remainingTime = pollingDuration - elapsed;
@@ -356,23 +345,28 @@ console.log(otpRef)
             const formatted = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
             setTimeoutRemaining(formatted);
 
-            if (!savedOtp || savedOtp === '') {
+            if (!savedOtp) {
               setLoading(true);
-              pollForSMS(parsedNumber.activationId, parsedNumber.provider);
+              pollForSMS(parsedNumber.activationId, parsedNumber.provider, remainingTime);
             }
           } else {
-            // sessionStorage.removeItem('numberInfo');
-            // sessionStorage.removeItem('otp');
-            // sessionStorage.removeItem('pollStartTime');
             setTimeoutRemaining('00:00');
+            clearPolling();
+            sessionStorage.removeItem('numberInfo');
+            sessionStorage.removeItem('pollStartTime');
           }
         }
-
       } catch {
         console.log('Error parsing saved number, clearing it...');
         sessionStorage.removeItem('numberInfo');
+        clearPolling();
       }
     }
+
+    fetchCountries();
+    fetchUSAServices();
+    fetchOtherCountriesServices();
+
   }, []);
 
   useEffect(() => {
@@ -384,7 +378,7 @@ console.log(otpRef)
     sessionStorage.removeItem('numberInfo');
     sessionStorage.removeItem('otp');
     sessionStorage.removeItem('pollStartTime');
-    setTimeoutRemaining(null);
+    setTimeoutRemaining('00:00');
     setLoading(false);
   }, [pathname]);
 
@@ -446,173 +440,176 @@ console.log(otpRef)
   );
 
   return (
-    <section className='text-gray-800'>
+    <>
       <Toaster richColors position='top-center' duration={3000} />
 
-      {loading && <PurchaseNumberModal
-        service={numberInfo?.name}
-        country={numberInfo?.country}
-        number={numberInfo?.number}
-        otp={otpRef.current || ''}
-        timeout={timeoutRemaining}
-        onClose={() => clearInfo()}
-      />}
+      <section className='text-gray-800'>
 
-      <div className='p-2 border border-zinc-200 rounded-md mb-2 bg-white'>
-        <h1 className='py-2'>1. Select country</h1>
+        {loading && <PurchaseNumberModal
+          service={numberInfo?.name}
+          country={numberInfo?.country}
+          number={numberInfo?.number}
+          otp={otp || ''}
+          timeout={timeoutRemaining}
+          onClose={() => clearInfo()}
+        />}
 
-        {selectedCountry ? (
-          <div className="flex items-center justify-between p-2 border border-zinc-200 rounded-md">
-            <div className="flex items-center gap-2">
-              <img
-                src={selectedCountry.flags.png || selectedCountry.flags.svg}
-                alt={selectedCountry.flags.alt || selectedCountry.name.common}
-                className="w-6 h-4 object-cover"
-              />
-              <p>{selectedCountry.name.common}</p>
+        <div className='p-2 border border-zinc-200 rounded-md mb-2 bg-white'>
+          <h1 className='py-2'>1. Select country</h1>
+
+          {selectedCountry ? (
+            <div className="flex items-center justify-between p-2 border border-zinc-200 rounded-md">
+              <div className="flex items-center gap-2">
+                <img
+                  src={selectedCountry.flags.png || selectedCountry.flags.svg}
+                  alt={selectedCountry.flags.alt || selectedCountry.name.common}
+                  className="w-6 h-4 object-cover"
+                />
+                <p>{selectedCountry.name.common}</p>
+              </div>
+              <button
+                onClick={() => {
+                  setSelectedCountry(null);
+                  setServices([]);
+                  setSelectedService(null);
+                  setPrice(null);
+                }}
+                className="text-red-500 text-xl font-bold px-2 cursor-pointer"
+              >
+                ×
+              </button>
             </div>
-            <button
-              onClick={() => {
-                setSelectedCountry(null);
-                setServices([]);
-                setSelectedService(null);
-                setPrice(null);
-              }}
-              className="text-red-500 text-xl font-bold px-2 cursor-pointer"
-            >
-              ×
-            </button>
-          </div>
-        ) : (
-          <>
-            <input
-              value={searchCountries}
-              onChange={(e) => setSearchCountries(e.target.value)}
-              placeholder='Search country'
-              type="text"
-              className='p-2 text-[15px] rounded-md w-full outline-none border border-zinc-200 mb-2'
-            />
+          ) : (
+            <>
+              <input
+                value={searchCountries}
+                onChange={(e) => setSearchCountries(e.target.value)}
+                placeholder='Search country'
+                type="text"
+                className='p-2 text-[15px] rounded-md w-full outline-none border border-zinc-200 mb-2'
+              />
+              <div className="max-h-[30rem] overflow-y-auto my-2 border-zinc-200 rounded-md py-2">
+                <ul>
+                  {filteredCountries.map((country, index) => (
+                    <li key={index} className='my-2'>
+                      <label className='flex items-center gap-2 p-2 border border-zinc-200 rounded-md w-full cursor-pointer'>
+                        <input
+                          type="radio"
+                          name="country"
+                          value={country.name.common}
+                          onChange={() => selectCountry(country)}
+                          className="accent-blue-500"
+                        />
+                        <img
+                          src={country.flags.png || country.flags.svg}
+                          alt={country.flags.alt || country.name.common}
+                          className="w-6 h-4 object-cover"
+                        />
+                        <p>{country.name.common}</p>
+                      </label>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Service Selection */}
+        <div className='p-2 border border-zinc-200 rounded-md bg-white scroll-mt-24'>
+          <h1 className='py-2'>2. Select service</h1>
+          <input
+            value={searchServices}
+            onChange={(e) => setSearchServices(e.target.value)}
+            placeholder='Search service'
+            type="text"
+            className='p-2 text-[15px] rounded-md w-full outline-none border border-zinc-200 mb-2'
+            disabled={!!selectedService}
+          />
+
+          {selectedService ? (
+            <div className='my-4 border border-zinc-200 rounded-md pt-8 pb-4 px-4 bg-gray-50 relative'>
+              <div>
+                {priceLoading ? (
+                  <p>Loading prices...</p>
+                ) : Array.isArray(price) ? (
+                  price.length > 0 ? (
+                    <>
+                      {price.map((item, i) => (
+                        <button
+                          key={i}
+                          disabled={loading}
+                          onClick={() => purchaseNumber(item, i)}
+                          className="flex w-full items-center justify-between text-[14px] cursor-pointer text-white gap-3 bg-teal-800 rounded-lg py-2 px-3 mb-2"
+                        >
+                          <h2 className='text-[12px] font-semibold'>{selectedService.name}</h2>
+                          <div className="flex gap-1 items-center">
+                            <p>₦{item.cost.toLocaleString()}</p>
+                            <ShoppingCart size={16} />
+                          </div>
+                        </button>
+                      ))}
+                      <div className="bg-yellow-100 my-3 text-yellow-800 p-3 rounded-md text-sm">
+                        <strong>Note:</strong> Kindly click on a <strong>price above</strong> to receive your number and code. Turn your VPN <strong>on or off</strong> if needed to get your SMS. No code? You’ll get a <strong>full refund</strong>. We aren’t responsible for issues after you receive your code, such as account bans on WhatsApp, Telegram or other platforms.
+                      </div>
+                    </>
+                  ) : (
+                    <p>No prices available</p>
+                  )
+                ) : price !== null ? (
+                  <>
+                    <button
+                      disabled={loading}
+                      onClick={() => purchaseNumber(price)}
+                      className="flex w-full items-center justify-between text-[14px] cursor-pointer text-white gap-3 bg-teal-800 rounded-lg py-2 px-3"
+                    >
+                      <h2 className='text-[12px] font-semibold'>{selectedService.name}</h2>
+                      <div className="flex gap-1 items-center">
+                        <p>₦{price.cost.toLocaleString()}</p>
+                        <ShoppingCart size={16} />
+                      </div>
+                    </button>
+                    <div className="bg-yellow-100 my-3 text-yellow-800 p-3 rounded-md text-sm">
+                      <strong>Note:</strong> Kindly click on the <strong>price above</strong> to receive your number and code. Turn your VPN <strong>on or off</strong> if needed to get your SMS. No code? You’ll get a <strong>full refund</strong>. We aren’t responsible for issues after you receive your code, such as account bans on WhatsApp, Telegram or other platforms.
+                    </div>
+                  </>
+                ) : (
+                  <p>No price available</p>
+                )}
+              </div>
+              <button
+                onClick={() => {
+                  setSelectedService(null);
+                  setPrice(null);
+                }}
+                className='text-red-500 text-xl font-bold px-2 absolute top-0 right-1 cursor-pointer'
+              >
+                ×
+              </button>
+            </div>
+          ) : (
             <div className="max-h-[30rem] overflow-y-auto my-2 border-zinc-200 rounded-md py-2">
               <ul>
-                {filteredCountries.map((country, index) => (
+                {filteredServices.map((service, index) => (
                   <li key={index} className='my-2'>
-                    <label className='flex items-center gap-2 p-2 border border-zinc-200 rounded-md w-full cursor-pointer'>
-                      <input
-                        type="radio"
-                        name="country"
-                        value={country.name.common}
-                        onChange={() => selectCountry(country)}
-                        className="accent-blue-500"
-                      />
-                      <img
-                        src={country.flags.png || country.flags.svg}
-                        alt={country.flags.alt || country.name.common}
-                        className="w-6 h-4 object-cover"
-                      />
-                      <p>{country.name.common}</p>
-                    </label>
+                    <button
+                      type="button"
+                      onClick={() => selectService(service)}
+                      className='flex items-center justify-between rounded-md p-1 border border-zinc-200 w-full cursor-pointer'
+                    >
+                      <div className='flex items-center gap-2'>
+                        <input type="radio" name="service" readOnly />
+                        <p>{'name' in service ? service.name : 'Unknown'}</p>
+                      </div>
+                    </button>
                   </li>
                 ))}
               </ul>
             </div>
-          </>
-        )}
-      </div>
-
-      {/* Service Selection */}
-      <div className='p-2 border border-zinc-200 rounded-md bg-white scroll-mt-24'>
-        <h1 className='py-2'>2. Select service</h1>
-        <input
-          value={searchServices}
-          onChange={(e) => setSearchServices(e.target.value)}
-          placeholder='Search service'
-          type="text"
-          className='p-2 text-[15px] rounded-md w-full outline-none border border-zinc-200 mb-2'
-          disabled={!!selectedService}
-        />
-
-        {selectedService ? (
-          <div className='my-4 border border-zinc-200 rounded-md pt-8 pb-4 px-4 bg-gray-50 relative'>
-            <div>
-              {priceLoading ? (
-                <p>Loading prices...</p>
-              ) : Array.isArray(price) ? (
-                price.length > 0 ? (
-                  <>
-                    {price.map((item, i) => (
-                      <button
-                        key={i}
-                        disabled={loading}
-                        onClick={() => purchaseNumber(item, i)}
-                        className="flex w-full items-center justify-between text-[14px] cursor-pointer text-white gap-3 bg-teal-800 rounded-lg py-2 px-3 mb-2"
-                      >
-                        <h2 className='text-[12px] font-semibold'>{selectedService.name}</h2>
-                        <div className="flex gap-1 items-center">
-                          <p>₦{item.cost.toLocaleString()}</p>
-                          <ShoppingCart size={16} />
-                        </div>
-                      </button>
-                    ))}
-                    <div className="bg-yellow-100 my-3 text-yellow-800 p-3 rounded-md text-sm">
-                      <strong>Note:</strong> Kindly click on a <strong>price above</strong> to receive your number and code. Turn your VPN <strong>on or off</strong> if needed to get your SMS. No code? You’ll get a <strong>full refund</strong>. We aren’t responsible for issues after you receive your code, such as account bans on WhatsApp, Telegram or other platforms.
-                    </div>
-                  </>
-                ) : (
-                  <p>No prices available</p>
-                )
-              ) : price !== null ? (
-                <>
-                  <button
-                    disabled={loading}
-                    onClick={() => purchaseNumber(price)}
-                    className="flex w-full items-center justify-between text-[14px] cursor-pointer text-white gap-3 bg-teal-800 rounded-lg py-2 px-3"
-                  >
-                    <h2 className='text-[12px] font-semibold'>{selectedService.name}</h2>
-                    <div className="flex gap-1 items-center">
-                      <p>₦{price.cost.toLocaleString()}</p>
-                      <ShoppingCart size={16} />
-                    </div>
-                  </button>
-                  <div className="bg-yellow-100 my-3 text-yellow-800 p-3 rounded-md text-sm">
-                    <strong>Note:</strong> Kindly click on the <strong>price above</strong> to receive your number and code. Turn your VPN <strong>on or off</strong> if needed to get your SMS. No code? You’ll get a <strong>full refund</strong>. We aren’t responsible for issues after you receive your code, such as account bans on WhatsApp, Telegram or other platforms.
-                  </div>
-                </>
-              ) : (
-                <p>No price available</p>
-              )}
-            </div>
-            <button
-              onClick={() => {
-                setSelectedService(null);
-                setPrice(null);
-              }}
-              className='text-red-500 text-xl font-bold px-2 absolute top-0 right-1 cursor-pointer'
-            >
-              ×
-            </button>
-          </div>
-        ) : (
-          <div className="max-h-[30rem] overflow-y-auto my-2 border-zinc-200 rounded-md py-2">
-            <ul>
-              {filteredServices.map((service, index) => (
-                <li key={index} className='my-2'>
-                  <button
-                    type="button"
-                    onClick={() => selectService(service)}
-                    className='flex items-center justify-between rounded-md p-1 border border-zinc-200 w-full cursor-pointer'
-                  >
-                    <div className='flex items-center gap-2'>
-                      <input type="radio" name="service" readOnly />
-                      <p>{'name' in service ? service.name : 'Unknown'}</p>
-                    </div>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-    </section>
+          )}
+        </div>
+      </section>
+    </>
   );
 };
 

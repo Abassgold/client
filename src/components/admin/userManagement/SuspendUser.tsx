@@ -13,7 +13,6 @@ import {
   DialogFooter,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { getToken } from '@/lib/Token';
 import { useRouter } from 'next/navigation';
 import { Toaster } from '@/components/ui/sonner';
 
@@ -30,7 +29,6 @@ const SuspendUserButton: React.FC<SuspendUserButtonProps> = ({ userId }) => {
   const [reason, setReason] = useState('');
 
   const handleSuspend = async () => {
-    const token = getToken();
     if (!reason.trim()) {
       toast.warning('Please provide a reason for suspension');
       return;
@@ -40,9 +38,7 @@ const SuspendUserButton: React.FC<SuspendUserButtonProps> = ({ userId }) => {
     try {
       const { data } = await axios.patch<responseType>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/users/${userId}/suspend`, { reason },
         {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+          withCredentials: true
         }
       );
       if (!data.ok) return toast.error(data.msg)

@@ -7,7 +7,6 @@ import axios, { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 import { Toaster } from '@/components/ui/sonner'
 import { toast } from 'sonner'
-import { getToken } from '@/lib/Token'
 import {
   Pagination,
   PaginationContent,
@@ -34,10 +33,9 @@ const Page = () => {
   const [totalPages, setTotalPages] = useState(1)
 
   const fetchUsers = async (pageNumber = 1, search = '') => {
-    const token = getToken()
     try {
       const { data } = await axios.get<fetchUsersResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/users`, {
-        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
         params: { page: pageNumber, limit: 10, search }
       })
       if (!data.ok) {

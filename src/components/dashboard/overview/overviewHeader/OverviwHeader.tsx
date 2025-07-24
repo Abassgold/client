@@ -23,10 +23,7 @@ const OverviwHeader = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     if(user?.firstName !== '' || user.lastName !=='') return;
-  const token = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('accessToken='))
-    ?.split('=')[1]
+ 
 
 
   const fetchUser = async () => {
@@ -34,9 +31,7 @@ const OverviwHeader = () => {
       const { data } = await axios.get<findUser>(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/me`,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+         withCredentials: true
         }
       )
 if(!data.ok) {

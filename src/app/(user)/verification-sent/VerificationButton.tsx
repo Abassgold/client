@@ -10,15 +10,14 @@ const VerificationButton = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const sendVerificationMail = async () => {
-    const token = document.cookie.split('; ').find(row => row.startsWith('accessToken='))?.split('=')[1];
     setLoading(true)
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/verification`, {
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
           cache: 'no-store',
-        }
+        },
+        credentials: 'include'
       });
       const data: sentType = await res.json();
       if (res.status === 401 || !data?.ok) {

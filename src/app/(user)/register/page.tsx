@@ -39,14 +39,13 @@ const Register = () => {
         onSubmit: async (values: IUser): Promise<findUser | void> => {
             setLoader(true)
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/register`, {
+                const response = await fetch(`register/api/`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(values),
                 })
                 const data: findUser = await response.json();
                 if (data?.ok) {
-                    document.cookie = `accessToken=${data.token}; path=/; max-age=${86400*30}; secure; samesite=strict`;
                     toast.success(data.msg);
                     router.push('/verification-sent');
                     return;
