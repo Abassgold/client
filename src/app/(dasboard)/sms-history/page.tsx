@@ -18,7 +18,6 @@ type responseType = {
 const Page = async () => {
     const token = (await cookies()).get('accessToken')?.value
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/getActivationInfo`, {
-        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`

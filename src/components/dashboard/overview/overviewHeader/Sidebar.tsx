@@ -1,7 +1,7 @@
 'use client'
 import {  LogOut, User, X } from "lucide-react";
 import Link from "next/link";
-import { dasbhboardNavitems } from "../../DashboardAside";
+import { dasbhboardNavitems, logOutResponse } from "../../DashboardAside";
 import { usePathname, useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/hooks";
 interface sidebarType {
@@ -17,12 +17,18 @@ const Sidebar = ({ isOpen, toggleSidebar, setActiveSection }: sidebarType) => {
 
     const router = useRouter();
     const logOut = async () => {
-        document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        toggleSidebar()
-        sessionStorage.removeItem('numberInfo');
-        sessionStorage.removeItem('otp');
-        router.push('/login')
-    }
+        try {
+          const res = await fetch('/api/logout')
+      
+          const data: logOutResponse = await res.json();
+          if(!data.ok) return;
+          sessionStorage.removeItem('numberInfo');
+          sessionStorage.removeItem('otp');
+          router.push('/login');
+        } catch (err) {
+          console.error('Logout failed:', err);
+        }
+      };
 
     return (
         <aside

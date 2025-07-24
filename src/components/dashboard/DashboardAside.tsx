@@ -20,18 +20,28 @@ export const dasbhboardNavitems = [
   { title: "Deposit", url: "/deposit", icon: File },
   { title: "Account", url: "/account", icon: Settings },
 ];
-
+export interface logOutResponse{
+  ok: boolean
+}
 export function ResponsiveSidebar() {
   const user = useAppSelector(state => state.auth.user.user)
   const router = useRouter();
   const pathName = usePathname()
-  const logOut = async () => {
-    document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    sessionStorage.removeItem('numberInfo');
-    sessionStorage.removeItem('otp');
-    router.push('/login')
 
-  }
+  const logOut = async () => {
+    try {
+      const res = await fetch('/api/logout')
+  
+      const data: logOutResponse = await res.json();
+      if(!data.ok) return;
+      sessionStorage.removeItem('numberInfo');
+      sessionStorage.removeItem('otp');
+      router.push('/login');
+    } catch (err) {
+      console.error('Logout failed:', err);
+    }
+  };
+  
 
   return (
     <>

@@ -4,11 +4,11 @@ import FeturesCard from "./FeturesCard";
 
 const Features = () => {
   const features = [
-    {
-      title: "Online Banking",
-      description: "Securely manage your accounts, transfer funds, and track transactions.",
-      icon: "🏦",
-    },
+    // {
+    //   title: "Online Banking",
+    //   description: "Securely manage your accounts, transfer funds, and track transactions.",
+    //   icon: "🏦",
+    // },
     {
       title: "Utility Payments",
       description: "Pay electricity, water, and other bills in just a few clicks.",
@@ -19,6 +19,11 @@ const Features = () => {
       description: "Top up mobile plans and manage streaming subscriptions effortlessly.",
       icon: "📱",
     },
+    {
+      title: "eSIM Services",
+      description: "Buy and manage eSIMs for instant data and connectivity worldwide.",
+      icon: "📶",
+    },    
     {
       title: "Crypto Trading",
       description: "Easily sell your USDT with competitive rates and receive payments through multiple local and international methods.",
@@ -49,7 +54,7 @@ const Features = () => {
           Our Services
         </motion.h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch p-4">
           {features.map((feature, index) => (
             <motion.div
               key={index}

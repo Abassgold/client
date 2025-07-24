@@ -120,7 +120,7 @@ const Dashboard = async () => {
                         {activity.serviceType}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {activity.amount}
+                      ₦{activity.amount}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {new Date(activity.createdAt).toLocaleDateString()}

@@ -13,16 +13,25 @@ import {
   XIcon,
   ClipboardList,
 } from 'lucide-react';
-import { bounceOut } from '@/lib/logOut';
+import { logOutResponse } from '../dashboard/DashboardAside';
 
 export const AdminLayout = () => {
   const router = useRouter();
   const pathName = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const logOut = () => {
-    bounceOut();
-    router.push('/login');
+  const logOut = async () => {
+    try {
+      const res = await fetch('/api/logout')
+  
+      const data: logOutResponse = await res.json();
+      if(!data.ok) return;
+      sessionStorage.removeItem('numberInfo');
+      sessionStorage.removeItem('otp');
+      router.push('/login');
+    } catch (err) {
+      console.error('Logout failed:', err);
+    }
   };
 
   const navigation = [
@@ -82,9 +91,9 @@ export const AdminLayout = () => {
             <div className="mt-auto border-t border-teal-700 p-4">
               <button
                 onClick={logOut}
-                className="w-full flex items-center group"
+                className="w-full flex items-center group cursor-pointer"
               >
-                <LogOutIcon className="mr-2 h-5 w-5 text-white group-hover:text-teal-200" />
+                <LogOutIcon className="mr-2  h-5 w-5 text-white group-hover:text-teal-200" />
                 <span className="text-base font-medium text-white group-hover:text-teal-200">
                   Log out
                 </span>
@@ -121,9 +130,9 @@ export const AdminLayout = () => {
           <div className="flex-shrink-0 flex border-t border-teal-700 p-4">
             <button
               onClick={logOut}
-              className="w-full flex items-center group"
+              className="w-full flex items-center group cursor-pointer"
             >
-              <LogOutIcon className="mr-2 h-5 w-5 text-white group-hover:text-teal-200" />
+              <LogOutIcon className="mr-2  h-5 w-5 text-white group-hover:text-teal-200" />
               <span className="text-sm font-medium text-white group-hover:text-teal-200">
                 Log out
               </span>
