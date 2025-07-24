@@ -126,7 +126,7 @@ const TransactionsPage = () => {
           <table className="min-w-full bg-white rounded-md shadow-md whitespace-nowrap">
             <thead className="bg-teal-800 text-white">
               <tr>
-                <th className="px-1 py-3 text-left">Ref</th>
+                <th className="px- py-3 text-left">Ref</th>
                 <th className="px-1 py-3 text-left">Amount</th>
                 <th className="px-1 py-3 text-left">Type</th>
                 <th className="px-1 py-3 text-left">Status</th>
