@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     cookieStore.set('accessToken', data.token || '', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
+        sameSite: 'none',
         maxAge: 60 * 60 * 24 * 30
     });
     return NextResponse.json(
