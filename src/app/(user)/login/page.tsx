@@ -86,7 +86,7 @@ const Login = () => {
                             style={{ objectFit: 'contain' }}
                         />
                     </div>
-                    <h1 className="text-gray-600 text-xl font-semibold md:text-3xl mb-3">welcome back!</h1>
+                    <h1 className="text-gray-600 text-xl font-semibold md:text-3xl mb-3">Welcome Back!</h1>
                     <div className="h-1 bg-teal-800 w-[48px] mb-6"></div>
                     <form onSubmit={formik.handleSubmit}>
                         <div className="mb-6">
