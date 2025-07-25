@@ -19,10 +19,10 @@ interface NumberInfo {
 }
 
 type purchaseNumberType = PriceType | ServiceFull;
-type rentalCancelType = {
-  ok: boolean;
-  msg?: string;
-}
+// type rentalCancelType = {
+//   ok: boolean;
+//   msg?: string;
+// }
 interface OtpType {
   ok: boolean;
   msg?: string;
