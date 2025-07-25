@@ -1,5 +1,6 @@
 'use client'
 import FinanceSummary from '@/components/admin/finance/FinanceSummary';
+import { getToken } from '@/lib/Token';
 import React, { useEffect, useState } from 'react';
 
 const Page = () => {
@@ -10,6 +11,7 @@ const Page = () => {
   });
 
   useEffect(() => {
+    const token = getToken();
     const fetchFinance = async () => {
       const today = new Date();
       const month = today.getMonth() + 1; 
@@ -20,8 +22,8 @@ const Page = () => {
           cache: 'no-store',
           headers: {
             'Content-Type': 'application/json',
+            'authorization': `Bearer ${token}`
           },
-          credentials: 'include',
           next: { revalidate: 60 }
         }
       );

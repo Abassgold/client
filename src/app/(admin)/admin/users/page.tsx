@@ -16,6 +16,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
+import { getToken } from '@/lib/Token'
 
 interface fetchUsersResponse {
   ok: true;
@@ -35,7 +36,9 @@ const Page = () => {
   const fetchUsers = async (pageNumber = 1, search = '') => {
     try {
       const { data } = await axios.get<fetchUsersResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/users`, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        },
         params: { page: pageNumber, limit: 10, search }
       })
       if (!data.ok) {

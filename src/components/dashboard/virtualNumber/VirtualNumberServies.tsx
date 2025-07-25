@@ -7,6 +7,7 @@ import PurchaseNumberModal from "./PuchaseNumberModal";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { getToken } from "@/lib/Token";
 
 interface NumberInfo {
   number: string;
@@ -114,7 +115,9 @@ const VirtualNumberServices = () => {
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/purchase/sms`,
         { ...item, index },
         {
-          withCredentials: true
+          headers:{
+            Authorization: `Bearer ${getToken()}`
+          }
         }
       );
 
@@ -200,7 +203,9 @@ const VirtualNumberServices = () => {
         const { data } = await axios.get<OtpType>(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/activation/${activationId}`,
           {
-            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${getToken()}`
+            },
             params: { provider }
           }
         );

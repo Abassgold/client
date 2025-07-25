@@ -15,6 +15,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Button } from '@/components/ui/button';
+import { getToken } from '@/lib/Token';
 type Transaction = {
   _id: string;
   reference: string;
@@ -47,7 +48,9 @@ const TransactionsPage = () => {
     setLoading(true);
     try {
       const { data } = await axios.get<FetchTransactionResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/transactions/me`, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        },
         params: {
           page,
           limit: 10,

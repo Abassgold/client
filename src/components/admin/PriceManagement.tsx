@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Toaster } from '../ui/sonner';
 import { useRouter } from 'next/navigation';
+import { getToken } from '@/lib/Token';
 type priceResponse = {
   ok: boolean;
   msg: string;
@@ -29,46 +30,51 @@ const PriceManagement: React.FC = () => {
 
   const handleSaveChanges = async () => {
     setLoading(true)
+    const token = getToken();
     try {
       const { data } = await axios.post<priceResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/set-price/ngn`,
         virtualNumber,
         {
-         withCredentials: true
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
       )
       if (!data.ok) return toast.error(data.msg)
-        toast.success(data.msg)
+      toast.success(data.msg)
       router.refresh()
     } catch (error: unknown) {
       const err = error as AxiosError
-      if(err.response?.status === 401) return router.push('/login')
+      if (err.response?.status === 401) return router.push('/login')
       toast.error('Something went wrong')
     } finally {
       setLoading(false)
     }
   };
-useEffect(()=>{
-   const fetchPrices = async () => {
-    setLoading(true)
-    try {
-      const { data } = await axios.get<fetchPriceResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/get-prices`,
-        {
-         withCredentials: true
-        }
-      )
-      if (!data.ok) return toast.error(data.msg)
+  useEffect(() => {
+    const fetchPrices = async () => {
+      setLoading(true)
+      try {
+        const { data } = await axios.get<fetchPriceResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/get-prices`,
+          {
+            headers: {
+              Authorization: `Bearer ${getToken()}`
+            }
+          }
+        )
+        if (!data.ok) return toast.error(data.msg)
         setPrice(data.price?.price)
-      setGain(data.price?.gain)
-    } catch (error: unknown) {
-      const err = error as AxiosError
-      if(err.response?.status === 401) return router.push('/login')
-      toast.error('Something went wrong')
-    } finally {
-      setLoading(false)
-    }
-  };
-  fetchPrices();
-},[])
+        setGain(data.price?.gain)
+      } catch (error: unknown) {
+        const err = error as AxiosError
+        if (err.response?.status === 401) return router.push('/login')
+        toast.error('Something went wrong')
+      } finally {
+        setLoading(false)
+      }
+    };
+    fetchPrices();
+  }, [])
   return (
     <div className=" max-w-4xl mx-auto">
       <Toaster

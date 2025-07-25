@@ -9,6 +9,7 @@ import axios, { AxiosError } from "axios"
 import { findUser } from "@/redux/type"
 import { toast } from "sonner"
 import { Toaster } from "@/components/ui/sonner"
+import { getToken } from "@/lib/Token"
 interface changePassword {
     oldPassword: string;
     newPassword: string;
@@ -48,7 +49,9 @@ const Security = () => {
             setLoading(true)
             try {
                 const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/updatePassword`, values, {
-                   withCredentials: true
+                  headers: {
+                    Authorization: `Bearer ${getToken()}`
+                  }
                 })
                 const res: findUser = data
                 if (!res?.ok) {

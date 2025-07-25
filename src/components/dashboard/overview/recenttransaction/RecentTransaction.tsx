@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Eye, EyeOff } from 'lucide-react';
 import axios from 'axios';
 import RecentTransactionSkeleton from './RecentTransactionSkelton';
+import { getToken } from '@/lib/Token';
 type transactionType = {
   reference: string;
    serviceType:  string;
@@ -31,7 +32,9 @@ const RecentTransaction = () => {
         const { data } = await axios.get<WalletResponse>(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/wallet/`,
           {
-            withCredentials: true
+            headers: {
+              Authorization: `Bearer ${getToken()}`
+            }
           }
         );
 

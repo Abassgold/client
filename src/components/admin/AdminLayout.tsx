@@ -15,6 +15,7 @@ import {
   Landmark,
 } from 'lucide-react';
 import { logOutResponse } from '../dashboard/DashboardAside';
+import { deleteToken } from '@/lib/Token';
 
 export const AdminLayout = () => {
   const router = useRouter();
@@ -29,6 +30,7 @@ export const AdminLayout = () => {
       if(!data.ok) return;
       sessionStorage.removeItem('numberInfo');
       sessionStorage.removeItem('otp');
+      deleteToken();
       router.push('/login');
     } catch (err) {
       console.error('Logout failed:', err);

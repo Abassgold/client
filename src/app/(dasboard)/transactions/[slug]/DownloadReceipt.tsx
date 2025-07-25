@@ -32,7 +32,7 @@ const DownloadReceipt = ({ transaction }: DownloadReceiptProps) => {
       <div className="bg-white max-w-lg mx-auto w-full rounded-lg shadow-lg p-6">
         <div ref={receiptRef}>
           <h1 className="md:text-3xl font-bold text-teal-800 text-center mb-6">
-            FLOZAP Transaction Receipt
+            FloZap Transaction Receipt
           </h1>
 
           <div className="space-y-4">

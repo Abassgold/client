@@ -37,6 +37,7 @@ export async function POST(req: NextRequest) {
             ok: data.ok,
             msg: data.msg,
             user: data.user,
+            token: data.token
         },
         { status: 200 }
     );

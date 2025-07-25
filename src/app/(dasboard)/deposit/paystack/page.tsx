@@ -8,6 +8,7 @@ import { redirect, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Toaster } from '@/components/ui/sonner';
+import { getToken } from '@/lib/Token';
 interface paymentType {
   ok: boolean;
   msg: string;
@@ -102,8 +103,11 @@ const DepositPage = () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/me`,
           {
-            credentials: 'include'
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${getToken()}`
           }
+        }
         );
         if (response.status === 401) {
           router.push('/login');

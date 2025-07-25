@@ -1,4 +1,5 @@
 'use client'
+import { getToken } from "@/lib/Token"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { addUser } from "@/redux/slice/auth"
 import { findUser } from "@/redux/type"
@@ -16,7 +17,9 @@ const Account = () => {
                 const { data } = await axios.get<findUser>(
                     `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/me`,
                     {
-                       withCredentials: true
+                       headers: {
+                        Authorization: `Bearer ${getToken()}`
+                       },
                     }
                 )
                 if (!data.ok) {

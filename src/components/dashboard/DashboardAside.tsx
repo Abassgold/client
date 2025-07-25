@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Toaster } from "../ui/sonner";
 // import Image from "next/image";
 import { useAppSelector } from "@/redux/hooks";
+import { deleteToken } from "@/lib/Token";
 
 export const dasbhboardNavitems = [
   { title: "Overview", url: "/dashboard", icon: Home },
@@ -36,6 +37,7 @@ export function ResponsiveSidebar() {
       if(!data.ok) return;
       sessionStorage.removeItem('numberInfo');
       sessionStorage.removeItem('otp');
+      deleteToken();
       router.push('/login');
     } catch (err) {
       console.error('Logout failed:', err);

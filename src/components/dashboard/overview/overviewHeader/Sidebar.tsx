@@ -4,6 +4,7 @@ import Link from "next/link";
 import { dasbhboardNavitems, logOutResponse } from "../../DashboardAside";
 import { usePathname, useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/hooks";
+import { deleteToken } from "@/lib/Token";
 interface sidebarType {
     isOpen: boolean;
     toggleSidebar: () => void;
@@ -24,6 +25,7 @@ const Sidebar = ({ isOpen, toggleSidebar, setActiveSection }: sidebarType) => {
           if(!data.ok) return;
           sessionStorage.removeItem('numberInfo');
           sessionStorage.removeItem('otp');
+          deleteToken();
           router.push('/login');
         } catch (err) {
           console.error('Logout failed:', err);

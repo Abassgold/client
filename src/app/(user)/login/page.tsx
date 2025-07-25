@@ -11,6 +11,7 @@ import { useAppDispatch } from "@/redux/hooks";
 import { addUser } from "@/redux/slice/auth";
 import { findUser } from "@/redux/type";
 import Image from "next/image";
+import { setToken } from "@/lib/Token";
 
 interface loginType {
     email: string;
@@ -50,6 +51,7 @@ const Login = () => {
                 if (data?.ok) {
                     toast.success(data.msg);
                     dispatch(addUser(data));
+                    setToken(data.token || '');
                     router.push('/dashboard');
                     return;
                 }
