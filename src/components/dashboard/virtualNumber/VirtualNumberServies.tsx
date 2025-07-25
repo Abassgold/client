@@ -19,7 +19,10 @@ interface NumberInfo {
 }
 
 type purchaseNumberType = PriceType | ServiceFull;
-
+type rentalCancelType = {
+  ok: boolean;
+  msg?: string;
+}
 interface OtpType {
   ok: boolean;
   msg?: string;
@@ -115,7 +118,7 @@ const VirtualNumberServices = () => {
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/purchase/sms`,
         { ...item, index },
         {
-          headers:{
+          headers: {
             Authorization: `Bearer ${getToken()}`
           }
         }
@@ -144,6 +147,35 @@ const VirtualNumberServices = () => {
       setLoading(false);
     }
   };
+  // const cancelRental = async (activationId: string, provider: string) => {
+
+  //   setLoading(true);
+  //   try {
+  //     const { data } = await axios.get<rentalCancelType>(
+  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/cancelRental/${activationId}`,
+  //       {
+  //         headers: { Authorization: `Bearer ${getToken()}` },
+  //         params: { provider }
+  //       }
+  //     );
+  //     if (data.ok) {
+  //       toast.success(data.msg || 'Rental cancelled successfully');
+  //     } else {
+  //       toast.error(data.msg || 'Failed to cancel rental');
+  //     }
+  //     setNumberInfo(null);
+  //     updateOtp(null);
+  //     sessionStorage.removeItem('numberInfo');
+  //     sessionStorage.removeItem('otp');
+  //     sessionStorage.removeItem('pollStartTime');
+  //     toast.error('Activation cancelled. Please try again.');
+  //     setTimeoutRemaining('00:00');
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.error('Error cancelling rental:', error);
+  //     toast.error('Error occurred while trying to cancel rental');
+  //   }
+  // }
   const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const updateOtp = (code: string | null) => {
@@ -264,32 +296,7 @@ const VirtualNumberServices = () => {
     updateOtp(null);
     setLoading(false);
   };
-  // const cancelPolling = async (activationId: string, provider: string) => {
 
-  //   await delay(100000); // delay for 2 seconds before printing
-
-  //   try {
-  //     const { data } = await axios.get<OtpType>(
-  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/activation/${activationId}`,
-  //       { 
-  //         withCredentials: true,
-  //          params: { provider } }
-  //     );
-  //     if (data.ok && data.status === 'completed') {
-  //       otpRef.current = data.code;
-  //       sessionStorage.setItem('otp', data.code);
-  //     } else if (data.status === 'cancelled') {
-  //       sessionStorage.removeItem('numberInfo');
-  //       sessionStorage.removeItem('otp');
-  //       sessionStorage.removeItem('pollStartTime');
-  //       toast.error('Activation cancelled. Please try again.');
-  //       setTimeoutRemaining('00:00');
-  //       setLoading(false);
-  //     }
-  //   } catch (error) {
-
-  //   }
-  // }
   useEffect(() => {
     const savedNumberStr = sessionStorage.getItem('numberInfo');
     const savedOtp = sessionStorage.getItem('otp');
