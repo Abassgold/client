@@ -40,7 +40,7 @@ const Dashboard = async () => {
            return (
             <Link
               key={item.name}
-              href={''}
+              href={item.link}
               className="bg-white overflow-hidden shadow rounded-lg"
             >
               <div className="p-5">

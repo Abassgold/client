@@ -12,6 +12,7 @@ import {
   MenuIcon,
   XIcon,
   ClipboardList,
+  Landmark,
 } from 'lucide-react';
 import { logOutResponse } from '../dashboard/DashboardAside';
 
@@ -36,6 +37,7 @@ export const AdminLayout = () => {
 
   const navigation = [
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboardIcon },
+    { name: 'Finance', href: '/admin/finance', icon: Landmark },
     { name: 'Users', href: '/admin/users', icon: UsersIcon },
     { name: 'Prices', href: '/admin/prices', icon: TagIcon },
     { name: 'Transactions', href: '/admin/transactions', icon: ClipboardList },
