@@ -12,7 +12,8 @@ const Contact = () => {
           Have questions? Reach out to our support team!
         </p>
         <Link
-          href="mailto:support@flozap.com"
+          target="_blank"
+          href="https://wa.me/qr/BHKITMXTHP2PE1"
           className="inline-block bg-white text-teal-700 px-6 py-3 rounded-full font-semibold hover:bg-gray-200 transition"
         >
           Contact Us

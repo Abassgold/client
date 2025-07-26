@@ -3,6 +3,8 @@ import "./globals.css";
 import { Inter } from 'next/font/google';
 
 import StoreProvider from "@/redux/StoreProvider";
+import Image from "next/image";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "FloZap",
@@ -26,7 +28,20 @@ export default function RootLayout({
         <StoreProvider>
           {children}
         </StoreProvider>
+        <Link
+          className="fixed bottom-2 right-4 z-50 bg-white p-2 rounded-full shadow-lg hover:shadow-xl transition animate-bounce duration-500"
+          target="_blank"
+          href="https://t.me/flozap"
+        >
+          <Image
+            src="/Telegram_logo.svg"
+            alt="Telegram Logo"
+            width={30}
+            height={30}
+          />
+        </Link>
       </body>
     </html>
   );
 }
+

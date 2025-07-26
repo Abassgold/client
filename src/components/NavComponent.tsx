@@ -82,7 +82,7 @@ const NavHeader = () => {
             <div className="pt-4 pb-3 border-t border-gray-200">
               <Link
                 href="/login"
-                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-teal-800 hover:bg-gray-50"
+                className="block px-3 py-2 rounded-md text-base font-medium  hover:text-teal-800 text-teal-700 bg-teal-100 hover:bg-teal-200"
               >
                 Sign in
               </Link>
