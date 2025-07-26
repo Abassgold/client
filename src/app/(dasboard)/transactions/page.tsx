@@ -102,22 +102,28 @@ const TransactionsPage = () => {
             <option value="failed">Failed</option>
             <option value="refunded">Refunded</option>
           </select>
-
-          <input
+          <div>
+            <label htmlFor="dateFrom">From</label>
+            <input
             type="date"
             value={dateFrom}
             placeholder='From'
             onChange={(e) => { setDateFrom(e.target.value); setPage(1); }}
-            className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600"
+            className="p-2 ms-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600"
           />
-
-          <input
+          </div>
+          <div>
+            <label htmlFor="dateTo">To</label>
+                      <input
             type="date"
             value={dateTo}
             placeholder='To'
             onChange={(e) => { setDateTo(e.target.value); setPage(1); }}
-            className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600"
+            className="p-2 ms-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600"
           />
+          </div>
+
+
 
           <Button onClick={fetchTransactions} className="bg-teal-700 hover:bg-teal-800 text-white">
             <RefreshCw size={16} className="mr-2" /> Refresh
@@ -129,7 +135,7 @@ const TransactionsPage = () => {
           <table className="min-w-full bg-white rounded-md shadow-md whitespace-nowrap">
             <thead className="bg-teal-800 text-white">
               <tr>
-                <th className="px- py-3 text-left">Ref</th>
+                <th className="px- py-3 text-left">Ref No.</th>
                 <th className="px-1 py-3 text-left">Amount</th>
                 <th className="px-1 py-3 text-left">Type</th>
                 <th className="px-1 py-3 text-left">Status</th>

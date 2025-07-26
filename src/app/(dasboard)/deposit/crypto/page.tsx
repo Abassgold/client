@@ -1,20 +1,19 @@
-// 'use client'
 
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+// import { cookies } from "next/headers";
+// import { redirect } from "next/navigation";
 
 const Page = async () => {
-    const token = (await cookies()).get('accessToken')?.value
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/wallet/zixipay/generate-wallet`,
-        {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-                cache: 'no-store',
-            }
-        }
-    )
-    if (res.status === 401) redirect('/login')
+    // const token = (await cookies()).get('accessToken')?.value
+    // const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/wallet/zixipay/generate-wallet`,
+    //     {
+    //         headers: {
+    //             'Authorization': `Bearer ${token}`,
+    //             'Content-Type': 'application/json',
+    //             cache: 'no-store',
+    //         }
+    //     }
+    // )
+    // if (res.status === 401) redirect('/login')
         
 
 
