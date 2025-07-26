@@ -191,8 +191,6 @@ const VirtualNumberServices = () => {
   };
 
   const pollForSMS = async (activationId: string, provider: string, initialRemainingTime?: number) => {
-    console.log('mmm');
-
     isPollingActive.current = true;
     const pollingDuration = 1 * 60 * 1000; // 10 mins
     const startTime = Date.now();
@@ -228,7 +226,6 @@ const VirtualNumberServices = () => {
 
     const poll = async () => {
       if (!isPollingActive.current) {
-        console.log('Polling stopped.');
         return;
       }
       try {
@@ -260,13 +257,12 @@ const VirtualNumberServices = () => {
           setNumberInfo(null);
           return;
         } else {
-          console.log('Polling for code:', data.msg);
           await delay(5000);
           poll();
         }
       } catch (error) {
-        console.error('Polling error:', error);
         clearPolling();
+        console.error('Error polling for code:', error);
         toast.error('Error polling for code.');
         setLoading(false)
         setNumberInfo(null)
@@ -369,7 +365,6 @@ const VirtualNumberServices = () => {
           }
         }
       } catch {
-        console.log('Error parsing saved number, clearing it...');
         sessionStorage.removeItem('numberInfo');
         clearPolling();
       }

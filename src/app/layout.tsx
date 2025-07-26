@@ -29,7 +29,7 @@ export default function RootLayout({
           {children}
         </StoreProvider>
         <Link
-          className="fixed bottom-2 right-4 z-50 bg-white p-2 rounded-full shadow-lg hover:shadow-xl transition animate-bounce duration-500"
+          className="fixed bottom-2 right-2 z-50 bg-white p-2 rounded-full shadow-lg hover:shadow-xl transition animate-bounce duration-500"
           target="_blank"
           href="https://t.me/flozap"
         >
