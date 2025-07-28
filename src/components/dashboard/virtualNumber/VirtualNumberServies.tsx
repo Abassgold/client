@@ -191,7 +191,7 @@ const VirtualNumberServices = () => {
 
   const pollForSMS = async (activationId: string, provider: string, initialRemainingTime?: number) => {
     isPollingActive.current = true;
-    const pollingDuration = 1 * 60 * 1000; // 10 mins
+    const pollingDuration = 5 * 60 * 1000;
     const startTime = Date.now();
     let endTime = startTime + pollingDuration;
 
@@ -297,7 +297,7 @@ const VirtualNumberServices = () => {
     const savedNumberStr = sessionStorage.getItem('numberInfo');
     const savedOtp = sessionStorage.getItem('otp');
     const savedStartTime = sessionStorage.getItem('pollStartTime');
-    const pollingDuration = 1 * 60 * 1000;
+    const pollingDuration = 5 * 60 * 1000;
     const now = Date.now();
 
 
