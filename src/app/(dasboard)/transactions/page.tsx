@@ -5,7 +5,6 @@ import { RefreshCw, Eye } from 'lucide-react';
 import Link from 'next/link';
 import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
-import { Toaster, toast } from 'sonner';
 import {
   Pagination,
   PaginationContent,
@@ -16,6 +15,7 @@ import {
 } from "@/components/ui/pagination";
 import { Button } from '@/components/ui/button';
 import { getToken } from '@/lib/Token';
+import { toast } from 'react-toastify';
 type Transaction = {
   _id: string;
   reference: string;
@@ -84,8 +84,6 @@ const TransactionsPage = () => {
 
   return (
     <div className='relative text-sm'>
-      <Toaster richColors position='top-center' duration={2000} />
-
       <div className=''>
         <h1 className="text-2xl font-semibold text-gray-900 mb-4">Transactions</h1>
 

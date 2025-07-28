@@ -1,17 +1,16 @@
 'use client'
-import { Toaster } from "@/components/ui/sonner";
 import { useFormik } from "formik";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import * as Yup from 'yup';
 import { useAppDispatch } from "@/redux/hooks";
 import { addUser } from "@/redux/slice/auth";
 import { findUser } from "@/redux/type";
 import Image from "next/image";
 import { getToken, setToken } from "@/lib/Token";
+import { toast } from "react-toastify";
 
 interface loginType {
     email: string;
@@ -74,11 +73,7 @@ const Login = () => {
     }, [])
     return (
         <section className="p-4 h-screen bg-zinc-100">
-            <Toaster
-                richColors
-                position='top-center'
-                duration={2000}
-            />
+           
             <div className="max-w-xl mx-auto h-full flex items-center">
                 <div className="w-full">
                     <div className="flex justify-center">

@@ -7,9 +7,8 @@ import { addUser } from "@/redux/slice/auth"
 import * as Yup from 'yup'
 import axios, { AxiosError } from "axios"
 import { findUser } from "@/redux/type"
-import { toast } from "sonner"
-import { Toaster } from "@/components/ui/sonner"
 import { getToken } from "@/lib/Token"
+import { toast } from "react-toastify"
 interface changePassword {
     oldPassword: string;
     newPassword: string;
@@ -74,11 +73,6 @@ const Security = () => {
 
     return (
         <section>
-            <Toaster
-                richColors
-                position='top-center'
-                duration={3000}
-            />
             <section className="min-h-full text-gray-800">
                 <div className="py-4">
                     <h1>Your Profile</h1>

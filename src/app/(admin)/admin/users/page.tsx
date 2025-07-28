@@ -5,8 +5,6 @@ import Link from 'next/link'
 import { Users } from '../adminTypes'
 import axios, { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
-import { Toaster } from '@/components/ui/sonner'
-import { toast } from 'sonner'
 import {
   Pagination,
   PaginationContent,
@@ -17,6 +15,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 import { getToken } from '@/lib/Token'
+import { toast } from 'react-toastify'
 
 interface fetchUsersResponse {
   ok: true;
@@ -67,8 +66,6 @@ const Page = () => {
 
   return (
     <div className='relative'>
-      <Toaster richColors position='top-center' duration={2000} />
-
       <div className='sticky  top-0'>
         <div className="sm:flex sm:items-center p-2">
           <div className="sm:flex-auto">

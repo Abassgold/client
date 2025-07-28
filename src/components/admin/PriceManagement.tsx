@@ -3,10 +3,9 @@
 import axios, { AxiosError } from 'axios';
 import { SaveIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
-import { Toaster } from '../ui/sonner';
 import { useRouter } from 'next/navigation';
 import { getToken } from '@/lib/Token';
+import { toast } from 'react-toastify';
 type priceResponse = {
   ok: boolean;
   msg: string;
@@ -77,11 +76,7 @@ const PriceManagement: React.FC = () => {
   }, [])
   return (
     <div className=" max-w-4xl mx-auto">
-      <Toaster
-        richColors
-        position='top-center'
-        duration={5000}
-      />
+      
       <div className="sm:flex sm:items-center sm:justify-between mb-6">
         <div>
           <h1 className="text-2xl md:text-3xl font-semibold text-gray-800">Price Management</h1>

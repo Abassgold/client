@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 import StoreProvider from "@/redux/StoreProvider";
 import Image from "next/image";
 import Link from "next/link";
+import { ToastContainer } from "react-toastify";
 
 export const metadata: Metadata = {
   title: "FloZap",
@@ -25,6 +26,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
+         <ToastContainer
+                position="top-center"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+              />
         <StoreProvider>
           {children}
         </StoreProvider>

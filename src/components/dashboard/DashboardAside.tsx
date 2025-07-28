@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { Home, Bitcoin,  File, Settings, LogOut, Barcode, FileDigit, User, History } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { Toaster } from "../ui/sonner";
 // import Image from "next/image";
 import { useAppSelector } from "@/redux/hooks";
 import { deleteToken } from "@/lib/Token";
@@ -47,11 +46,7 @@ export function ResponsiveSidebar() {
 
   return (
     <>
-      <Toaster
-        richColors
-        position='top-center'
-        duration={200}
-      />
+      
       <aside className="bg-white text-gray-600 p-2 hidden md:flex md:flex-col xl:min-w-64 max-w-64 h-screen">
         <div className="py-3">
             <Link href="#" className="text-xl md:text-3xl font-bold text-teal-800">
