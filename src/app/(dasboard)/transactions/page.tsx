@@ -156,7 +156,7 @@ const TransactionsPage = () => {
                 }`}>
                   <td className="px-2 py-3">{tx.reference}</td>
                   <td className="px-2 py-3">₦{tx.amount.toFixed(2)}</td>
-                  <td className="px-2 py-3">{tx.type}</td>
+                  <td className={`px-2 py-3 ${tx.type === 'credit' ? 'text-green-600' : 'text-red-600'}`}>{tx.type}</td>
                   <td className={`px-2 py-3 font-medium ${
                     tx.status === 'completed' ? 'text-green-600' :
                     tx.status === 'pending' ? 'text-yellow-600' :

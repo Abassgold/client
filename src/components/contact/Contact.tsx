@@ -3,7 +3,7 @@ import Link from "next/link";
 const Contact = () => {
   return (
     <section
-      id="contact"
+      id="contact-us"
       className="bg-gradient-to-r from-teal-600 via-teal-700 to-teal-800 text-white py-16 px-4"
     >
       <div className="max-w-[70rem] mx-auto text-center">

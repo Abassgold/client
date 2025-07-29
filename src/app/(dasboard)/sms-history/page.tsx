@@ -37,7 +37,7 @@ const Page = async () => {
             <table className="w-full divide-y divide-gray-200">
                 <thead className="bg-teal-800">
                     <tr>
-                        {['ReF', "Country", "Number", "Code", "Price"].map((header) => (
+                        {['ReF No.', "Country", "Number", "Code", "Price", 'date'].map((header) => (
                             <th key={header} className="px-4 py-3 text-left text-xs md:text-sm lg:text-base font-medium text-white uppercase tracking-wider">{header}</th>
                         ))}
                     </tr>
@@ -48,18 +48,18 @@ const Page = async () => {
                             index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
                           }`}>
                             <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">{item._id}</td>
-                            <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">
+                            <td className="px-4 py-3  text-xs md:text-sm lg:text-base">
                                 {item.country}
-                                <small>{item.name}</small>
+                                <small className='block'>{item.name}</small>
                             </td>
-                            <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">{item.number}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">+{item.number}</td>
                             <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">
                                <span className='bg-teal-800 rounded-md -1 text-white'>
                                  {item ? item.code : ''}
                                </span>
                                 </td>
                             <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">₦{item.cost}</td>
-                            <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">{new Date(item.updatedAt).toLocaleDateString()}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">{new Date(item.updatedAt).toLocaleString()}</td>
                         </tr>
                     ))}
                 </tbody>
