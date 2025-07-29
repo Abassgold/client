@@ -8,6 +8,7 @@ interface PurchaseNumberModalProps {
   otp?: string;
   timeout: number | null | string;
   onClose: () => void;
+  markAsDone:()=>void;
 }
 const PurchaseNumberModal = (
   {
@@ -17,16 +18,18 @@ const PurchaseNumberModal = (
     otp,
     timeout,
     onClose,
+    markAsDone
   }: PurchaseNumberModalProps
 ) => {
   const [copiedField, setCopiedField] = useState('');
 
 
-  const done = () => {
+  const done = async() => {
     sessionStorage.removeItem('numberInfo');
     sessionStorage.removeItem('otp');
     sessionStorage.removeItem('pollStartTime');
-    onClose()
+    await markAsDone()
+    await onClose()
   }
   const copyToClipboard = (text: string, field: string) => {
     navigator.clipboard.writeText(text).then(() => {

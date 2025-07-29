@@ -146,6 +146,33 @@ const VirtualNumberServices = () => {
       setLoading(false);
     }
   };
+  const markAsDone = async(activation?: string)=>{
+    const activationId =  activation ?? numberInfo?.activationId;
+
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/markAsDone`, { activationId });
+    if (response.status === 200) {
+      setNumberInfo(null);
+      updateOtp(null);
+      sessionStorage.removeItem('numberInfo');
+      sessionStorage.removeItem('otp');
+      sessionStorage.removeItem('pollStartTime');
+      setTimeoutRemaining('00:00');
+    } else {
+      setNumberInfo(null);
+      updateOtp(null);
+      sessionStorage.removeItem('numberInfo');
+      sessionStorage.removeItem('otp');
+      sessionStorage.removeItem('pollStartTime');
+      setTimeoutRemaining('00:00');
+    }
+  }
+
+
+
+
+
+
+  
   const cancelRental = async (activationId: string, provider: string) => {
 
     // setLoading(true);
@@ -242,7 +269,7 @@ const VirtualNumberServices = () => {
         if (data.status === 'completed') {
           updateOtp(data.code)
           sessionStorage.setItem('otp', data.code);
-          clearPolling();
+          // clearPolling();
           return;
         } else if (data.status === 'cancelled') {
           clearPolling();
@@ -465,6 +492,7 @@ const VirtualNumberServices = () => {
           otp={otp || ''}
           timeout={timeoutRemaining}
           onClose={() => clearInfo()}
+          markAsDone={()=>markAsDone()}
         />}
 
         <div className='p-2 border border-zinc-200 rounded-md mb-2 bg-white'>
