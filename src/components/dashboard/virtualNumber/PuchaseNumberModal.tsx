@@ -43,7 +43,7 @@ const PurchaseNumberModal = (
   return (
     <div className="p-4">
       <div className="fixed inset-0 bg-black opacity-95  flex items-center justify-center z-50">
-        <div className="bg-gray-100 rounded-xl shadow-xl max-w-sm w-full p-6 relative">
+        <div className="bg-white rounded-xl shadow-xl max-w-sm w-full p-6 relative">
           <h2 className="text-teal-800 text-lg font-bold mb-6 text-center">
             Number Purchase Details
           </h2>
