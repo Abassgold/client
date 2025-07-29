@@ -67,7 +67,7 @@ const PurchaseNumberModal = (
               <div className="flex justify-between items-center">
                 <span className="text-gray-900">Number:</span>
                 <span className="font-medium flex gap-1 items-center">
-                  +{number}
+                  {number}
                   <button
                     onClick={() => copyToClipboard(number, 'number')}
                     className="mt-1  text-teal-800 cursor-pointer"
