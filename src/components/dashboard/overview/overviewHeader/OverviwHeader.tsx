@@ -50,7 +50,7 @@ router.push('/login');
   }
 
   fetchUser()
-}, [router, dispatch, user])
+}, [])
 
   return (
     <section>

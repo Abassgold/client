@@ -34,7 +34,9 @@ const DepositPage = () => {
 
     try {
       const res = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/wallet/initialize-payment`, { amount }, {
-        withCredentials: true
+        headers:{
+          Authorization: `Bearer ${getToken()}`
+        }
       });
 
       if (res.status === 500) {
@@ -72,6 +74,7 @@ const DepositPage = () => {
         },
         onCancel: () => {
           setLoading(false);
+          toast.error('Payment cancelled. Please try again.');
         },
       });
     } catch (error: unknown) {
@@ -122,7 +125,7 @@ const DepositPage = () => {
       }
     }
     fetchUser();
-  }, [dispatch, router, user])
+  }, [])
 
   return (
     <section className="mx-auto max-w-3xl p-4 bg-white rounded-lg shadow-md mt-10">
