@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import React from 'react'
 type activationType = {
-    _id: string;
+    activationId: string;
     number: string;
     name: string;
     cost: string;
@@ -47,9 +47,9 @@ const Page = async () => {
                         <tr key={index} className={` hover:bg-gray-100 ${
                             index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
                           }`}>
-                            <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">{item._id}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">{item.activationId}</td>
                             <td className="px-4 py-3  text-xs md:text-sm lg:text-base">
-                                {item.country}
+                                <p className=' whitespace-nowrap'>{item.country}</p>
                                 <small className='block'>{item.name}</small>
                             </td>
                             <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">+{item.number}</td>
