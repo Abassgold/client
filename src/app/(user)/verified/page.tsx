@@ -34,15 +34,20 @@ const Verify = async (props: {
     if (data.ok)
         return (
             <div className="text-center p-6 h-screen flex flex-col justify-center bg-zinc-100 items-center gap-2 text-teal-800">
-                <div className="flex justify-center">
-                    <Image
-                        src="/myflozap_logo.png"
-                        alt="floZap-logo"
-                        width={130}
-                        height={40}
-                        style={{ objectFit: 'contain' }}
-                    />
-                </div>
+                <Image
+                    src="/myflozap_logo.png"
+                    alt="floZap-logo"
+                    width={250}
+                    height={100}
+                    className="mx-auto bg-none md:hidden block"
+                />
+                <Image
+                    src="/myflozap_logo.png"
+                    alt="floZap-logo"
+                    width={350}
+                    height={100}
+                    className="mx-auto bg-none hidden md:block"
+                />
                 <h1 className="text-xl font-bold">Account Verified Successfully! 👍</h1>
                 <p>You can now log in to your account.</p>
                 <div className=''>

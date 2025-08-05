@@ -69,15 +69,20 @@ const Register = () => {
             />
             <div className="max-w-xl mx-auto h-full flex items-center">
                 <div className="w-full">
-                    <div className="flex justify-center">
-                        <Image
-                            src="/myflozap_logo.png"
-                            alt="floZap-logo"
-                            width={130}
-                            height={40}
-                            style={{ objectFit: 'contain' }}
-                        />
-                    </div>
+                    <Image
+                        src="/myflozap_logo.png"
+                        alt="floZap-logo"
+                        width={250}
+                        height={100}
+                        className="mx-auto bg-none md:hidden block"
+                    />
+                    <Image
+                        src="/myflozap_logo.png"
+                        alt="floZap-logo"
+                        width={350}
+                        height={100}
+                        className="mx-auto bg-none hidden md:block"
+                    />
                     <h1 className="text-gray-600 text-xl font-semibold md:text-3xl mb-3 capitalize">welcome onboard!</h1>
                     <div className="h-1 bg-teal-800 w-[48px] mb-6"></div>
                     <form onSubmit={formik.handleSubmit}>
@@ -129,7 +134,7 @@ const Register = () => {
                                 type="text"
                                 pattern="[0-9]*"
                                 inputMode="numeric"
-                                 placeholder="Enter your Phone Number" className="block text-sm md:text-base text-gray-600 outline-none border-[0.5px] border-zinc-300 p-2 w-full rounded-md" />
+                                placeholder="Enter your Phone Number" className="block text-sm md:text-base text-gray-600 outline-none border-[0.5px] border-zinc-300 p-2 w-full rounded-md" />
                             {formik.touched.telephone && formik.errors.telephone && (
                                 <p className="text-sm text-red-600">{formik.errors.telephone}</p>
                             )}

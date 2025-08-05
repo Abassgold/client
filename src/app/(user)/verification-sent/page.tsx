@@ -35,15 +35,20 @@ const Verification = async () => {
     <section className="p-4 h-screen text-center bg-zinc-100">
       <div className="max-w-xl mx-auto h-full flex items-center">
         <div className="w-full">
-          <div className="flex justify-center">
-            <Image
-              src="/myflozap_logo.png"
-              alt="floZap-logo"
-              width={130}
-              height={40}
-              style={{ objectFit: 'contain' }}
-            />
-          </div>
+          <Image
+            src="/myflozap_logo.png"
+            alt="floZap-logo"
+            width={250}
+            height={100}
+            className="mx-auto bg-none md:hidden block"
+          />
+          <Image
+            src="/myflozap_logo.png"
+            alt="floZap-logo"
+            width={350}
+            height={100}
+            className="mx-auto bg-none hidden md:block"
+          />
           <h1 className="font-semibold text-xl md:text-2xl text-gray-700">
             Please verify your email
           </h1>

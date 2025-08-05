@@ -48,9 +48,9 @@ const PasswordReset = () => {
             try {
                 const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/updatePassword`, values, {
                     headers: {
-                       Authorization: `Bearer ${getToken()}`
+                        Authorization: `Bearer ${getToken()}`
                     },
-                    
+
                 })
                 const res: findUser = data
                 if (!res?.ok) {
@@ -79,15 +79,20 @@ const PasswordReset = () => {
             />
             <div className="max-w-xl mx-auto h-full flex items-center">
                 <div className="w-full">
-                    <div className="flex justify-center">
-                        <Image
-                            src="/myflozap_logo.png"
-                            alt="floZap-logo"
-                            width={130}
-                            height={40}
-                            style={{ objectFit: 'contain' }}
-                        />
-                    </div>
+                    <Image
+                        src="/myflozap_logo.png"
+                        alt="floZap-logo"
+                        width={250}
+                        height={100}
+                        className="mx-auto bg-none md:hidden block"
+                    />
+                    <Image
+                        src="/myflozap_logo.png"
+                        alt="floZap-logo"
+                        width={350}
+                        height={100}
+                        className="mx-auto bg-none hidden md:block"
+                    />
                     <h1 className="text-gray-600 text-xl font-semibold md:text-3xl mb-3 capitalize">reset password!</h1>
                     <div className="h-1 bg-teal-800 w-[48px] mb-6"></div>
                     <h3 className='text-gray-800 mb-4'>Your new password must be different from the previous ones</h3>
