@@ -5,7 +5,7 @@ import { ShoppingCart } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import PurchaseNumberModal from "./PuchaseNumberModal";
 import { usePathname, useRouter } from "next/navigation";
-import {  toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { getToken } from "@/lib/Token";
 
 interface NumberInfo {
@@ -146,25 +146,10 @@ const VirtualNumberServices = () => {
       setLoading(false);
     }
   };
-  const markAsDone = async(activation?: string)=>{
-    const activationId =  activation ?? numberInfo?.activationId;
-
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/markAsDone`, { activationId });
-    if (response.status === 200) {
-      setNumberInfo(null);
-      updateOtp(null);
-      sessionStorage.removeItem('numberInfo');
-      sessionStorage.removeItem('otp');
-      sessionStorage.removeItem('pollStartTime');
-      setTimeoutRemaining('00:00');
-    } else {
-      setNumberInfo(null);
-      updateOtp(null);
-      sessionStorage.removeItem('numberInfo');
-      sessionStorage.removeItem('otp');
-      sessionStorage.removeItem('pollStartTime');
-      setTimeoutRemaining('00:00');
-    }
+  const markAsDone = async (activation?: string) => {
+    const activationId = activation ?? numberInfo?.activationId;
+    setLoading(false);
+    await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/markAsDone`, { activationId });
   }
 
 
@@ -172,35 +157,18 @@ const VirtualNumberServices = () => {
 
 
 
-  
-  const cancelRental = async (activationId: string, provider: string) => {
 
-    // setLoading(true);
-    try {
-      const { data } = await axios.get<rentalCancelType>(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/cancelRental/${activationId}`,
-        {
-          headers: { Authorization: `Bearer ${getToken()}` },
-          params: { provider }
-        }
-      );
-      if (data.ok) {
-        toast.success(data.msg || 'Rental cancelled successfully');
-      } else {
-        toast.error(data.msg || 'Failed to cancel rental');
+  const cancelRental = async (activationId: string, provider: string) => {
+    clearPolling()
+    setLoading(false)
+    await axios.get<rentalCancelType>(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/cancelRental/${activationId}`,
+      {
+        headers: { Authorization: `Bearer ${getToken()}` },
+        params: { provider }
       }
-      setNumberInfo(null);
-      updateOtp(null);
-      sessionStorage.removeItem('numberInfo');
-      sessionStorage.removeItem('otp');
-      sessionStorage.removeItem('pollStartTime');
-      toast.error('Activation cancelled. Please try again.');
-      setTimeoutRemaining('00:00');
-      setLoading(false);
-    } catch (error) {
-      console.error('Error cancelling rental:', error);
-      toast.error('Error occurred while trying to cancel rental');
-    }
+    );
+    clearInfo()
   }
   const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -218,7 +186,7 @@ const VirtualNumberServices = () => {
 
   const pollForSMS = async (activationId: string, provider: string, initialRemainingTime?: number) => {
     isPollingActive.current = true;
-    const pollingDuration = 10 * 60 * 1000;
+    const pollingDuration = 5 * 60 * 1000;
     const startTime = Date.now();
     let endTime = startTime + pollingDuration;
 
@@ -311,6 +279,7 @@ const VirtualNumberServices = () => {
     countdownInterval.current = null;
   };
   const clearInfo = () => {
+    clearPolling();
     sessionStorage.removeItem('numberInfo');
     sessionStorage.removeItem('otp');
     sessionStorage.removeItem('pollStartTime');
@@ -324,7 +293,7 @@ const VirtualNumberServices = () => {
     const savedNumberStr = sessionStorage.getItem('numberInfo');
     const savedOtp = sessionStorage.getItem('otp');
     const savedStartTime = sessionStorage.getItem('pollStartTime');
-    const pollingDuration = 10 * 60 * 1000;
+    const pollingDuration = 5 * 60 * 1000;
     const now = Date.now();
 
 
@@ -481,7 +450,7 @@ const VirtualNumberServices = () => {
         </div>
 
       </div>
-      
+
 
       <section className='text-gray-800'>
 
@@ -492,7 +461,8 @@ const VirtualNumberServices = () => {
           otp={otp || ''}
           timeout={timeoutRemaining}
           onClose={() => clearInfo()}
-          markAsDone={()=>markAsDone()}
+          markAsDone={() => markAsDone()}
+          canCel={() => cancelRental(numberInfo?.activationId ?? '', numberInfo?.provider ?? '')}
         />}
 
         <div className='p-2 border border-zinc-200 rounded-md mb-2 bg-white'>

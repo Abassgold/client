@@ -9,6 +9,7 @@ interface PurchaseNumberModalProps {
   timeout: number | null | string;
   onClose: () => void;
   markAsDone:()=>void;
+  canCel:()=>void
 }
 const PurchaseNumberModal = (
   {
@@ -18,16 +19,14 @@ const PurchaseNumberModal = (
     otp,
     timeout,
     onClose,
-    markAsDone
+    markAsDone,
+    canCel
   }: PurchaseNumberModalProps
 ) => {
   const [copiedField, setCopiedField] = useState('');
 
 
   const done = async() => {
-    sessionStorage.removeItem('numberInfo');
-    sessionStorage.removeItem('otp');
-    sessionStorage.removeItem('pollStartTime');
     await markAsDone()
     await onClose()
   }
@@ -113,14 +112,16 @@ const PurchaseNumberModal = (
 
             )}
           </div>
-
-          <button
-            disabled={otp === ''}
+          {!otp || otp === '' ? <button className='mt-6 text-[13px] w-full cursor-pointer bg-red-800 text-white py-2 rounded-md'
+          onClick={canCel}
+          >Cancel</button>: <button
             onClick={done}
-            className={`mt-6 text-[13px] w-full cursor-pointer ${otp ? 'bg-teal-800' : 'bg-teal-800 opacity-70'} text-white py-2 rounded-md`}
+            className={`mt-6 text-[13px] w-full cursor-pointer bg-teal-800 text-white py-2 rounded-md`}
           >
-            {otp ? 'Done' : 'Waiting for OTP...'}
+            Done
           </button>
+          }
+          
         </div>
       </div>
     </div>
