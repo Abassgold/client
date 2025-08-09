@@ -161,13 +161,15 @@ const VirtualNumberServices = () => {
   const cancelRental = async (activationId: string, provider: string) => {
     clearPolling()
     setLoading(false)
-    await axios.get<rentalCancelType>(
+    const { data } = await axios.get<rentalCancelType>(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/cancelRental/${activationId}`,
       {
         headers: { Authorization: `Bearer ${getToken()}` },
         params: { provider }
       }
     );
+    if (data.ok) toast.success(data.msg)
+    else toast.error(data.msg)
     clearInfo()
   }
   const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));

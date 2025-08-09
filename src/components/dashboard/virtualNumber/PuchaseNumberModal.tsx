@@ -30,6 +30,8 @@ const PurchaseNumberModal = (
     await markAsDone()
     await onClose()
   }
+
+  
   const copyToClipboard = (text: string, field: string) => {
     navigator.clipboard.writeText(text).then(() => {
       setCopiedField(field);

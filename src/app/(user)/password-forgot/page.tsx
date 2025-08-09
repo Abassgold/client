@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
+import { toast } from 'sonner';
 
 const Forgotpassword = () => {
     const [email, setEmail] = useState('')
@@ -16,14 +17,14 @@ const Forgotpassword = () => {
         try {
             const res = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/password-reset`, { email });
             if (res.data.ok) {
-                alert(res.data.msg);
+                toast.success(res.data.msg)
                 router.push('/login');
             } else {
-                alert(res.data.msg || "An error occurred");
+                toast.error(res.data.msg || "An error occurred");
             }
         } catch (err) {
             console.error(err);
-            alert('Failed to send recovery email');
+            toast.error('Failed to send recovery email');
         } finally {
             setLoading(false);
         }

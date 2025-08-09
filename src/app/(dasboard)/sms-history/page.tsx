@@ -53,10 +53,8 @@ const Page = async () => {
                                 <small className='block'>{item.name}</small>
                             </td>
                             <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">+{item.number}</td>
-                            <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">
-                               <span className='bg-teal-800 rounded-md -1 text-white'>
+                            <td className="px-4 py-3 text-teal-900 whitespace-nowrap text-xs md:text-sm lg:text-base">
                                  {item ? item.code : ''}
-                               </span>
                                 </td>
                             <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">₦{item.cost}</td>
                             <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">{new Date(item.updatedAt).toLocaleString()}</td>

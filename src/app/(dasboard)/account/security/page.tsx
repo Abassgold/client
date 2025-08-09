@@ -8,7 +8,7 @@ import * as Yup from 'yup'
 import axios, { AxiosError } from "axios"
 import { findUser } from "@/redux/type"
 import { getToken } from "@/lib/Token"
-import { toast } from "react-toastify"
+import { toast } from "sonner"
 interface changePassword {
     oldPassword: string;
     newPassword: string;

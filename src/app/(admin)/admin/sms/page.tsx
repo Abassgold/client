@@ -1,6 +1,5 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import { Toaster } from 'sonner';
 import {
   Pagination,
   PaginationContent,
@@ -78,7 +77,6 @@ const SmsPage = () => {
 
   return (
     <div className="overflow-auto max-h-screen py-8 px-1">
-      <Toaster richColors position="top-center" duration={2000} />
 
       <div className="mb-4">
         <input

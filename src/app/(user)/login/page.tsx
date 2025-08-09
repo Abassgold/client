@@ -10,7 +10,8 @@ import { addUser } from "@/redux/slice/auth";
 import { findUser } from "@/redux/type";
 import Image from "next/image";
 import { getToken, setToken } from "@/lib/Token";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
+
 
 interface loginType {
     email: string;
@@ -73,7 +74,6 @@ const Login = () => {
     }, [])
     return (
         <section className="p-4 h-screen bg-zinc-100">
-           
             <div className="max-w-xl mx-auto h-full flex items-center">
                 <div className="w-full">
                         <Image

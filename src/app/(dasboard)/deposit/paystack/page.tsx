@@ -7,7 +7,7 @@ import axios from 'axios';
 import { redirect, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { getToken } from '@/lib/Token';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 interface paymentType {
   ok: boolean;
   msg: string;

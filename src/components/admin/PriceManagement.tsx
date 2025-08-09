@@ -5,7 +5,7 @@ import { SaveIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getToken } from '@/lib/Token';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 type priceResponse = {
   ok: boolean;
   msg: string;

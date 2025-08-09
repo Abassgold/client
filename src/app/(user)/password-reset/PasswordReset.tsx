@@ -1,5 +1,4 @@
 'use client'
-import { Toaster } from "@/components/ui/sonner"
 import { getToken } from "@/lib/Token"
 import { useAppDispatch } from "@/redux/hooks"
 import { addUser } from "@/redux/slice/auth"
@@ -72,11 +71,7 @@ const PasswordReset = () => {
     })
     return (
         <section className="p-4 h-screen bg-zinc-100">
-            <Toaster
-                richColors
-                position='top-center'
-                duration={2000}
-            />
+
             <div className="max-w-xl mx-auto h-full flex items-center">
                 <div className="w-full">
                     <Image

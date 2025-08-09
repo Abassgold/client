@@ -6,6 +6,7 @@ import StoreProvider from "@/redux/StoreProvider";
 import Image from "next/image";
 import Link from "next/link";
 import { ToastContainer } from "react-toastify";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "FloZap",
@@ -38,6 +39,11 @@ export default function RootLayout({
                 pauseOnHover
                 theme="colored"
               />
+           <Toaster
+           duration={3000}
+           richColors
+           position='top-center'
+           />
         <StoreProvider>
           {children}
         </StoreProvider>

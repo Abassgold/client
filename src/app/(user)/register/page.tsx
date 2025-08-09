@@ -7,7 +7,6 @@ import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { findUser, IUser } from "./types";
 import { toast } from "sonner";
-import { Toaster } from "@/components/ui/sonner";
 import Image from "next/image";
 const Register = () => {
     const [loader, setLoader] = useState(false)
@@ -62,11 +61,7 @@ const Register = () => {
 
     return (
         <section className="p-4 h-screen bg-zinc-100">
-            <Toaster
-                richColors
-                position='top-center'
-                duration={2000}
-            />
+           
             <div className="max-w-xl mx-auto h-full flex items-center">
                 <div className="w-full">
                     <Image
