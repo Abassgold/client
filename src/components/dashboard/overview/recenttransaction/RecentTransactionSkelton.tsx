@@ -19,7 +19,7 @@ const RecentTransactionSkeleton = () => {
         </div>
 
         <div>
-          <h4 className="text-lg font-[600] mb-2 text-gray-800">Recent Wallet Transactions</h4>
+          <h4 className="text-lg font-[600] mb-2 text-gray-800">Recent Wallet Transactionsooo</h4>
           <div className="space-y-2">
             {[1, 2, 3].map((i) => (
               <div key={i} className="bg-gray-200 h-12 rounded-md"></div>

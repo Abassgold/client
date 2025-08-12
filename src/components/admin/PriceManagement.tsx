@@ -16,13 +16,13 @@ interface fetchPriceResponse {
   price?: PriceInput;
 }
 type PriceInput = {
-  price: number;
-  gain: number;
+  price: number | undefined;
+  gain: number | undefined;
 };
 
 const PriceManagement: React.FC = () => {
   const router = useRouter();
-  const [virtualNumber, setVirtualNumber] = useState<PriceInput>({ price: 0, gain: 0 });
+  const [virtualNumber, setVirtualNumber] = useState<PriceInput>({ price: undefined, gain: undefined });
   const [price, setPrice] = useState<number>()
   const [gain, setGain] = useState<number>()
   const [loading, setLoading] = useState(false);

@@ -9,9 +9,9 @@ import RecentTransactionSkeleton from './RecentTransactionSkelton';
 import { getToken } from '@/lib/Token';
 type transactionType = {
   reference: string;
-   serviceType:  string;
-   amount : number;
-    type:"credit" | "debit"
+  serviceType: string;
+  amount: number;
+  type: "credit" | "debit"
 }
 export interface WalletResponse {
   ok: boolean;
@@ -29,6 +29,7 @@ const RecentTransaction = () => {
   useEffect(() => {
     const fetchDashboardData = async (): Promise<void> => {
       try {
+        setLoading(true)
         const { data } = await axios.get<WalletResponse>(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/wallet/`,
           {
@@ -46,7 +47,6 @@ const RecentTransaction = () => {
 
         setTransactions(data.transactions || []);
         setBalance(data.balance || 0);
-        // setUsdtWalletBalance(data.usdtBalance || 0);
       } catch (error: unknown) {
         if (error instanceof Error) {
           console.error('Error fetching dashboard data:', error.message);
@@ -78,12 +78,12 @@ const RecentTransaction = () => {
                 {isBalanceVisible ? <Eye /> : <EyeOff />}
               </button>
             </div>
-            <p className="text-2xl md:text-3xl font-bold text-teal-600">
+            <p className="text-xl sm:text-2xl md:text-3xl font-bold text-teal-600">
               {isBalanceVisible
                 ? `₦${balance.toLocaleString('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}`
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}`
                 : '******'}
             </p>
           </div>
@@ -91,7 +91,7 @@ const RecentTransaction = () => {
           <div className="flex flex-col sm:flex-row gap-2">
             <Link
               href="/deposit"
-              className="bg-teal-600 cursor-pointer text-white py-2 px-4 rounded-lg hover:bg-teal-500 text-center"
+              className="bg-teal-600 cursor-pointer text-white py-2 px-4 rounded-lg hover:bg-teal-500 text-center md:text-base text-sm"
             >
               Fund Wallet
             </Link>
