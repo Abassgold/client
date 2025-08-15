@@ -12,17 +12,16 @@ export const isAuthenticated = async (token: string) => {
             },
         });
         // If suspended, backend returns 403
-        if (res.status === 403) {
-            return { authenticated: true, suspended: true };
-        }
+        if (res.status === 403) return { authenticated: true, suspended: true };
+
+        if (res.status === 401) return { authenticated: false, suspended: false };
 
         const data: isAuth = await res.json();
 
-        if (res.ok && data.ok) {
-            return { authenticated: true, suspended: false };
-        }
+        if (res.ok && data.ok) return { authenticated: true, suspended: false };
 
         return { authenticated: false, suspended: false };
+        
     } catch (err: unknown) {
         console.error(err instanceof Error ? err.message : 'Unknown Error: ' + err);
         return { authenticated: false, suspended: false };
