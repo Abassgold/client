@@ -9,6 +9,7 @@ export async function middleware(req: NextRequest) {
     const authStatus = await isAuthenticated(token);
 
     if (!token || !authStatus.authenticated) {
+        console.log('u need to log in')
         return NextResponse.redirect(new URL('/login', req.url));
     }
 
@@ -27,6 +28,7 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
     matcher: [
+        '/deposit/:path*',
         '/dashboard/:path*',
         '/account/:path*',
         '/transactions/:path*',
