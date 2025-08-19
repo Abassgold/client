@@ -28,15 +28,7 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
     matcher: [
-        '/deposit/:path*',
-        '/dashboard/:path*',
-        '/account/:path*',
-        '/transactions/:path*',
-        '/crypto/:path*',
-        '/virtual-number/:path*',
-        '/utilities/:path*',
-        '/giftcards/:path*',
-        '/recharge/:path*',
+        '/user/:path*',
         '/admin/:path*'
     ],
 };

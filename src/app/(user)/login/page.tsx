@@ -52,7 +52,7 @@ const Login = () => {
                     toast.success(data.msg);
                     dispatch(addUser(data));
                     setToken(data.token || '');
-                    router.push('/dashboard');
+                    router.push('/user/dashboard');
                     return;
                 }
                 if (!data.ok && data.msg === 'not-verified') {
@@ -70,7 +70,7 @@ const Login = () => {
     })
     useEffect(()=>{
         const token = getToken();
-        if(token) return router.push('/dashboard');
+        if(token) return router.push('/user/dashboard');
     }, [])
     return (
         <section className="p-4 h-screen bg-zinc-100">

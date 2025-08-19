@@ -67,7 +67,7 @@ const DepositPage = () => {
           const verifyData: paymentType = await verifyPayment.json();
           if (verifyData.ok) {
             toast.success('Wallet funded successfully!');
-            router.push('/dashboard');
+            router.push('/user/dashboard');
           } else {
             toast.error(verifyData.msg || 'Payment verification failed. Please try again.');
           }

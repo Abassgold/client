@@ -7,18 +7,18 @@ import { useAppSelector } from "@/redux/hooks";
 import { deleteToken } from "@/lib/Token";
 
 export const dasbhboardNavitems = [
-  { title: "Overview", url: "/dashboard", icon: Home },
+  { title: "Overview", url: "/user/dashboard", icon: Home },
   // { title: "Utility Payments", url: "/utilities", icon: Banknote },
   // { title: "Recharge & Subscriptions", url: "/recharge", icon: Calendar },
   // { title: "Gift Cards", url: "/giftcards", icon: Gift },
-  { title: "Sell Crypto", url: "/crypto", icon: Bitcoin },
-  { title: "Virtual Numbers", url: "/virtual-number", icon: FileDigit },
-  { title: "Sms History", url: "/sms-history", icon: History },
+  { title: "Sell Crypto", url: "/user/crypto", icon: Bitcoin },
+  { title: "Virtual Numbers", url: "/user/virtual-number", icon: FileDigit },
+  { title: "Sms History", url: "/user/sms-history", icon: History },
   // { title: "Esim", url: "/esim", icon: FileDigit },
-  { title: "Transactions", url: "/transactions", icon: Barcode },
+  { title: "Transactions", url: "/user/transactions", icon: Barcode },
   // { title: "Referral", url: "/referral", icon: Hash },
-  { title: "Deposit", url: "/deposit", icon: File },
-  { title: "Account", url: "/account", icon: Settings },
+  { title: "Deposit", url: "/user/deposit", icon: File },
+  { title: "Account", url: "/user/account", icon: Settings },
 ];
 export interface logOutResponse{
   ok: boolean

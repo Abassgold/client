@@ -90,7 +90,7 @@ const RecentTransaction = () => {
 
           <div className="flex flex-col sm:flex-row gap-2">
             <Link
-              href="/deposit"
+              href="/user/deposit"
               className="bg-teal-600 cursor-pointer text-white py-2 px-4 rounded-lg hover:bg-teal-500 text-center md:text-base text-sm"
             >
               Fund Wallet

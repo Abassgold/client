@@ -6,7 +6,7 @@ const ChooseDepositMethod = () => {
   const router = useRouter()
 
   const handleSelect = (method: 'paystack' | 'crypto') => {
-    router.push(method === 'paystack' ? '/deposit/paystack' : '/deposit/crypto')
+    router.push(method === 'paystack' ? '/user/deposit/paystack' : '/user/deposit/crypto')
   }
 
   return (

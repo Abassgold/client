@@ -6,9 +6,9 @@ import { useAppDispatch } from "@/redux/hooks"
 import { addUser } from "@/redux/slice/auth"
 import * as Yup from 'yup'
 import axios, { AxiosError } from "axios"
-import { findUser } from "@/redux/type"
 import { getToken } from "@/lib/Token"
 import { toast } from "sonner"
+import { findUser } from "@/redux/type"
 interface changePassword {
     oldPassword: string;
     newPassword: string;
