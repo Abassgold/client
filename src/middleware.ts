@@ -9,20 +9,16 @@ export async function middleware(req: NextRequest) {
     const authStatus = await isAuthenticated(token);
 
     if (!token || !authStatus.authenticated) {
-        console.log('u need to log in')
         return NextResponse.redirect(new URL('/login', req.url));
     }
-
     if (authStatus.suspended) {
         return NextResponse.redirect(new URL('/account-suspended', req.url));
     }
-
     if (adminRoutes.some(route => req.nextUrl.pathname.startsWith(route))) {
         if (!(await isAdmin(token))) {
             return NextResponse.redirect(new URL('/login', req.url));
         }
     }
-
     return NextResponse.next();
 }
 
