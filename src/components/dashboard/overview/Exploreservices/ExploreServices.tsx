@@ -3,10 +3,10 @@ import ExploreCard from './ExploreCard'
 
 const ExploreServices = () => {
   const services = [
-        { name: "Virtual Numbers", icon: "📞", link: "/virtual-number" },
-        { name: "eSIM", icon: "📱", link: "/esim" },
-        { name: "Sell Crypto", icon: "₿", link: "/crypto" },
-        { name: "Gift Cards", icon: "🎁", link: "/giftcards" },
+        { name: "Virtual Numbers", icon: "📞", link: "/user/virtual-number" },
+        { name: "eSIM", icon: "📱", link: "/user/esim" },
+        { name: "Sell Crypto", icon: "₿", link: "/user/crypto" },
+        { name: "Gift Cards", icon: "🎁", link: "/user/giftcards" },
       ];
   return (
     <div className="mb-6">
