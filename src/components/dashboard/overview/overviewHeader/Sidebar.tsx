@@ -73,6 +73,13 @@ const Sidebar = ({ isOpen, toggleSidebar, setActiveSection }: sidebarType) => {
                                 </li>
                             );
                         })}
+                        <button
+                            onClick={logOut}
+                            className="flex items-center mt-4 gap-3 w-full text-left p-2 hover:bg-gray-700 rounded transition"
+                        >
+                            <LogOut size={24} />
+                            Log Out
+                        </button>
                     </ul>
                 </nav>
             </div>
@@ -92,13 +99,6 @@ const Sidebar = ({ isOpen, toggleSidebar, setActiveSection }: sidebarType) => {
                         </button>
                     </Link>
                 )}
-                <button
-                    onClick={logOut}
-                    className="flex items-center gap-3 w-full text-left p-2 hover:bg-gray-700 rounded transition"
-                >
-                    <LogOut size={24} />
-                    Logout
-                </button>
             </div>
         </aside>
 
