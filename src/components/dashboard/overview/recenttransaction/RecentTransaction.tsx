@@ -118,7 +118,7 @@ const RecentTransaction = () => {
             )}
             {transactions.length > 0 && (
               <Link
-                href="/transactions"
+                href="/user/transactions"
                 className="text-teal-600 hover:underline text-sm mt-2 block"
               >
                 View All
