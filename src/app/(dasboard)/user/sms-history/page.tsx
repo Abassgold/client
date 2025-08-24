@@ -5,7 +5,7 @@ type activationType = {
     activationId: string;
     number: string;
     name: string;
-    cost: string;
+    cost: number;
     code?: string;
     country: string;
     updatedAt: Date;
@@ -56,7 +56,7 @@ const Page = async () => {
                             <td className="px-4 py-3 text-teal-900 whitespace-nowrap text-xs md:text-sm lg:text-base">
                                  {item ? item.code : ''}
                                 </td>
-                            <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">₦{item.cost}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">₦{item.cost.toFixed(2)}</td>
                             <td className="px-4 py-3 whitespace-nowrap text-xs md:text-sm lg:text-base">{new Date(item.updatedAt).toLocaleString()}</td>
                         </tr>
                     ))}
