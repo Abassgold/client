@@ -47,7 +47,7 @@ const FAQ = () => {
 
         <div className="space-y-4">
           {faqs.map((faq, index) => (
-            <div key={index} className="bg-white rounded-md shadow-md overflow-hidden">
+            <div key={index} className="bg-white cursor-pointer rounded-md shadow-md overflow-hidden">
               <button
                 onClick={() => toggleFAQ(index)}
                 className="w-full flex justify-between items-center px-6 py-4 text-left text-gray-800 font-medium text-sm sm:text-base md:text-lg focus:outline-none"
