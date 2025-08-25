@@ -41,16 +41,16 @@ const FAQ = () => {
   return (
     <section id="faq" className="py-20 bg-gray-50">
       <div className="max-w-[70rem] mx-auto px-4">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-gray-700">
+        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-gray-700 ">
           Frequently Asked Questions
         </h2>
 
         <div className="space-y-4">
           {faqs.map((faq, index) => (
-            <div key={index} className="bg-white cursor-pointer rounded-md shadow-md overflow-hidden">
+            <div key={index} className=" cursor-pointer rounded-md shadow-md overflow-hidden bg-white">
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full flex justify-between items-center px-6 py-4 text-left text-gray-800 font-medium text-sm sm:text-base md:text-lg focus:outline-none"
+                className="w-full flex justify-between items-center px-6 cursor-pointer py-4 text-left text-gray-800 font-medium text-sm sm:text-base md:text-lg focus:outline-none"
               >
                 <span>{faq.question}</span>
                 <span>{openIndex === index ? "-" : "+"}</span>
@@ -63,7 +63,7 @@ const FAQ = () => {
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="px-6 pb-4 text-gray-600 text-sm sm:text-base"
+                    className="px-6 pb-4 text-gray-600 text-sm sm:text-base cursor-pointer"
                   >
                     <div>{faq.answer}</div>
                   </motion.div>
