@@ -14,7 +14,7 @@ import { getToken } from '@/lib/Token';
 type SMS = {
   number: string;
   name: string;
-  cost: string;
+  cost: number;
   code: string;
   country: string;
   status: 'pending' | 'completed' | 'cancelled';
@@ -112,7 +112,7 @@ const SmsPage = () => {
                     <small className="text-[12px]">{item.name}</small>
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-gray-800">+{item.number}</td>
-                  <td className="px-4 py-3 whitespace-nowrap text-gray-800">₦{item.cost}</td>
+                  <td className="px-4 py-3 whitespace-nowrap text-gray-800">₦{item.cost.toFixed(2)}</td>
                   <td className="px-4 py-3 whitespace-nowrap text-gray-800">{item.code}</td>
                   <td className="px-4 py-3 whitespace-nowrap text-gray-800">{item.status}</td>
                   <td className="px-4 py-3 whitespace-nowrap text-gray-800">{new Date(item.updatedAt).toLocaleString()}</td>
