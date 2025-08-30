@@ -10,7 +10,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "FloZap",
-  description: "FloZap is a smart digital platform for buying virtual numbers, crypto transactions, esim activations, and more — all in one place.",
+  description: "FloZap is your all-in-one platform for virtual numbers, eSIMs, and more. Get everything you need to stay connected and secure, all in one easy place.",
   icons: {
   icon: '/myflozap_logo.png',
   shortcut: '/myflozap_logo.png',
