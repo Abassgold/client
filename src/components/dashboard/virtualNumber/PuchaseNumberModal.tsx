@@ -63,7 +63,7 @@ const PurchaseNumberModal = (
             </div>
 
             <div className="flex justify-between">
-              <span className="text-gray-900">time-left:</span>
+              <span className="text-gray-900">Time-left:</span>
               <span className="font-medium">{timeout}</span>
             </div>
             {/* Number */}
