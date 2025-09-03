@@ -4,11 +4,7 @@ import FeturesCard from "./FeturesCard";
 
 const Features = () => {
   const features = [
-    // {
-    //   title: "Online Banking",
-    //   description: "Securely manage your accounts, transfer funds, and track transactions.",
-    //   icon: "🏦",
-    // },
+    
     {
       title: "Utility Payments",
       description: "Pay electricity, water, and other bills in just a few clicks.",
@@ -20,25 +16,31 @@ const Features = () => {
       icon: "📱",
     },
     {
-      title: "eSIM Services",
-      description: "Buy and manage eSIMs for instant data and connectivity worldwide.",
+      title: "Check Results",
+      description: "Quickly check exam results and academic performance.",
       icon: "📶",
-    },    
-    {
-      title: "Crypto Trading",
-      description: "Easily sell your USDT with competitive rates and receive payments through multiple local and international methods.",
-      icon: "₿",
-    },
-    {
-      title: "Virtual Number",
-      description: "Get instant access to phone numbers from over 100 countries. Perfect for verifications, business contacts, or maintaining privacy.",
-      icon: "📞",
-    },
-    {
-      title: "Gift Cards",
-      description: "Exchange your gift cards for cash quickly and securely.",
-      icon: "🎁",
-    },
+    }, 
+    // {
+    //   title: "eSIM Services",
+    //   description: "Buy and manage eSIMs for instant data and connectivity worldwide.",
+    //   icon: "📶",
+    // },  
+     
+    // {
+    //   title: "Crypto Trading",
+    //   description: "Easily sell your USDT with competitive rates and receive payments through multiple local and international methods.",
+    //   icon: "₿",
+    // },
+    // {
+    //   title: "Virtual Number",
+    //   description: "Get instant access to phone numbers from over 100 countries. Perfect for verifications, business contacts, or maintaining privacy.",
+    //   icon: "📞",
+    // },
+    // {
+    //   title: "Gift Cards",
+    //   description: "Exchange your gift cards for cash quickly and securely.",
+    //   icon: "🎁",
+    // },
   ];
 
   return (

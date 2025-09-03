@@ -25,8 +25,10 @@ const Hero = () => {
                 </span>
               </h1>
               <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                FloZap provides seamless access to virtual phone numbers, USDT
+                {/* FloZap provides seamless access to virtual phone numbers, USDT
                 exchange services, and eSIM solutions. Connect globally with
+                ease and security. */}
+                FloZap provides seamless access to Airtime & Data, Tv subscriptions, Exam checker and the likes. Connect globally with
                 ease and security.
               </p>
 
