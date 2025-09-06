@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link";
-import { Home, Bitcoin,  File, Settings, LogOut, Barcode, FileDigit, User, History } from "lucide-react";
+import { Home, Bitcoin,  File, Settings, LogOut, Barcode, FileDigit, User, History, PhoneCall } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 // import Image from "next/image";
 import { useAppSelector } from "@/redux/hooks";
@@ -18,6 +18,7 @@ export const dasbhboardNavitems = [
   { title: "Transactions", url: "/user/transactions", icon: Barcode },
   // { title: "Referral", url: "/referral", icon: Hash },
   { title: "Deposit", url: "/user/deposit", icon: File },
+  { title: "Contact-Us", url: "https://wa.me/qr/BHKITMXTHP2PE1", icon: PhoneCall },
   { title: "Account", url: "/user/account", icon: Settings },
 ];
 export interface logOutResponse{

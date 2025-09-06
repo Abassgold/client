@@ -36,7 +36,6 @@ const Register = () => {
                 .required('Please enter your password'),
         }),
         onSubmit: async (values: IUser): Promise<findUser | void> => {
-            return;
             setLoader(true)
             try {
                 const response = await fetch(`register/api/`, {
