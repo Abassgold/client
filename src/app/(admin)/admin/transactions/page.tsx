@@ -1,22 +1,15 @@
 'use client'
 
 import React, { useEffect, useState } from 'react';
-import { SearchIcon,  RefreshCw, Eye } from 'lucide-react';
+import { SearchIcon, RefreshCw, Eye } from 'lucide-react';
 import Link from 'next/link';
 import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 import { Button } from '@/components/ui/button';
 import { getToken } from '@/lib/Token';
 import { toast } from 'react-toastify';
-    
+import PaginationWrapper from '@/components/pagination/PaginationWrapper';
+
 type Transaction = {
   _id: string;
   reference: string;
@@ -83,7 +76,7 @@ const TransactionsPage = () => {
     fetchTransactions();
   }, [page, searchTerm, statusFilter, dateFrom, dateTo]);
 
- 
+
 
   return (
     <div className='relative text-sm'>
@@ -164,17 +157,16 @@ const TransactionsPage = () => {
                   <td className="px-2 py-3 capitalize">{tx.beneficiary}</td>
                   <td className="px-2 py-3">₦{tx.amount.toFixed(2)}</td>
                   <td className={`px-2 py-3 ${tx.type === 'credit' ? 'text-green-600' : 'text-red-600'}`}>{tx.type}</td>
-                  <td className={`px-2 py-3 font-medium ${
-                    tx.status === 'completed' ? 'text-green-600' :
-                    tx.status === 'pending' ? 'text-yellow-600' :
-                    tx.status === 'refunded' ? 'text-blue-600' : 'text-red-600'
-                  }`}>
+                  <td className={`px-2 py-3 font-medium ${tx.status === 'completed' ? 'text-green-600' :
+                      tx.status === 'pending' ? 'text-yellow-600' :
+                        tx.status === 'refunded' ? 'text-blue-600' : 'text-red-600'
+                    }`}>
                     {tx.status}
                   </td>
                   <td className="px-2 py-3">{new Date(tx.createdAt).toLocaleString()}</td>
                   <td className="px-2 py-3 flex gap-2">
                     <Link href={`/admin/transactions/${tx._id}`} className="text-teal-700 hover:underline">
-                    <Eye size={16}/>
+                      <Eye size={16} />
                     </Link>
                   </td>
                 </tr>
@@ -185,29 +177,7 @@ const TransactionsPage = () => {
 
         {/* Pagination */}
         <div className="mt-4">
-          <Pagination className='text-teal-800'>
-            <PaginationContent>
-              <PaginationItem>
-                <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1}>
-                  <PaginationPrevious href="#" />
-                </button>
-              </PaginationItem>
-
-              {Array.from({ length: totalPages }, (_, i) => (
-                <PaginationItem key={i + 1}>
-                  <button onClick={() => setPage(i + 1)}>
-                    <PaginationLink href="#" isActive={page === i + 1}>{i + 1}</PaginationLink>
-                  </button>
-                </PaginationItem>
-              ))}
-
-              <PaginationItem>
-                <button onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))} disabled={page === totalPages}>
-                  <PaginationNext href="#" />
-                </button>
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+          <PaginationWrapper page={page} totalPages={totalPages} setPage={setPage} />
         </div>
       </div>
     </div>

@@ -1,15 +1,8 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 import { useRouter } from 'next/navigation';
 import { getToken } from '@/lib/Token';
+import PaginationWrapper from '@/components/pagination/PaginationWrapper';
 
 type SMS = {
   number: string;
@@ -121,31 +114,7 @@ const SmsPage = () => {
             </tbody>
           </table>
           <div className="w-full flex justify-start mt-4">
-            <Pagination className="text-teal-800">
-              <PaginationContent>
-                <PaginationItem>
-                  <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1}>
-                    <PaginationPrevious href="#" />
-                  </button>
-                </PaginationItem>
-
-                {Array.from({ length: totalPages }, (_, i) => (
-                  <PaginationItem key={i + 1}>
-                    <button onClick={() => setPage(i + 1)}>
-                      <PaginationLink href="#" isActive={page === i + 1}>
-                        {i + 1}
-                      </PaginationLink>
-                    </button>
-                  </PaginationItem>
-                ))}
-
-                <PaginationItem>
-                  <button onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))} disabled={page === totalPages}>
-                    <PaginationNext href="#" />
-                  </button>
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+            <PaginationWrapper page={page} totalPages={totalPages} setPage={setPage} />
           </div>
         </div>
       )}
