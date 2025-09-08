@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import SuspendUserButton from '@/components/admin/userManagement/SuspendUser';
 import UnSuspendUserButton from '@/components/admin/userManagement/UnSuspendUser';
+import ManipulateUserBalance from './ManipulateUserBalance';
 
 type UserTransaction = {
   id: number;
@@ -154,6 +155,7 @@ const UserDetailPage = async ({
       </div>
       {user.isSuspended}
       <div className='mt-2'>
+        <ManipulateUserBalance amount={3264} email={user.email} />
       {user.isSuspended ? <UnSuspendUserButton userId={id}/> : <SuspendUserButton userId={id}/>}
       </div>
     </div>

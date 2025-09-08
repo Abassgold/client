@@ -31,7 +31,7 @@ const ChooseDepositMethod = () => {
             </div>
           </button>
 
-          {/* <button
+          <button
             onClick={() => handleSelect('korapay')}
             className="w-full border border-gray-300 rounded-lg p-4 hover:border-teal-500 transition cursor-pointer"
           >
@@ -42,9 +42,9 @@ const ChooseDepositMethod = () => {
                 className="h-10 sm:h-12 md:h-14  w-auto object-contain"
               />
             </div>
-          </button> */}
+          </button>
 
-          {/* <button
+          <button
             onClick={() => handleSelect('crypto')}
             className="w-full border border-gray-300 rounded-lg p-4 hover:border-teal-500 transition cursor-pointer"
           >
@@ -55,7 +55,7 @@ const ChooseDepositMethod = () => {
                 className="h-10 sm:h-12 md:h-14  w-auto object-contain"
               />
             </div>
-          </button> */}
+          </button>
         </div>
       </div>
     </div>
