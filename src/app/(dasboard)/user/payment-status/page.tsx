@@ -16,7 +16,7 @@ const status = searchParams.get("status");
       // Simulate an API call to verify payment status
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/wallet/kora/verify-payment-status?reference=${reference}`);
       const data = await res.json();
-      console.log(status, reference);
+      console.log(status, reference, data);
       if (status === "success") {
         toast.success(`Payment successful! Ref: ${reference}`);
       } else if (status === "failed") {
