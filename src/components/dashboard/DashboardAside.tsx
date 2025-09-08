@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link";
-import { Home,   File, Settings, LogOut, Barcode, User,  PhoneCall, Tv, Calendar, Banknote } from "lucide-react";
+import { Home, Bitcoin,  File, Settings, LogOut, Barcode, FileDigit, User, History, PhoneCall } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 // import Image from "next/image";
 import { useAppSelector } from "@/redux/hooks";
@@ -8,15 +8,12 @@ import { deleteToken } from "@/lib/Token";
 
 export const dasbhboardNavitems = [
   { title: "Overview", url: "/user/dashboard", icon: Home },
-  { title: "Utility Payments", url: "/utilities", icon: Banknote },
-  { title: "Recharge & Subscriptions", url: "/recharge", icon: Calendar },
+  // { title: "Utility Payments", url: "/utilities", icon: Banknote },
+  // { title: "Recharge & Subscriptions", url: "/recharge", icon: Calendar },
   // { title: "Gift Cards", url: "/giftcards", icon: Gift },
-  // { title: "Sell Crypto", url: "/user/crypto", icon: Bitcoin },
-  // { title: "Virtual Numbers", url: "/user/virtual-number", icon: FileDigit },
-
-  // { title: "Sms History", url: "/user/sms-history", icon: History },
-  { title: "Tv Subscription", url: "/user/tv-subscription", icon: Tv },
-
+  { title: "Sell Crypto", url: "/user/crypto", icon: Bitcoin },
+  { title: "Virtual Numbers", url: "/user/virtual-number", icon: FileDigit },
+  { title: "Sms History", url: "/user/sms-history", icon: History },
   // { title: "Esim", url: "/esim", icon: FileDigit },
   { title: "Transactions", url: "/user/transactions", icon: Barcode },
   // { title: "Referral", url: "/referral", icon: Hash },

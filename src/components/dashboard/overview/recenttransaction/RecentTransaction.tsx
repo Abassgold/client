@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-// import TransactionCard from './TransactionCard';
+import TransactionCard from './TransactionCard';
 import Link from 'next/link';
 import { Eye, EyeOff } from 'lucide-react';
 import axios from 'axios';
@@ -98,7 +98,7 @@ const RecentTransaction = () => {
           </div>
         </div>
 
-        {/* <div>
+        <div>
           <h4 className="text-lg font-[600] mb-2 text-gray-800">Recent Wallet Transactions</h4>
           <div className="space-y-2">
             {transactions.length === 0 ? (
@@ -125,7 +125,7 @@ const RecentTransaction = () => {
               </Link>
             )}
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );
