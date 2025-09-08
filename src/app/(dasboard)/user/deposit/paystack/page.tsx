@@ -23,7 +23,7 @@ const DepositPage = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!amount || amount < 1000) {
+    if (!amount || amount < 100) {
       setError('Minimum deposit amount is ₦1,000');
       return;
     }
@@ -134,11 +134,11 @@ const DepositPage = () => {
       </h1>
       <p className="mb-1">Enter the amount you want to deposit</p>
       <p className="text-teal-800 font-bold text-sm">
-        Minimum: ₦1,000.00
+        Minimum: ₦100.00
       </p>
 
       <div className="flex flex-wrap gap-2 mt-4 mb-6">
-        {[1000, 2000, 5000, 10000, 20000].map((amt) => (
+        {[100, 200, 500, 1000, 2000].map((amt) => (
           <div
             key={amt}
             onClick={() => quickSelect(amt)}
