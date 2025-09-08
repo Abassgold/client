@@ -5,17 +5,16 @@ import { useRouter } from 'next/navigation'
 const ChooseDepositMethod = () => {
   const router = useRouter()
 
-  const handleSelect = (method: 'paystack' | 'crypto') => {
-    router.push(method === 'paystack' ? '/user/deposit/paystack' : '/user/deposit/crypto')
+  const handleSelect = (method: 'paystack' | 'crypto' | 'korapay') => {
+    router.push(`/user/deposit/${method}`)
   }
-
   return (
     <div className="flex items-center justify-center bg-gray-100 px-4">
-      <div className="bg-white shadow-lg rounded-lg p-6 sm:p-10 max-w-md w-full text-center">
+      <div className="bg-white shadow-lg rounded-lg p-6 sm:p-10 max-w-lg w-full text-center">
         <h1 className="text-xl sm:text-2xl font-semibold md:font-bold text-gray-700 mb-6">
           Choose a Deposit Method
         </h1>
-         
+
         <div className="flex flex-col sm:flex-row gap-4">
           {/* Paystack Button */}
           <button
@@ -32,8 +31,20 @@ const ChooseDepositMethod = () => {
             </div>
           </button>
 
-          {/* USDT Button */}
-          <button
+          {/* <button
+            onClick={() => handleSelect('korapay')}
+            className="w-full border border-gray-300 rounded-lg p-4 hover:border-teal-500 transition cursor-pointer"
+          >
+            <div className="flex justify-center">
+              <img
+                src="/Korapay-Logo.svg"
+                alt="USDT"
+                className="h-10 sm:h-12 md:h-14  w-auto object-contain"
+              />
+            </div>
+          </button> */}
+
+          {/* <button
             onClick={() => handleSelect('crypto')}
             className="w-full border border-gray-300 rounded-lg p-4 hover:border-teal-500 transition cursor-pointer"
           >
@@ -44,7 +55,7 @@ const ChooseDepositMethod = () => {
                 className="h-10 sm:h-12 md:h-14  w-auto object-contain"
               />
             </div>
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
