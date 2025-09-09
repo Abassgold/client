@@ -57,7 +57,6 @@ const DepositPage = () => {
 
         } catch (error: unknown) {
             if (error instanceof Error) {
-                console.error('Error during payment:', error.message);
                 setError('An error occurred while processing your payment. Please try again.');
                 return;
             }
@@ -126,7 +125,6 @@ const DepositPage = () => {
                     </div>
                 ))}
             </div>
-
             <form onSubmit={handleSubmit}>
                 <div className="mb-2 relative">
                     <input
@@ -138,9 +136,7 @@ const DepositPage = () => {
                     />
                     <span className="absolute left-2 top-[11px] text-gray-500">₦</span>
                 </div>
-
                 {error && <p className="text-red-600 mb-2 text-xs">{error}</p>}
-
                 <button
                     type="submit"
                     disabled={loading}
