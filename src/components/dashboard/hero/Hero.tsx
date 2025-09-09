@@ -4,7 +4,7 @@ import './hero.css';
 
 const Hero = () => {
   return (
-      <div className="relative bg-white overflow-hidden">
+    <div className="relative bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
           <svg
@@ -25,13 +25,10 @@ const Hero = () => {
                 </span>
               </h1>
               <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                {/* FloZap provides seamless access to virtual phone numbers, USDT
-                exchange services, and eSIM solutions. Connect globally with
-                ease and security. */}
-                FloZap provides seamless access to Airtime & Data, Tv subscriptions, Exam checker and the likes. Connect globally with
-                ease and security.
+                FloZap makes it easy to buy airtime & data, pay for TV subscriptions, check exam results,
+                and handle your utility bills — while also giving you seamless access to crypto exchange,
+                gift card trading, virtual numbers, and eSIM solutions for global connectivity.
               </p>
-
               <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                 <div className="rounded-md shadow">
                   <Link
