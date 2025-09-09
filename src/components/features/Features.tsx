@@ -20,27 +20,27 @@ const Features = () => {
       description: "Quickly check exam results and academic performance.",
       icon: "📶",
     }, 
-    // {
-    //   title: "eSIM Services",
-    //   description: "Buy and manage eSIMs for instant data and connectivity worldwide.",
-    //   icon: "📶",
-    // },  
+    {
+      title: "eSIM Services",
+      description: "Buy and manage eSIMs for instant data and connectivity worldwide.",
+      icon: "📶",
+    },  
      
-    // {
-    //   title: "Crypto Trading",
-    //   description: "Easily sell your USDT with competitive rates and receive payments through multiple local and international methods.",
-    //   icon: "₿",
-    // },
-    // {
-    //   title: "Virtual Number",
-    //   description: "Get instant access to phone numbers from over 100 countries. Perfect for verifications, business contacts, or maintaining privacy.",
-    //   icon: "📞",
-    // },
-    // {
-    //   title: "Gift Cards",
-    //   description: "Exchange your gift cards for cash quickly and securely.",
-    //   icon: "🎁",
-    // },
+    {
+      title: "Crypto Trading",
+      description: "Easily sell your USDT with competitive rates and receive payments through multiple local and international methods.",
+      icon: "₿",
+    },
+    {
+      title: "Virtual Number",
+      description: "Get instant access to phone numbers from over 100 countries. Perfect for verifications, business contacts, or maintaining privacy.",
+      icon: "📞",
+    },
+    {
+      title: "Gift Cards",
+      description: "Exchange your gift cards for cash quickly and securely.",
+      icon: "🎁",
+    },
   ];
 
   return (
