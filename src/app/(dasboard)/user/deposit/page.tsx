@@ -41,8 +41,8 @@ const ChooseDepositMethod = () => {
                 alt="USDT"
                 className="h-10 sm:h-12 md:h-14  w-auto object-contain"
               />
-            </div>
-          </button> */}
+            </div> */}
+          </button>
 
           <button
             onClick={() => handleSelect('crypto')}

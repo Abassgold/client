@@ -147,9 +147,10 @@ const VirtualNumberServices = () => {
     }
   };
   const markAsDone = async (activation?: string) => {
-    const activationId = activation ?? numberInfo?.activationId;
+    const activationId = numberInfo?.activationId ?? activation;
     setLoading(false);
     await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/markAsDone`, { activationId });
+    clearInfo();
   }
 
 
@@ -172,6 +173,8 @@ const VirtualNumberServices = () => {
     else toast.error(data.msg)
     clearInfo()
   }
+
+
   const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const updateOtp = (code: string | null) => {

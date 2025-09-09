@@ -13,10 +13,9 @@ const Footer = () => {
           <div>
             <h3 className="text-2xl font-bold mb-4 text-white">FloZap</h3>
             <p className="text-gray-300 text-sm leading-relaxed">
-              Your trusted platform to buy airtime and data, pay for TV and utility bills,
-              check exam results — and also sell crypto, trade gift cards, get virtual numbers,
-              and activate eSIMs with ease.
+              Your trusted platform for airtime, data, bill payments, and exam checks — plus crypto exchange, gift card trading, virtual numbers, and eSIM activation.
             </p>
+
           </div>
 
           {/* Quick Links */}
