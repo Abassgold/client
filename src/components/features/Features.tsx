@@ -4,7 +4,7 @@ import FeturesCard from "./FeturesCard";
 
 const Features = () => {
   const features = [
-    
+
     {
       title: "Utility Payments",
       description: "Pay electricity, water, and other bills in just a few clicks.",
@@ -17,15 +17,15 @@ const Features = () => {
     },
     {
       title: "Check Results",
-      description: "Quickly check exam results and academic performance.",
-      icon: "📶",
-    }, 
+      description: "Easily access and verify your exam results anytime.",
+      icon: "📝",
+    },
     {
       title: "eSIM Services",
       description: "Buy and manage eSIMs for instant data and connectivity worldwide.",
       icon: "📶",
-    },  
-     
+    },
+
     {
       title: "Crypto Trading",
       description: "Easily sell your USDT with competitive rates and receive payments through multiple local and international methods.",
