@@ -129,7 +129,7 @@ const SMSPage = () => {
                         <table className="min-w-full bg-white rounded-lg shadow-lg overflow-hidden">
                             <thead className="bg-teal-800">
                                 <tr>
-                                    {['ID','Country', 'Number', 'Code', 'Price', 'Status', 'balB4', 'balAF', 'Date', 'Action'].map((header) => (
+                                    {['ID','Country', 'Number', 'Code', 'Price', 'Status', 'balB4', 'balAF', 'Date'].map((header) => (
                                         <th key={header} className="px-4 py-3 text-left text-white uppercase tracking-wider">
                                             {header}
                                         </th>
@@ -166,13 +166,6 @@ const SMSPage = () => {
                                         <td className="px-4 py-2  whitespace-nowrap">₦{tx.balB4}</td>
                                         <td className="px-4 py-2  whitespace-nowrap">₦{tx.balAF}</td>
                                         <td className="px-4 py-2  whitespace-nowrap">{new Date(tx.updatedAt).toLocaleString()}</td>
-                                        <td className="px-4  whitespace-nowrap">
-                                            <div className="inline-flex justify-center items-center ">
-                                                {(tx.status === 'pending' || tx.status === 'cancelled') && (
-                                                    <ManipulateUserBalance email={user?.email || ''} amount={tx.cost}/>
-                                                )}
-                                            </div>
-                                        </td>
                                     </tr>
                                 ))}
                             </tbody>

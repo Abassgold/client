@@ -28,11 +28,12 @@ interface Props {
   amount: number
 }
 
-const ManipulateUserBalance = ({ email, amount }: Props) => {
+const ManipulateUserBalance = ({ email}: Props) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [type, setType] = useState('');
   const [remarks, setRemarks] = useState('');
+  const [amount, setAmount] = useState(0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -104,6 +105,21 @@ const ManipulateUserBalance = ({ email, amount }: Props) => {
               <option value="credit">Credit</option>
               <option value="debit">Debit</option>
             </select>
+            <div>
+              <label htmlFor="amount" className="block mb-1">
+                Amount
+              </label>
+              <input
+                type="number"
+                id="amount"
+                name="amount"
+                placeholder="Enter amount..."
+                required
+                value={amount}
+                onChange={(e) => setAmount(Number(e.target.value))}
+                className="w-full p-2 rounded-md bg-zinc-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              />
+            </div>
             <div>
               <label htmlFor="remarks" className="block mb-1">
                 Remarks
