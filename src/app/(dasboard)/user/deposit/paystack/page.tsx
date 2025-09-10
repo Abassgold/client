@@ -8,6 +8,7 @@ import { redirect, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { getToken } from '@/lib/Token';
 import { toast } from 'sonner';
+import PaymentSupportNotice from '@/lib/PaymentSupportNotice/PaymentSupportNotice';
 interface paymentType {
   ok: boolean;
   msg: string;
@@ -129,6 +130,7 @@ const DepositPage = () => {
 
   return (
     <section className="mx-auto max-w-3xl p-4 bg-white rounded-lg shadow-md mt-10">
+      <PaymentSupportNotice />
       <h1 className="text-xl font-bold text-gray-700 mb-4">
         Deposit with Paystack
       </h1>
