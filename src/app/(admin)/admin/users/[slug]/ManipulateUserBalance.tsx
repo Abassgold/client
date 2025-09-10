@@ -127,7 +127,7 @@ const ManipulateUserBalance = ({ email}: Props) => {
               <textarea
                 id="remarks"
                 name="remarks"
-                placeholder="Enter your remarks..."
+                placeholder="Wallet debited/credited by FloZap for..."
                 required
                 value={remarks}
                 onChange={(e) => setRemarks(e.target.value)}

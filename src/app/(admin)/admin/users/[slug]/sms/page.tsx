@@ -5,7 +5,6 @@ import axios, { AxiosError } from 'axios';
 import { getToken } from '@/lib/Token';
 import { useParams, useRouter } from 'next/navigation';
 import { toast, Toaster } from 'sonner';
-import ManipulateUserBalance from '../ManipulateUserBalance';
 import PaginationWrapper from '@/components/pagination/PaginationWrapper';
 
 type SMS = {
