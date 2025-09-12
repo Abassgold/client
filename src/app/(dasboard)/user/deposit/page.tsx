@@ -1,11 +1,10 @@
 'use client'
-import React from 'react'
 import { useRouter } from 'next/navigation'
 
 const ChooseDepositMethod = () => {
   const router = useRouter()
 
-  const handleSelect = (method: 'paystack' | 'crypto' | 'korapay') => {
+  const handleSelect = (method: 'paystack' | 'crypto' | 'korapay' | 'account-details') => {
     router.push(`/user/deposit/${method}`)
   }
   return (
@@ -17,7 +16,7 @@ const ChooseDepositMethod = () => {
 
         <div className="flex flex-col sm:flex-row gap-4">
           {/* Paystack Button */}
-          <button
+          {/* <button
             onClick={() => handleSelect('paystack')}
             className=" cursor-pointer w-full border border-gray-300 rounded-lg p-4 hover:border-teal-500 transition "
           >
@@ -29,20 +28,21 @@ const ChooseDepositMethod = () => {
                 className="h-10 sm:h-12 md:h-14 w-auto object-contain"
               />
             </div>
-          </button>
+          </button> */}
 
-           {/* <button
-            onClick={() => handleSelect('korapay')}
+
+           <button
+            onClick={() => handleSelect('account-details')}
             className="w-full border border-gray-300 rounded-lg p-4 hover:border-teal-500 transition cursor-pointer"
           >
             <div className="flex justify-center">
               <img
-                src="/Korapay-Logo.svg"
-                alt="USDT"
+                src="/paymentPoint.png"
+                alt="Account Details"
                 className="h-10 sm:h-12 md:h-14  w-auto object-contain"
               />
             </div> 
-          </button> */}
+          </button>
 
           <button
             onClick={() => handleSelect('crypto')}
