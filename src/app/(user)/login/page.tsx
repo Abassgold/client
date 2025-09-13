@@ -48,15 +48,16 @@ const Login = () => {
                     body: JSON.stringify(values),
                 })
                 const data: findUser = await response.json();
+                if (data.ok && data.msg === 'not-verified') {
+                    router.push('/verification-sent')
+                    return;
+                }
+
                 if (data?.ok) {
                     toast.success(data.msg);
                     dispatch(addUser(data));
                     setToken(data.token || '');
                     router.push('/user/dashboard');
-                    return;
-                }
-                if (!data.ok && data.msg === 'not-verified') {
-                    router.push('/verification-sent')
                     return;
                 }
                 toast.error(data?.msg || "An error occurred");
