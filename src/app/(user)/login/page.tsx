@@ -56,7 +56,7 @@ const Login = () => {
                     return;
                 }
                 if (!data.ok && data.msg === 'not-verified') {
-                    router.push('/verification-sent')
+                    router.push('/user/verification-sent')
                     return;
                 }
                 toast.error(data?.msg || "An error occurred");
