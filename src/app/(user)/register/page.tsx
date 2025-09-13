@@ -46,7 +46,7 @@ const Register = () => {
                 const data: findUser = await response.json();
                 if (data?.ok) {
                     toast.success(data.msg);
-                    router.push('/user/verification-sent');
+                    router.push('/verification-sent');
                     return;
                 }
                 toast.error(data?.msg || "An error occurred");
