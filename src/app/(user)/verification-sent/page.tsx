@@ -1,36 +1,38 @@
-import Link from 'next/link';
-import React from 'react';
-import VerificationButton from './VerificationButton';
-import { redirect } from 'next/navigation';
-import { headers } from 'next/headers';
-import { cookies } from 'next/headers';
-import Image from 'next/image';
+import Link from "next/link";
+import React from "react";
+import VerificationButton from "./VerificationButton";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import Image from "next/image";
 
-interface sentType {
+interface SentType {
   ok: boolean;
   msg?: string;
   user?: string;
 }
-const Verification = async () => {
-  const referer = (await headers()).get('referer');
-  const token = (await cookies()).get('accessToken')?.value
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/verification`, {
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      cache: 'no-store',
-    }
-  });
 
-  const data: sentType = await res.json();
-  const mail = data?.user || "your email";
-  if (res.status === 401 || !data?.ok) {
-    if (referer) {
-      return redirect(referer)
+const Verification = async () => {
+  const token = (await cookies()).get("accessToken")?.value;
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/verification`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
     }
-    return redirect('/')
+  );
+
+  const data: SentType = await res.json();
+  const mail = data?.user || "your email";
+
+  if (res.status === 401 || !data?.ok) {
+    return redirect("/login");
   }
+
   return (
     <section className="p-4 h-screen text-center bg-zinc-100">
       <div className="max-w-xl mx-auto h-full flex items-center">
@@ -40,22 +42,27 @@ const Verification = async () => {
             alt="floZap-logo"
             width={250}
             height={100}
-            className="mx-auto bg-none md:hidden block"
+            className="mx-auto md:hidden block"
           />
           <Image
             src="/myflozap_logo.png"
             alt="floZap-logo"
             width={350}
             height={100}
-            className="mx-auto bg-none hidden md:block"
+            className="mx-auto hidden md:block"
           />
-          <h1 className="font-semibold text-xl md:text-2xl text-gray-700">
+
+          <h1 className="font-semibold text-xl md:text-2xl text-gray-700 mt-6">
             Please verify your email
           </h1>
-          <p className="mt-4 mb-6 font-[500] text-gray-600">
-            We&apos;ve sent an email verification link to <span className="font-semibold">
-              <strong className='text-gray-800 italic'>{mail}</strong>
-            </span>. Kindly check your inbox or spam folder and click the link to activate your account.
+
+          <p className="mt-4 mb-6 font-medium text-gray-600">
+            We&apos;ve sent an email verification link to{" "}
+            <span className="font-semibold">
+              <strong className="text-gray-800 italic">{mail}</strong>
+            </span>
+            . Kindly check your inbox or spam folder and click the link to
+            activate your account.
           </p>
 
           <div>
@@ -67,9 +74,7 @@ const Verification = async () => {
             </Link>
             <p className="text-sm mt-4 text-gray-500">
               Didn&apos;t get the email?{" "}
-              <VerificationButton>
-                resend
-              </VerificationButton>
+              <VerificationButton>resend</VerificationButton>
             </p>
           </div>
         </div>
