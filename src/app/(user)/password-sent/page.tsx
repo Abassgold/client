@@ -2,7 +2,7 @@ import { MoveLeft } from 'lucide-react'
 import { cookies, headers } from 'next/headers';
 import Link from 'next/link'
 import React from 'react'
-import { sentType } from '../verified/page';
+import { SentType } from '../verified/page';
 import { redirect } from 'next/navigation';
 import Image from 'next/image';
 
@@ -18,7 +18,7 @@ const PasswordSent = async () => {
     }
   });
 
-  const data: sentType = await res.json();
+  const data: SentType = await res.json();
   if (res.status === 401 || !data?.ok) {
     if (referer) {
       return redirect(referer)
