@@ -25,4 +25,5 @@ export type Users =     {
       telephone: string;
       createdAt:Date;
       role: string,
+      isVerified?: boolean;
     }
