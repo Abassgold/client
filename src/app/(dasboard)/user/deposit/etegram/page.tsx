@@ -24,7 +24,7 @@ const DepositPage = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (!amount || amount < 1000) {
+        if (!amount || amount < 100) {
             setError('Minimum deposit amount is ₦1,000');
             return;
         }
