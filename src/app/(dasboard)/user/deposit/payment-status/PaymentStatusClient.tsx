@@ -7,7 +7,6 @@ import { toast } from "sonner";
 interface PaymentStatusResponse {
   status: string;
 }
-
 export default function PaymentStatusClient() {
   const searchParams = useSearchParams();
   const router = useRouter();
