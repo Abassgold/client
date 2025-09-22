@@ -47,7 +47,6 @@ export default function PaymentStatusClient() {
   return (
     <div className="flex h-screen items-center justify-center">
       <p className="text-sm md:text-xl font-semibold">
-        the access code is {accessCode}...
         Checking payment status...
       </p>
     </div>
