@@ -24,6 +24,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "etegram-pay": "^1.1.5",
     "formik": "^2.4.6",
     "html2pdf.js": "^0.10.3",
     "lucide-react": "^0.510.0",

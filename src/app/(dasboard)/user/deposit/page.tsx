@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 const ChooseDepositMethod = () => {
   const router = useRouter()
 
-  const handleSelect = (method: 'paystack' | 'crypto' | 'korapay' | 'account-details') => {
+  const handleSelect = (method: 'etegram' | 'crypto' | 'korapay' | 'account-details') => {
     router.push(`/user/deposit/${method}`)
   }
   return (
@@ -15,16 +15,16 @@ const ChooseDepositMethod = () => {
         </h1>
 
         <div className="flex flex-col sm:flex-row gap-4">
-          {/* Paystack Button */}
+          {/* Etegram Button */}
           {/* <button
-            onClick={() => handleSelect('paystack')}
+            onClick={() => handleSelect('etegram')}
             className=" cursor-pointer w-full border border-gray-300 rounded-lg p-4 hover:border-teal-500 transition "
           >
 
             <div className="flex justify-center">
               <img
-                src="/paystack_image.png"
-                alt="PayStack"
+                src="/etegram_logo.png"
+                alt="Etegram"
                 className="h-10 sm:h-12 md:h-14 w-auto object-contain"
               />
             </div>

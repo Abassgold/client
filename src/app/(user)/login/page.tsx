@@ -52,7 +52,6 @@ const Login = () => {
                     router.push('/verification-sent')
                     return;
                 }
-
                 if (data?.ok) {
                     toast.success(data.msg);
                     dispatch(addUser(data));
