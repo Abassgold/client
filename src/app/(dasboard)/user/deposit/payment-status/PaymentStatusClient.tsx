@@ -30,8 +30,9 @@ export default function PaymentStatusClient() {
         } else if (data.status === "pending") {
           toast("⚠️ Payment pending...");
           router.push("/user/deposit/etegram");
-        } else {
-          toast("⚠️ Payment status unknown");
+        }
+         else {
+          toast("⚠️ Payment cancelled ❌, please try again.");
           router.push("/user/deposit/etegram");
         }
       } catch (error) {
