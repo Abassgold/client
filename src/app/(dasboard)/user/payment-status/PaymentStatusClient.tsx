@@ -11,8 +11,7 @@ interface PaymentStatusResponse {
 export default function PaymentStatusClient() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const accessCode = searchParams.get("accessCode") ?? "";
-
+  const accessCode = searchParams.get("access-code") ?? "";
   useEffect(() => {
     if (!accessCode) return;
 
@@ -22,7 +21,7 @@ export default function PaymentStatusClient() {
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/wallet/etegram/verify-payment-status?accessCode=${accessCode}`
         );
         const data: PaymentStatusResponse = await res.json();
-
+        
         if (data.status === "success") {
           toast.success("Payment successful!");
           router.push("/user/dashboard");
