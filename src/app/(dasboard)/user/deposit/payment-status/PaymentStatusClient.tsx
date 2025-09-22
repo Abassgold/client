@@ -11,6 +11,8 @@ export default function PaymentStatusClient() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const accessCode = searchParams.get("access-code") ?? "";
+  const getData = searchParams.entries();
+  console.log(Object.fromEntries(getData));
   useEffect(() => {
     if (!accessCode) return;
 
@@ -20,21 +22,21 @@ export default function PaymentStatusClient() {
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/wallet/etegram/verify-payment-status?accessCode=${accessCode}`
         );
         const data: PaymentStatusResponse = await res.json();
-        
-        if (data.status === "success") {
-          toast.success("Payment successful!");
-          router.push("/user/dashboard");
-        } else if (data.status === "failed") {
-          toast.error("Payment failed ❌, please try again.");
-          router.push("/user/deposit/etegram");
-        } else if (data.status === "pending") {
-          toast("⚠️ Payment pending...");
-          router.push("/user/deposit/etegram");
-        }
-         else {
-          toast("⚠️ Payment cancelled ❌, please try again.");
-          router.push("/user/deposit/etegram");
-        }
+        console.log("Payment verification response:", data);
+        // if (data.status === "success") {
+        //   toast.success("Payment successful!");
+        //   router.push("/user/dashboard");
+        // } else if (data.status === "failed") {
+        //   toast.error("Payment failed ❌, please try again.");
+        //   router.push("/user/deposit/etegram");
+        // } else if (data.status === "pending") {
+        //   toast("⚠️ Payment pending...");
+        //   router.push("/user/deposit/etegram");
+        // }
+        //  else {
+        //   toast("⚠️ Payment cancelled ❌, please try again.");
+        //   router.push("/user/deposit/etegram");
+        // }
       } catch (error) {
         console.error("Payment verification error:", error);
         toast.error("An error occurred while verifying payment.");
