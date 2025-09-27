@@ -1,5 +1,7 @@
 "use client";
 
+import { PushNotificationManagerPage } from "@/components/PushNotification";
+
 // import { useEffect, useState } from "react";
 // import { Card, CardContent } from "@/components/ui/card";
 // import { Button } from "@/components/ui/button";
@@ -80,6 +82,7 @@ const EsimPage = () => {
   return (
     <div>
       coming soon...
+            <PushNotificationManagerPage />
     </div>
     // <div className="max-w-5xl mx-auto p-6">
     //   <h1 className="text-2xl font-bold mb-6">eSIM Marketplace</h1>

@@ -2,9 +2,8 @@ import ExploreServices from '@/components/dashboard/overview/Exploreservices/Exp
 import OverviewHero from '@/components/dashboard/overview/OverviewHero'
 import Quickactions from '@/components/dashboard/overview/Quickactions'
 import RecentTransaction from '@/components/dashboard/overview/recenttransaction/RecentTransaction'
-import React from 'react'
 
-const Dashboard = () => {
+const Dashboard =async() => {
   return (
     <section className='w-full'>
       <OverviewHero />
