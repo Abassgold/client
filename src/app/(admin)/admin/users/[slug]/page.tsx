@@ -44,7 +44,7 @@ type fetchResponse = {
 const UserDetailPage = async ({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: Promise<{slug: string }>
 }) => {
   const token = (await cookies()).get('accessToken')?.value;
   const id = (await params).slug

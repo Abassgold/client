@@ -213,9 +213,10 @@ const TransactionsPage = () => {
                     </td>
                     <td className="px-2 py-3 flex gap-2">
                       <Link
-                        href={`/user/transactions/${tx._id}`}
+                        href={`/admin/transactions/${tx._id}`}
                         className="text-teal-700 hover:underline"
                       >
+                        
                         <Eye size={16} />
                       </Link>
                     </td>
