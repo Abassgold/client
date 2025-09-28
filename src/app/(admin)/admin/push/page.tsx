@@ -16,6 +16,7 @@ const Page = () => {
       action={async (formData: FormData) => {
         const msg = formData.get('message') as string
         await sendNotification(msg);
+        setMessage('');
       }}
       className="max-w-md mx-auto p-4 border rounded mt-10"
     >
