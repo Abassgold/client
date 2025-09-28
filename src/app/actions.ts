@@ -10,7 +10,7 @@ webpush.setVapidDetails(
   process.env.VAPID_PRIVATE_KEY!
 )
 
-let subscription: webpush.PushSubscription | null = null
+// let subscription: webpush.PushSubscription | null = null
 // {
 //   endpoint: 'https://fcm.googleapis.com/fcm/send/c3c_0oM2P38:APA91bGc_Nn671pebBIjeQ8nQuq5XzbQyhzypFhy4xyLAUaY5gI4UFRweHyop9wCW_4cLuSPjDzzga0x72zJ88YzuoOjAc2n-7-nXQFipOtO0n-_VQ5DTG8ozYUh1LP4KeISrkPt-j8-',
 //   expirationTime: null,
@@ -21,9 +21,7 @@ let subscription: webpush.PushSubscription | null = null
 // }
 
 export async function subscribeUser(sub: webpush.PushSubscription) {
-  const token = (await cookies()).get('accessToken')?.value
-  console.log('Token in action:', token);
-  subscription = sub;
+  // subscription = sub;
   await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/subscription/subscribe`,
   {
     method: 'POST',
@@ -37,25 +35,21 @@ export async function subscribeUser(sub: webpush.PushSubscription) {
 }
 
 export async function unsubscribeUser() {
-  subscription = null
+  // subscription = null
   return { success: true }
 }
 
 export async function sendNotification(message: string) {
-  if (!subscription) {
-    throw new Error('No subscription available')
-  }
-
+  // send-notifications
+  // NEXT_PUBLIC_API_BASE_URL
   try {
-    await webpush.sendNotification(
-      subscription,
-      JSON.stringify({
-        title: 'Test Notification',
-        body: message,
-        icon: '/icon.png',
-        url: 'https://flozap.com/user/dashboard', 
-      })
-    )
+     await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/send-notification`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ message }),
+    })
     return { success: true }
   } catch (error) {
     console.error('Error sending push notification:', error)
