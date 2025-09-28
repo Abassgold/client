@@ -1,6 +1,5 @@
 'use server'
 
-import { cookies } from 'next/headers'
 import webpush from 'web-push'
 
 // Setup VAPID
