@@ -226,7 +226,6 @@ const TransactionsPage = () => {
             </tbody>
           </table>
         </div>
-
         {/* Pagination */}
         <div className="mt-4 flex justify-center">
           <PaginationWrapper page={page} totalPages={totalPages} setPage={setPage} />
