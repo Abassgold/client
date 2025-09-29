@@ -300,8 +300,6 @@ const VirtualNumberServices = () => {
     const savedStartTime = sessionStorage.getItem('pollStartTime');
     const pollingDuration = 5 * 60 * 1000;
     const now = Date.now();
-
-
     const fetchCountries = async () => {
       const res = await fetch(`https://restcountries.com/v3.1/all?fields=name,flags,cca2,cca3`);
       const data: CountryType[] = await res.json();

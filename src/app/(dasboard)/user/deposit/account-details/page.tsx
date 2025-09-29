@@ -78,15 +78,11 @@ export default function AccountDetailsPage() {
             {error && <p className="text-center text-red-600">{error}</p>}
 
             {!loading &&
-              bankAccounts.map((acc, index) => (
+              bankAccounts.slice(0,1).map((acc, index) => (
                 <div
                   key={index}
                   className="mb-4 border border-gray-200 rounded-lg p-3 bg-gray-50 shadow-sm"
                 >
-                  <h3 className="text-sm font-semibold text-teal-700 mb-2">
-                    Account Option {index + 1}
-                  </h3>
-
                   {/* Account Name */}
                   <div className="mb-2 flex items-center justify-between bg-white p-2.5 rounded-lg">
                     <div>
