@@ -449,12 +449,12 @@ const VirtualNumberServices = () => {
 
   return (
     <>
-      <div className="relative text-xs text-justify  bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-1">
+      {/* <div className="relative text-xs text-justify  bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-1">
         <div className="animate-marquee">
           ⚠️ Only USA numbers are available for purchase for now. We&apos;ll let you know when other countries&apos; numbers are available. Kindly join our telegram channel for more updates.
         </div>
 
-      </div>
+      </div> */}
 
 
       <section className='text-gray-800'>
