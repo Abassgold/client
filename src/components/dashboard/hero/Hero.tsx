@@ -25,7 +25,7 @@ const Hero = () => {
                 </span>
               </h1>
               <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                FloZap lets you buy airtime & data, pay bills, check results, and manage TV subscriptions — plus trade crypto, gift cards, and access virtual numbers & eSIMs for global use.
+                FloZap provides seamless access to virtual phone numbers, USDT exchange services, and eSIM solutions. Connect globally with ease and security.
               </p>
 
               <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
