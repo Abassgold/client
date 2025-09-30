@@ -14,6 +14,7 @@ import {
   ClipboardList,
   Landmark,
   LayoutDashboard,
+  Send,
 } from 'lucide-react';
 import { logOutResponse } from '../dashboard/DashboardAside';
 import { deleteToken } from '@/lib/Token';
@@ -44,6 +45,7 @@ export const AdminLayout = () => {
     { name: 'Users', href: '/admin/users', icon: UsersIcon },
     { name: 'Prices', href: '/admin/prices', icon: TagIcon },
     { name: 'Transactions', href: '/admin/transactions', icon: ClipboardList },
+    { name: 'Notifications', href: '/admin/push', icon: Send },
     { name: 'Settings', href: '/admin/settings', icon: SettingsIcon },
   ];
 
