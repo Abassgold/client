@@ -6,7 +6,6 @@ import NavHeader from "@/components/NavComponent";
 import FAQ from "@/components/faq/Faq";
 import Hero1 from "@/components/dashboard/hero/Hero1";
 import Testimonials from "@/components/testimonials/Testimonials";
-
 export default function Home() {
   return (
     <div className="bg-gray-100">

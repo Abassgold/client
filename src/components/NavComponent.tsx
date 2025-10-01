@@ -15,12 +15,17 @@ const NavHeader = () => {
 
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-20 ">
+    <header className="bg-white dark:bg-secondary-900 sticky top-0 z-50 shadow-sm border-b border-secondary-200 dark:border-secondary-800">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Link href="#" className="text-xl font-bold text-teal-800">
-              FloZap
+           <Link href="/" className="flex items-center">
+              <div className="w-10 h-10 bg-teal-900 rounded-md flex items-center justify-center">
+                <span className="text-white font-bold text-lg">F</span>
+              </div>
+              <span className="ml-3 font-bold text-xl text-secondary-900 dark:text-white">
+                FloZap
+              </span>
             </Link>
           </div>
           <nav className="hidden md:flex space-x-10">

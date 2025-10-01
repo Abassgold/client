@@ -1,6 +1,7 @@
 'use client';
 import Link from "next/link";
 import './hero.css';
+import { CheckIcon } from "lucide-react";
 
 const Hero = () => {
   return (
@@ -46,6 +47,32 @@ const Hero = () => {
                   </Link>
                 </div>
               </div>
+              <div className="mt-8 grid grid-cols-2 gap-4">
+              <div className="flex items-center">
+                <CheckIcon size={20} className="text-primary-700 mr-2" />
+                <span className="text-secondary-700 dark:text-secondary-300">
+                  Instant Recharges
+                </span>
+              </div>
+              <div className="flex items-center">
+                <CheckIcon size={20} className="text-primary-700 mr-2" />
+                <span className="text-secondary-700 dark:text-secondary-300">
+                  Secure Payments
+                </span>
+              </div>
+              <div className="flex items-center">
+                <CheckIcon size={20} className="text-primary-700 mr-2" />
+                <span className="text-secondary-700 dark:text-secondary-300">
+                  24/7 Support
+                </span>
+              </div>
+              <div className="flex items-center">
+                <CheckIcon size={20} className="text-primary-700 mr-2" />
+                <span className="text-secondary-700 dark:text-secondary-300">
+                  Best Rates
+                </span>
+              </div>
+            </div>
             </div>
           </main>
         </div>

@@ -1,51 +1,55 @@
 'use client';
 import { motion } from "framer-motion";
 import FeturesCard from "./FeturesCard";
+import { PhoneIcon, WifiIcon, TvIcon, ZapIcon, MessageSquareIcon, GlobeIcon, RefreshCcwIcon, DollarSignIcon } from 'lucide-react';
+
 
 const Features = () => {
-  const features = [
-
-    {
-      title: "Utility Payments",
-      description: "Pay electricity, water, and other bills in just a few clicks.",
-      icon: "💡",
-    },
-    {
-      title: "Recharge & Subscriptions",
-      description: "Top up mobile plans and manage streaming subscriptions effortlessly.",
-      icon: "📱",
-    },
-    {
-      title: "Check Results",
-      description: "Easily access and verify your exam results anytime.",
-      icon: "📝",
-    },
-    {
-      title: "eSIM Services",
-      description: "Buy and manage eSIMs for instant data and connectivity worldwide.",
-      icon: "📶",
-    },
-
-    {
-      title: "Crypto Trading",
-      description: "Easily sell your USDT with competitive rates and receive payments through multiple local and international methods.",
-      icon: "₿",
-    },
-    {
-      title: "Virtual Number",
-      description: "Get instant access to phone numbers from over 100 countries. Perfect for verifications, business contacts, or maintaining privacy.",
-      icon: "📞",
-    },
-    {
-      title: "Gift Cards",
-      description: "Exchange your gift cards for cash quickly and securely.",
-      icon: "🎁",
-    },
-  ];
+ const features = [{
+    icon: <PhoneIcon size={24} className="text-white" />,
+    title: 'Airtime Recharge',
+    description: 'Instantly recharge airtime for all major networks with the best rates and instant delivery.',
+    color: 'bg-blue-600'
+  }, {
+    icon: <WifiIcon size={24} className="text-white" />,
+    title: 'Data Bundles',
+    description: 'Purchase data bundles for all networks at competitive prices with instant activation.',
+    color: 'bg-green-600'
+  }, {
+    icon: <TvIcon size={24} className="text-white" />,
+    title: 'Cable TV',
+    description: 'Pay for your DSTV, GOTV, and Startimes subscriptions quickly and hassle-free.',
+    color: 'bg-purple-600'
+  }, {
+    icon: <ZapIcon size={24} className="text-white" />,
+    title: 'Electricity Bills',
+    description: 'Pay electricity bills for all distribution companies and get your token instantly.',
+    color: 'bg-yellow-600'
+  }, {
+    icon: <RefreshCcwIcon size={24} className="text-white" />,
+    title: 'Airtime to Cash',
+    description: 'Convert your excess airtime to cash at the best rates in the market.',
+    color: 'bg-red-600'
+  }, {
+    icon: <MessageSquareIcon size={24} className="text-white" />,
+    title: 'Bulk SMS',
+    description: 'Send bulk SMS to your customers, employees, or audience with our reliable SMS gateway.',
+    color: 'bg-indigo-600'
+  }, {
+    icon: <GlobeIcon size={24} className="text-white" />,
+    title: 'Virtual Number',
+    description: 'Get a virtual phone number for your business or personal use with our easy-to-use platform.',
+    color: 'bg-pink-600'
+  }, {
+    icon: <DollarSignIcon size={24} className="text-white" />,
+    title: 'USDT Payments',
+    description: 'Make and receive payments in USDT cryptocurrency with low transaction fees.',
+    color: 'bg-teal-600'
+  }];
 
   return (
-    <section id="features" className="py-20 bg-gray-50">
-      <div className="max-w-[70rem] mx-auto px-4">
+    <section id="features" className="py-20 bg-secondary-50 dark:bg-secondary-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -56,7 +60,7 @@ const Features = () => {
           Our Services
         </motion.h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch p-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {features.map((feature, index) => (
             <motion.div
               key={index}
@@ -69,6 +73,7 @@ const Features = () => {
                 title={feature.title}
                 description={feature.description}
                 icon={feature.icon}
+                color={feature.color}
               />
             </motion.div>
           ))}
