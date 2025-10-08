@@ -2,7 +2,7 @@ import UserDashboard from '@/components/pages/Dashboard'
 
 const Dashboard =async() => {
   return (
-    <section className='w-full'>
+    <section>
       <UserDashboard />
     </section>
   )
