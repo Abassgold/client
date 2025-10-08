@@ -57,26 +57,26 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
         return 'bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-400';
     }
   };
-  return <div ref={panelRef} className="absolute right-0 mt-2 w-80 bg-white dark:bg-secondary-900 rounded-lg shadow-lg border border-secondary-200 dark:border-secondary-800 z-50">
-      <div className="flex items-center justify-between p-3 border-b border-secondary-200 dark:border-secondary-800">
-        <h3 className="font-medium text-secondary-900 dark:text-white">
+  return <div ref={panelRef} className="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-900 rounded-lg shadow-lg border border-slate-200 dark:border-slate-800 z-50">
+      <div className="flex items-center justify-between p-3 border-b border-slate-200 dark:border-slate-800">
+        <h3 className="font-medium text-slate-900 dark:text-white">
           Notifications
         </h3>
-        <button onClick={onClose} className="text-secondary-500 hover:text-secondary-900 dark:hover:text-white">
+        <button onClick={onClose} className="text-slate-500 hover:text-slate-900 dark:hover:text-white">
           <XIcon size={16} />
         </button>
       </div>
       <div className="max-h-80 overflow-y-auto">
-        {notifications.map(notification => <div key={notification.id} className={`p-3 border-b border-secondary-200 dark:border-secondary-800 ${notification.read ? 'opacity-70' : ''}`}>
+        {notifications.map(notification => <div key={notification.id} className={`p-3 border-b border-slate-200 dark:border-slate-800 ${notification.read ? 'opacity-70' : ''}`}>
             <div className="flex justify-between">
-              <h4 className="text-sm font-medium text-secondary-900 dark:text-white">
+              <h4 className="text-sm font-medium text-slate-900 dark:text-white">
                 {notification.title}
               </h4>
-              <span className="text-xs text-secondary-500">
+              <span className="text-xs text-slate-500">
                 {notification.time}
               </span>
             </div>
-            <p className="text-xs text-secondary-600 dark:text-secondary-400 mt-1">
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
               {notification.message}
             </p>
             <div className="mt-2">
@@ -86,8 +86,8 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
             </div>
           </div>)}
       </div>
-      <div className="p-2 border-t border-secondary-200 dark:border-secondary-800 text-center">
-        <button className="text-xs text-primary-700 hover:text-primary-800 dark:text-primary-500 dark:hover:text-primary-400 font-medium">
+      <div className="p-2 border-t border-slate-200 dark:border-slate-800 text-center">
+        <button className="text-xs text-teal-700 hover:text-teal-800 dark:text-teal-500 dark:hover:text-teal-400 font-medium">
           View all notifications
         </button>
       </div>

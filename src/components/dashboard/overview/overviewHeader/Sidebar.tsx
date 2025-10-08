@@ -1,10 +1,10 @@
 'use client'
-import { LogOut, User, X } from "lucide-react";
+import {  LogOutIcon, X } from "lucide-react";
 import Link from "next/link";
-import { dasbhboardNavitems, logOutResponse } from "../../DashboardAside";
+import { bottomNavItems, logOutResponse, navItems } from "../../DashboardAside";
 import { usePathname, useRouter } from "next/navigation";
-import { useAppSelector } from "@/redux/hooks";
 import { deleteToken } from "@/lib/Token";
+import NavItem from "@/components/navItems/NavItems";
 
 interface sidebarType {
     isOpen: boolean;
@@ -13,11 +13,9 @@ interface sidebarType {
     setActiveSection: (id: string) => void;
 }
 
-const Sidebar = ({ isOpen, toggleSidebar, setActiveSection }: sidebarType) => {
+const Sidebar = ({ isOpen, toggleSidebar }: sidebarType) => {
     const pathName = usePathname();
-    const user = useAppSelector(state => state.auth.user.user);
     const router = useRouter();
-
     const logOut = async () => {
         try {
             const res = await fetch('/api/logout');
@@ -33,76 +31,56 @@ const Sidebar = ({ isOpen, toggleSidebar, setActiveSection }: sidebarType) => {
     };
 
     return (
-        <aside
-            className={`fixed top-0 left-0 h-screen w-full text-white flex flex-col md:hidden transform ${isOpen ? "translate-x-0" : "-translate-x-full"
-                } md:translate-x-0 transition-transform duration-300 bg-gray-800 z-20`}
-        >
-            {/* Header */}
-            <div className="px-4 py-2 flex justify-between items-center">
-                <h1 className="text-2xl text-white px-2 font-semibold">FloZap</h1>
-                <button
-                    className="md:hidden text-white"
-                    onClick={toggleSidebar}
-                    aria-label="Close sidebar"
-                >
-                    <X className="cursor-pointer" />
-                </button>
-            </div>
+<aside
+  className={`fixed top-0 left-0 bg-[#1a2328] h-screen w-full text-white flex flex-col md:hidden transform 
+    ${isOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 z-20`}
+>
+  {/* Mobile Sidebar Header */}
+  <div className="p-4 flex items-center justify-between border-b border-teal-800">
+    <div className="flex items-center">
+      <div className="w-8 h-8 bg-white text-teal-900 rounded-md flex items-center justify-center font-bold">
+        F
+      </div>
+      <span className="ml-3 font-bold">FloZap</span>
+    </div>
+    <button onClick={toggleSidebar} aria-label="Close sidebar">
+      <X className="cursor-pointer" />
+    </button>
+  </div>
 
-            {/* Main scrollable section */}
-            <div className="flex-1 overflow-y-auto">
-                <nav className="p-4">
-                    <ul className="space-y-2">
-                        {dasbhboardNavitems.map((item) => {
-                            const isActive = pathName.startsWith(item.url);
-                            return (
-                                <li key={item.title}>
-                                    <Link href={item.url}>
-                                        <button
-                                            onClick={() => {
-                                                setActiveSection(item.url);
-                                                if (window.innerWidth < 768) toggleSidebar();
-                                            }}
-                                            className={`cursor-pointer flex items-center gap-3 w-full p-2 rounded text-left ${isActive ? "bg-gray-600" : "hover:bg-gray-700"
-                                                }`}
-                                        >
-                                            <item.icon size={24} />
-                                            {item.title}
-                                        </button>
-                                    </Link>
-                                </li>
-                            );
-                        })}
-                        <button
-                            onClick={logOut}
-                            className="flex items-center mt-4 gap-3 w-full text-left p-2 hover:bg-gray-700 rounded transition"
-                        >
-                            <LogOut size={24} />
-                            Log Out
-                        </button>
-                    </ul>
-                </nav>
-            </div>
+  {/* Mobile Nav */}
+  <div className="flex-1 overflow-y-auto px-3 py-4 "
+  >
+    <nav className="space-y-1">
+      {navItems.map(item => (
+        <NavItem key={item.to} to={item.to} icon={item.icon} label={item.label} active={pathName === item.to} onClick={toggleSidebar} />
+      ))}
+    </nav>
+  </div>
 
-            {/* Fixed bottom actions */}
-            <div className="p-4  border-t border-gray-600 space-y-2">
-                {user && user.role === "admin" && (
-                    <Link href="/admin">
-                        <button
-                            onClick={() => {
-                                if (window.innerWidth < 768) toggleSidebar();
-                            }}
-                            className="flex items-center gap-3 w-full text-left p-2 hover:bg-gray-700 rounded transition"
-                        >
-                            <User size={24} />
-                            Admin
-                        </button>
-                    </Link>
-                )}
-            </div>
-        </aside>
+  {/* Mobile Bottom Nav */}
+  <div className="border-t border-teal-800 dark:border-slate-800 px-3 py-4 ">
+    <nav className="space-y-1">
+      {bottomNavItems.map(item => (
+        <NavItem key={item.to} to={item.to} icon={item.icon} label={item.label} active={pathName === item.to} onClick={toggleSidebar} />
+      ))}
+      <Link
+        href="#"
+        onClick={logOut}
+        className="flex items-center px-4 py-3 mb-1 rounded-lg transition-all 
+        text-[#5e677b] dark:text-[#c4cde1] hover:bg-[#ebeef5] dark:hover:bg-[#3f4552]"
+      >
+        <LogOutIcon size={18} />
+        <span className="ml-3 text-sm font-medium whitespace-nowrap">Logout</span>
+      </Link>
+    </nav>
+  </div>
+</aside>
 
-    );
+    )
+
+
+    
 };
 
 export default Sidebar;

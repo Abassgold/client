@@ -1,9 +1,13 @@
+'use client';
 import React from 'react';
 import { TvIcon } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/Card';
-import { Button } from '../components/ui/Button';
-import { Input } from '../components/ui/Input';
-import { Select } from '../components/ui/Select';
+import { Card } from '../ui/card';
+import { CardContent, CardDescription, CardHeader, CardTitle } from '../ui copy/Card';
+import { Select } from '../ui copy/Select';
+import { Input } from '../ui copy/Input';
+import { Button } from '../ui copy/Button';
+import ComingSoon from '../cominSoon/ComingSoon';
+
 export const CableTV: React.FC = () => {
   const providers = [{
     value: '',
@@ -56,7 +60,8 @@ export const CableTV: React.FC = () => {
     features: ['News', 'Movies', 'Kids', 'Documentaries']
   }];
   return <div>
-      <h1 className="text-2xl font-bold text-secondary-900 dark:text-white mb-6">
+    <ComingSoon/>
+      <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
         Cable TV Subscription
       </h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -77,7 +82,7 @@ export const CableTV: React.FC = () => {
           </Card>
         </div>
         <div className="lg:col-span-2">
-          <h2 className="text-lg font-medium text-secondary-900 dark:text-white mb-4">
+          <h2 className="text-lg font-medium text-slate-900 dark:text-white mb-4">
             Popular Packages
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -88,22 +93,22 @@ export const CableTV: React.FC = () => {
                       <TvIcon size={24} />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-lg font-medium text-secondary-900 dark:text-white mb-1">
+                      <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-1">
                         {pkg.name}
                       </h3>
-                      <p className="text-sm text-secondary-600 dark:text-secondary-400 mb-2">
+                      <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
                         {providers.find(p => p.value === pkg.provider)?.label}
                       </p>
-                      <p className="text-lg font-medium text-primary-700 dark:text-primary-400 mb-3">
+                      <p className="text-lg font-medium text-teal-700 dark:text-teal-400 mb-3">
                         {pkg.price}{' '}
-                        <span className="text-sm text-secondary-500">
+                        <span className="text-sm text-slate-500">
                           / month
                         </span>
                       </p>
                       <div className="mb-4">
-                        <ul className="text-sm text-secondary-600 dark:text-secondary-400">
+                        <ul className="text-sm text-slate-600 dark:text-slate-400">
                           {pkg.features.map((feature, index) => <li key={index} className="flex items-center mb-1">
-                              <span className="w-1 h-1 bg-secondary-400 dark:bg-secondary-600 rounded-full mr-2"></span>
+                              <span className="w-1 h-1 bg-slate-400 dark:bg-slate-600 rounded-full mr-2"></span>
                               {feature}
                             </li>)}
                         </ul>

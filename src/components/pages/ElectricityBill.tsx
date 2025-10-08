@@ -1,9 +1,11 @@
+'use client';
 import React from 'react';
 import { ZapIcon } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/Card';
-import { Button } from '../components/ui/Button';
-import { Input } from '../components/ui/Input';
-import { Select } from '../components/ui/Select';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../ui copy/Card';
+import { Button } from '../ui copy/Button';
+import { Input } from '../ui copy/Input';
+import { Select } from '../ui copy/Select';
+import ComingSoon from '../cominSoon/ComingSoon';
 export const ElectricityBill: React.FC = () => {
   const providers = [{
     value: '',
@@ -35,7 +37,8 @@ export const ElectricityBill: React.FC = () => {
     label: 'Postpaid'
   }];
   return <div>
-      <h1 className="text-2xl font-bold text-secondary-900 dark:text-white mb-6">
+    <ComingSoon/>
+      <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
         Electricity Bill Payment
       </h1>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -51,7 +54,7 @@ export const ElectricityBill: React.FC = () => {
                 <Select label="Meter Type" options={meterTypes} fullWidth required />
                 <Input label="Meter Number" type="text" placeholder="Enter meter number" leftIcon={<ZapIcon size={16} />} fullWidth required />
                 <Input label="Phone Number" type="tel" placeholder="Enter phone number" fullWidth required />
-                <Input label="Amount (₦)" type="number" placeholder="Enter amount" leftIcon={<span className="text-secondary-500">₦</span>} fullWidth required />
+                <Input label="Amount (₦)" type="number" placeholder="Enter amount" leftIcon={<span className="text-slate-500">₦</span>} fullWidth required />
                 <Button fullWidth>Verify Meter</Button>
               </form>
             </CardContent>
@@ -66,12 +69,12 @@ export const ElectricityBill: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="text-center py-12">
-              <div className="w-16 h-16 mx-auto rounded-full bg-secondary-100 dark:bg-secondary-800 flex items-center justify-center text-secondary-500 mb-4">
+              <div className="w-16 h-16 mx-auto rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 mb-4">
                 <ZapIcon size={32} />
               </div>
-              <p className="text-secondary-600 dark:text-secondary-400">
-                Enter your meter details and click "Verify Meter" to see
-                information
+              <p className="text-slate-600 dark:text-slate-400">
+              Enter your meter details and click &quot;Verify Meter&quot; to see information
+
               </p>
             </CardContent>
           </Card>
@@ -80,22 +83,22 @@ export const ElectricityBill: React.FC = () => {
               <CardTitle>Recent Payments</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <div className="divide-y divide-secondary-200 dark:divide-secondary-800">
-                {[1, 2, 3].map(item => <div key={item} className="p-4 hover:bg-secondary-50 dark:hover:bg-secondary-800/50 transition-colors">
+              <div className="divide-y divide-slate-200 dark:divide-slate-800">
+                {[1, 2, 3].map(item => <div key={item} className="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                     <div className="flex items-center">
                       <div className="w-8 h-8 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center text-yellow-700 dark:text-yellow-400 mr-3">
                         <ZapIcon size={16} />
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm font-medium text-secondary-900 dark:text-white">
+                        <p className="text-sm font-medium text-slate-900 dark:text-white">
                           {item === 1 ? 'Ikeja Electric' : item === 2 ? 'Eko Electric' : 'IBEDC'}
                         </p>
-                        <p className="text-xs text-secondary-500">
+                        <p className="text-xs text-slate-500">
                           Meter: {12345678 + item}
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-medium text-secondary-900 dark:text-white">
+                        <p className="text-sm font-medium text-slate-900 dark:text-white">
                           ₦{item * 5},000
                         </p>
                         <p className="text-xs text-green-600 dark:text-green-400">

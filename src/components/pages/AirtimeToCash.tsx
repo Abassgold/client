@@ -1,9 +1,11 @@
+'use client';
 import React from 'react';
 import { RefreshCcwIcon } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/Card';
-import { Button } from '../components/ui/Button';
-import { Input } from '../components/ui/Input';
-import { Select } from '../components/ui/Select';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../ui copy/Card';
+import { Button } from '../ui copy/Button';
+import { Input } from '../ui copy/Input';
+import { Select } from '../ui copy/Select';
+import ComingSoon from '../cominSoon/ComingSoon';
 export const AirtimeToCash: React.FC = () => {
   const networks = [{
     value: '',
@@ -41,6 +43,7 @@ export const AirtimeToCash: React.FC = () => {
     label: 'First Bank'
   }];
   return <div>
+    <ComingSoon/>
       <h1 className="text-2xl font-bold text-secondary-900 dark:text-white mb-6">
         Airtime to Cash
       </h1>

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
 import { HomeIcon, PhoneIcon, WifiIcon, TvIcon, ZapIcon, RefreshCcwIcon, MessageSquareIcon, SettingsIcon, HelpCircleIcon, LogOutIcon, ChevronRightIcon, GlobeIcon, DollarSignIcon } from 'lucide-react';
+import Link from 'next/link';
 interface SidebarProps {
   collapsed: boolean;
 }
@@ -18,7 +18,7 @@ const NavItem: React.FC<NavItemProps> = ({
   collapsed,
   active
 }) => {
-  return <Link to={to} className={`flex items-center px-4 py-3 mb-1 rounded-lg transition-all ${active ? 'bg-primary-700 text-white' : 'text-secondary-700 dark:text-secondary-300 hover:bg-secondary-100 dark:hover:bg-secondary-800'}`}>
+  return <Link href={to} className={`flex items-center px-4 py-3 mb-1 rounded-lg transition-all ${active ? 'bg-teal-700 text-white' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'}`}>
       <div className="flex items-center">
         <span className="w-5 h-5">{icon}</span>
         {!collapsed && <span className="ml-3 text-sm font-medium whitespace-nowrap">
@@ -31,7 +31,6 @@ const NavItem: React.FC<NavItemProps> = ({
 export const Sidebar: React.FC<SidebarProps> = ({
   collapsed
 }) => {
-  const location = useLocation();
   const navItems = [{
     to: '/',
     icon: <HomeIcon size={18} />,
@@ -50,7 +49,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     label: 'Virtual Number'
   }, {
     to: '/esim',
-    icon: <div size={18} />,
+    icon: <DollarSignIcon size={18} />,
     label: 'eSIM'
   }, {
     to: '/usdt',
@@ -86,15 +85,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
     icon: <LogOutIcon size={18} />,
     label: 'Logout'
   }];
-  return <aside className={`bg-white dark:bg-secondary-900 border-r border-secondary-200 dark:border-secondary-800 flex flex-col transition-all duration-300 ${collapsed ? 'w-16' : 'w-64'}`}>
+  return <aside className={`bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col transition-all duration-300 ${collapsed ? 'w-16' : 'w-64'}`}>
       <div className="p-4 flex items-center justify-center">
-        {collapsed ? <div className="w-8 h-8 bg-primary-700 rounded-md flex items-center justify-center">
+        {collapsed ? <div className="w-8 h-8 bg-teal-900 rounded-md flex items-center justify-center">
             <span className="text-white font-bold">F</span>
           </div> : <div className="flex items-center">
-            <div className="w-8 h-8 bg-primary-700 rounded-md flex items-center justify-center">
+            <div className="w-8 h-8 bg-teal-900 rounded-md flex items-center justify-center">
               <span className="text-white font-bold">F</span>
             </div>
-            <span className="ml-3 font-bold text-secondary-900 dark:text-white">
+            <span className="ml-3 font-bold text-slate-900 dark:text-white">
               FloZap
             </span>
           </div>}
@@ -104,7 +103,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {navItems.map(item => <NavItem key={item.to} to={item.to} icon={item.icon} label={item.label} collapsed={collapsed} active={location.pathname === item.to} />)}
         </nav>
       </div>
-      <div className="border-t border-secondary-200 dark:border-secondary-800 px-3 py-4">
+      <div className="border-t border-slate-200 dark:border-slate-800 px-3 py-4">
         <nav className="space-y-1">
           {bottomNavItems.map(item => <NavItem key={item.to} to={item.to} icon={item.icon} label={item.label} collapsed={collapsed} active={location.pathname === item.to} />)}
         </nav>

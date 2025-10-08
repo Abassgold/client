@@ -1,12 +1,14 @@
 'use client';
 
 import axios, { AxiosError } from "axios";
-import { ShoppingCart } from "lucide-react";
+import { GlobeIcon, ShoppingCart } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import PurchaseNumberModal from "./PuchaseNumberModal";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from 'react-toastify'
 import { getToken } from "@/lib/Token";
+import { CardDescription, CardHeader } from "@/components/ui/card";
+import { CardTitle } from "@/components/ui copy/Card";
 
 interface NumberInfo {
   number: string;
@@ -162,8 +164,6 @@ const VirtualNumberServices = () => {
 
 
   const cancelRental = async (activationId: string, provider: string) => {
-    clearPolling()
-    setLoading(false)
     const { data } = await axios.get<rentalCancelType>(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/cancelRental/${activationId}`,
       {
@@ -171,9 +171,14 @@ const VirtualNumberServices = () => {
         params: { provider }
       }
     );
-    if (data.ok) toast.success(data.msg)
-    else toast.error(data.msg)
-    clearInfo()
+    if (data.ok) {
+      clearPolling()
+      setLoading(false)
+      clearInfo();
+      toast.success(data.msg);
+    } else {
+      toast.error(data.msg);
+    }
   }
 
 
@@ -219,7 +224,7 @@ const VirtualNumberServices = () => {
         sessionStorage.removeItem('pollStartTime');
         sessionStorage.removeItem('otp');
         setTimeoutRemaining('00:00');
-        toast.error('Timeout: No response after 10 minutes.');
+        toast.error('Timeout: No response after 5 minutes.');
         return;
       } else {
         updateCountdownDisplay(timeLeft);
@@ -449,15 +454,7 @@ const VirtualNumberServices = () => {
 
   return (
     <>
-      {/* <div className="relative text-xs text-justify  bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-1">
-        <div className="animate-marquee">
-          ⚠️ Only USA numbers are available for purchase for now. We&apos;ll let you know when other countries&apos; numbers are available. Kindly join our telegram channel for more updates.
-        </div>
-
-      </div> */}
-
-
-      <section className='text-gray-800'>
+      <section className='text-gray-800 dark:text-white mb-4'>
 
         {loading && <PurchaseNumberModal
           service={numberInfo?.name}
@@ -469,70 +466,84 @@ const VirtualNumberServices = () => {
           markAsDone={() => markAsDone()}
           canCel={() => cancelRental(numberInfo?.activationId ?? '', numberInfo?.provider ?? '')}
         />}
-
-        <div className='p-2 border border-zinc-200 rounded-md mb-2 bg-white'>
-          <h1 className='py-2'>1. Select country</h1>
-
-          {selectedCountry ? (
-            <div className="flex items-center justify-between p-2 border border-zinc-200 rounded-md">
-              <div className="flex items-center gap-2">
-                <img
-                  src={selectedCountry.flags.png || selectedCountry.flags.svg}
-                  alt={selectedCountry.flags.alt || selectedCountry.name.common}
-                  className="w-6 h-4 object-cover"
-                />
-                <p>{selectedCountry.name.common}</p>
-              </div>
-              <button
-                onClick={() => {
-                  setSelectedCountry(null);
-                  setServices([]);
-                  setSelectedService(null);
-                  setPrice(null);
-                }}
-                className="text-red-500 text-xl font-bold px-2 cursor-pointer"
-              >
-                ×
-              </button>
-            </div>
-          ) : (
-            <>
-              <input
-                value={searchCountries}
-                onChange={(e) => setSearchCountries(e.target.value)}
-                placeholder='Search country'
-                type="text"
-                className='p-2 text-[15px] rounded-md w-full outline-none border border-zinc-200 mb-2'
+        <div className="border border-zinc-200 rounded-md mb-2">
+          <CardHeader className="bg-teal-50 dark:bg-teal-900 rounded-t-md border-b border-teal-100 dark:border-teal-800/30">
+            <CardTitle className="flex items-center mt-2">
+              <GlobeIcon
+                className="mr-2 text-teal-600 dark:text-teal-400"
+                size={20}
               />
-              <div className="max-h-[30rem] overflow-y-auto my-2 border-zinc-200 rounded-md py-2">
-                <ul>
-                  {filteredCountries.map((country, index) => (
-                    <li key={index} className='my-2'>
-                      <label className='flex items-center gap-2 p-2 border border-zinc-200 rounded-md w-full cursor-pointer'>
-                        <input
-                          type="radio"
-                          name="country"
-                          value={country.name.common}
-                          onChange={() => selectCountry(country)}
-                          className="accent-blue-500"
-                        />
-                        <img
-                          src={country.flags.png || country.flags.svg}
-                          alt={country.flags.alt || country.name.common}
-                          className="w-6 h-4 object-cover"
-                        />
-                        <p>{country.name.common}</p>
-                      </label>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </>
-          )}
-        </div>
+              Get a Virtual Number
+            </CardTitle>
+            <CardDescription>
+              Select your preferences to find available numbers
+            </CardDescription>
+          </CardHeader>
+          <div className='p-2'>
 
+            <h1 className='py-2'>1. Select country</h1>
+
+            {selectedCountry ? (
+              <div className="flex items-center justify-between p-2 border border-zinc-200 rounded-md">
+                <div className="flex items-center gap-2">
+                  <img
+                    src={selectedCountry.flags.png || selectedCountry.flags.svg}
+                    alt={selectedCountry.flags.alt || selectedCountry.name.common}
+                    className="w-6 h-4 object-cover"
+                  />
+                  <p>{selectedCountry.name.common}</p>
+                </div>
+                <button
+                  onClick={() => {
+                    setSelectedCountry(null);
+                    setServices([]);
+                    setSelectedService(null);
+                    setPrice(null);
+                  }}
+                  className="text-red-500 text-xl font-bold px-2 cursor-pointer"
+                >
+                  ×
+                </button>
+              </div>
+            ) : (
+              <>
+                <input
+                  value={searchCountries}
+                  onChange={(e) => setSearchCountries(e.target.value)}
+                  placeholder='Search country'
+                  type="text"
+                  className='p-2 text-[15px] rounded-md w-full outline-none border border-zinc-200 mb-2'
+                />
+                <div className="max-h-[30rem] overflow-y-auto my-2 border-zinc-200 rounded-md py-2">
+                  <ul>
+                    {filteredCountries.map((country, index) => (
+                      <li key={index} className='my-2'>
+                        <label className='flex items-center gap-2 p-2 border border-zinc-200 rounded-md w-full cursor-pointer'>
+                          <input
+                            type="radio"
+                            name="country"
+                            value={country.name.common}
+                            onChange={() => selectCountry(country)}
+                            className="accent-blue-500"
+                          />
+                          <img
+                            src={country.flags.png || country.flags.svg}
+                            alt={country.flags.alt || country.name.common}
+                            className="w-6 h-4 object-cover"
+                          />
+                          <p>{country.name.common}</p>
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
         {/* Service Selection */}
-        <div className='p-2 border border-zinc-200 rounded-md bg-white scroll-mt-24'>
+        {/* bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 */}
+        <div className='p-2 border border-zinc-200 rounded-md scroll-mt-24'>
           <h1 className='py-2'>2. Select service</h1>
           <input
             value={searchServices}
@@ -544,7 +555,7 @@ const VirtualNumberServices = () => {
           />
 
           {selectedService ? (
-            <div className='my-4 border border-zinc-200 rounded-md pt-8 pb-4 px-4 bg-gray-50 relative'>
+            <div className='my-4 border border-zinc-200 rounded-md pt-8 pb-4 px-4 relative'>
               <div>
                 {priceLoading ? (
                   <p>Loading prices...</p>

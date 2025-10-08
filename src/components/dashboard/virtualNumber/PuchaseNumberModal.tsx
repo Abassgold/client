@@ -51,24 +51,24 @@ const PurchaseNumberModal = (
 
           <div className="space-y-4 text-sm">
             {/* Service */}
-            <div className="flex justify-between">
-              <span className="text-gray-900">Service:</span>
+            <div className="flex justify-between text-gray-900">
+              <span className="">Service:</span>
               <span className="font-medium">{service}</span>
             </div>
 
             {/* Country */}
-            <div className="flex justify-between">
-              <span className="text-gray-900">Country:</span>
+            <div className="flex justify-between text-gray-900">
+              <span className="">Country:</span>
               <span className="font-medium">{country}</span>
             </div>
 
-            <div className="flex justify-between">
-              <span className="text-gray-900">Time-left:</span>
+            <div className="flex justify-between text-gray-900">
+              <span className="">Time-left:</span>
               <span className="font-medium">{timeout}</span>
             </div>
             {/* Number */}
             <div>
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center text-gray-900">
                 <span className="text-gray-900">Number:</span>
                 <span className="font-medium flex gap-1 items-center">
                   {number}
@@ -84,16 +84,16 @@ const PurchaseNumberModal = (
             </div>
 
             {/* Status */}
-            <div className="flex justify-between">
-              <span className="text-gray-900">Status:</span>
+            <div className="flex justify-between text-gray-900">
+              <span className="">Status:</span>
               <span className="font-medium">{otp ? 'OTP Received' : 'Waiting for OTP...'}</span>
             </div>
 
             {/* OTP */}
             {otp ? (
               <div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-900">OTP:</span>
+                <div className="flex justify-between items-center text-gray-900">
+                  <span className="">OTP:</span>
                   <span className="font-semibold text-green-700 flex items-center gap-1">
                     {otp}
                     <button

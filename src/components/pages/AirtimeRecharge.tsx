@@ -1,9 +1,11 @@
+'use client';
 import React, { useState } from 'react';
-import { PhoneIcon, UserIcon, CreditCardIcon, CheckCircleIcon, XCircleIcon } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../components/ui/Card';
-import { Button } from '../components/ui/Button';
-import { Input } from '../components/ui/Input';
-import { Select } from '../components/ui/Select';
+import { PhoneIcon,  CheckCircleIcon, XCircleIcon } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../ui copy/Card';
+import { Input } from '../ui copy/Input';
+import { Select } from '../ui copy/Select';
+import { Button } from '../ui copy/Button';
+import ComingSoon from '../cominSoon/ComingSoon';
 export const AirtimeRecharge: React.FC = () => {
   const [step, setStep] = useState<'form' | 'confirm' | 'success' | 'error'>('form');
   const [formData, setFormData] = useState({
@@ -70,6 +72,7 @@ export const AirtimeRecharge: React.FC = () => {
   };
   const renderForm = () => <form onSubmit={handleSubmit}>
       <div className="space-y-4">
+        <ComingSoon/>
         <Select label="Network Provider" options={networks} value={formData.network} onChange={value => handleChange('network', value)} fullWidth required />
         <Input label="Phone Number" type="tel" placeholder="Enter phone number" value={formData.phoneNumber} onChange={e => handleChange('phoneNumber', e.target.value)} leftIcon={<PhoneIcon size={16} />} fullWidth required />
         <Input label="Amount (₦)" type="number" placeholder="Enter amount" value={formData.amount} onChange={e => handleChange('amount', e.target.value)} leftIcon={<span className="text-secondary-500">₦</span>} fullWidth required />

@@ -2,6 +2,7 @@
 import { AppStore, makeStore } from './store'
 import { useRef } from 'react'
 import { Provider } from 'react-redux'
+import IsDarkModeWrapper from './IsDarkModeWrapper'
 
 export default function StoreProvider({
   children
@@ -13,6 +14,11 @@ export default function StoreProvider({
     // Create the store instance the first time this renders
     storeRef.current = makeStore()
   }
-
-  return <Provider store={storeRef.current}>{children}</Provider>
+  return (
+    <Provider store={storeRef.current}>
+      <IsDarkModeWrapper>
+        {children}
+      </IsDarkModeWrapper>
+    </Provider>
+  )
 }

@@ -12,20 +12,20 @@ const Footer: React.FC = () => {
             </div>
             <span className="ml-3 font-bold text-xl text-white">FloZap</span>
           </div>
-          <p className="text-secondary-400 mb-6">
+          <p className="text-slate-400 mb-6">
             Your trusted platform for airtime, data, bill payments, and exam checks — plus crypto exchange, gift card trading, virtual numbers, and eSIM activation.
           </p>
           <div className="flex space-x-4">
-            <a href="https://www.facebook.com/profile.php?id=61581521841453" className="text-secondary-400 hover:text-primary-500">
+            <a href="https://www.facebook.com/profile.php?id=61581521841453" className="text-slate-400 hover:text-teal-500">
               <Facebook size={20} />
             </a>
-            <a href="https://x.com/FloZapofficial" className="text-secondary-400 hover:text-primary-500">
+            <a href="https://x.com/FloZapofficial" className="text-slate-400 hover:text-teal-500">
               <Twitter size={20} />
             </a>
-            <a href="https://www.instagram.com/kola.devjs/?utm_source=qr&r=nametag" className="text-secondary-400 hover:text-primary-500">
+            <a href="https://www.instagram.com/kola.devjs/?utm_source=qr&r=nametag" className="text-slate-400 hover:text-teal-500">
               <Instagram size={20} />
             </a>
-            <a href="https://www.tiktok.com/@_flozap_t=ZS-90CAWz9fEo5&_r=1" className="text-secondary-400 hover:text-primary-500">
+            <a href="https://www.tiktok.com/@_flozap_t=ZS-90CAWz9fEo5&_r=1" className="text-slate-400 hover:text-teal-500">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -42,32 +42,32 @@ const Footer: React.FC = () => {
           <h3 className="font-bold text-lg mb-6">Services</h3>
           <ul className="space-y-3">
             <li>
-              <Link href="#features" className="text-secondary-400 hover:text-primary-500">
+              <Link href="#features" className="text-slate-400 hover:text-teal-500">
                 Airtime Recharge
               </Link>
             </li>
             <li>
-              <Link href="#features" className="text-secondary-400 hover:text-primary-500">
+              <Link href="#features" className="text-slate-400 hover:text-teal-500">
                 Data Bundles
               </Link>
             </li>
             <li>
-              <Link href="#features" className="text-secondary-400 hover:text-primary-500">
+              <Link href="#features" className="text-slate-400 hover:text-teal-500">
                 Cable TV
               </Link>
             </li>
             <li>
-              <Link href="#features" className="text-secondary-400 hover:text-primary-500">
+              <Link href="#features" className="text-slate-400 hover:text-teal-500">
                 Electricity Bills
               </Link>
             </li>
             <li>
-              <Link href="#features" className="text-secondary-400 hover:text-primary-500">
+              <Link href="#features" className="text-slate-400 hover:text-teal-500">
                 Bulk SMS
               </Link>
             </li>
             <li>
-              <Link href="#features" className="text-secondary-400 hover:text-primary-500">
+              <Link href="#features" className="text-slate-400 hover:text-teal-500">
                 Virtual Number
               </Link>
             </li>
@@ -77,32 +77,32 @@ const Footer: React.FC = () => {
           <h3 className="font-bold text-lg mb-6">Company</h3>
           <ul className="space-y-3">
             <li>
-              <Link href="#" className="text-secondary-400 hover:text-primary-500">
+              <Link href="#" className="text-slate-400 hover:text-teal-500">
                 About Us
               </Link>
             </li>
             <li>
-              <Link href="#" className="text-secondary-400 hover:text-primary-500">
+              <Link href="#" className="text-slate-400 hover:text-teal-500">
                 Careers
               </Link>
             </li>
             <li>
-              <Link href="#" className="text-secondary-400 hover:text-primary-500">
+              <Link href="#" className="text-slate-400 hover:text-teal-500">
                 Blog
               </Link>
             </li>
             <li>
-              <Link href="#" className="text-secondary-400 hover:text-primary-500">
+              <Link href="#" className="text-slate-400 hover:text-teal-500">
                 Press
               </Link>
             </li>
             <li>
-              <Link href="#" className="text-secondary-400 hover:text-primary-500">
+              <Link href="#" className="text-slate-400 hover:text-teal-500">
                 Partners
               </Link>
             </li>
             <li>
-              <Link href="#" className="text-secondary-400 hover:text-primary-500">
+              <Link href="#" className="text-slate-400 hover:text-teal-500">
                 Legal
               </Link>
             </li>
@@ -112,38 +112,38 @@ const Footer: React.FC = () => {
           <h3 className="font-bold text-lg mb-6">Contact Us</h3>
           <ul className="space-y-4">
             <li className="flex items-start">
-              <MapPin size={18} className="text-primary-500 mr-2 mt-0.5" />
-              <span className="text-secondary-400">
+              <MapPin size={18} className="text-teal-500 mr-2 mt-0.5" />
+              <span className="text-slate-400">
                 123 Innovation Drive, Tech District, Lagos, Nigeria
               </span>
             </li>
             <li className="flex items-center">
-              <Phone size={18} className="text-primary-500 mr-2" />
-              <a href="tel:+2348103875405" className="text-secondary-400 hover:text-primary-500">
+              <Phone size={18} className="text-teal-500 mr-2" />
+              <a href="tel:+2348103875405" className="text-slate-400 hover:text-teal-500">
                 +2348103875405
               </a>
             </li>
             <li className="flex items-center">
-              <Mail size={18} className="text-primary-500 mr-2" />
-              <a href="mailto:flozapofficial@gmail.com" className="text-secondary-400 hover:text-primary-500">
+              <Mail size={18} className="text-teal-500 mr-2" />
+              <a href="mailto:flozapofficial@gmail.com" className="text-slate-400 hover:text-teal-500">
                 flozapofficial@gmail.com
               </a>
             </li>
           </ul>
         </div>
       </div>
-      <div className="border-t border-secondary-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-        <p className="text-secondary-400 text-sm">
+      <div className="border-t border-slate-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p className="text-slate-400 text-sm">
           © {new Date().getFullYear()} FloZap. All rights reserved.
         </p>
         <div className="flex space-x-6 mt-4 md:mt-0">
-          <Link href="#" className="text-secondary-400 hover:text-primary-500 text-sm">
+          <Link href="#" className="text-slate-400 hover:text-teal-500 text-sm">
             Privacy Policy
           </Link>
-          <Link href="#" className="text-secondary-400 hover:text-primary-500 text-sm">
+          <Link href="#" className="text-slate-400 hover:text-teal-500 text-sm">
             Terms of Service
           </Link>
-          <Link href="#" className="text-secondary-400 hover:text-primary-500 text-sm">
+          <Link href="#" className="text-slate-400 hover:text-teal-500 text-sm">
             Cookie Policy
           </Link>
         </div>

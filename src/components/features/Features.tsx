@@ -48,7 +48,7 @@ const Features = () => {
   }];
 
   return (
-    <section id="features" className="py-20 bg-secondary-50 dark:bg-secondary-900">
+    <section id="features" className="py-20 bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}

@@ -1,7 +1,7 @@
 import React from 'react';
 interface ButtonProps {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
+  variant?: 'teal' | 'slate' | 'outline' | 'ghost' | 'danger';
   size?: 'sm' | 'md' | 'lg';
   fullWidth?: boolean;
   disabled?: boolean;
@@ -12,7 +12,7 @@ interface ButtonProps {
 }
 export const Button: React.FC<ButtonProps> = ({
   children,
-  variant = 'primary',
+  variant = 'teal',
   size = 'md',
   fullWidth = false,
   disabled = false,
@@ -21,12 +21,12 @@ export const Button: React.FC<ButtonProps> = ({
   type = 'button',
   icon
 }) => {
-  const baseClasses = 'inline-flex items-center justify-center font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-secondary-900';
+  const baseClasses = 'inline-flex items-center justify-center font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 dark:focus:ring-offset-slate-900';
   const variantClasses = {
-    primary: 'bg-primary-700 text-white hover:bg-primary-800 active:bg-primary-900',
-    secondary: 'bg-secondary-200 text-secondary-900 hover:bg-secondary-300 active:bg-secondary-400 dark:bg-secondary-800 dark:text-white dark:hover:bg-secondary-700',
-    outline: 'border border-secondary-300 dark:border-secondary-700 text-secondary-900 dark:text-white hover:bg-secondary-100 dark:hover:bg-secondary-800',
-    ghost: 'text-secondary-900 dark:text-white hover:bg-secondary-100 dark:hover:bg-secondary-800',
+    teal: 'bg-teal-700 text-white hover:bg-teal-800 active:bg-teal-900',
+    slate: 'bg-slate-200 text-slate-900 hover:bg-slate-300 active:bg-slate-400 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700',
+    outline: 'border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800',
+    ghost: 'text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800',
     danger: 'bg-red-600 text-white hover:bg-red-700 active:bg-red-800'
   };
   const sizeClasses = {
