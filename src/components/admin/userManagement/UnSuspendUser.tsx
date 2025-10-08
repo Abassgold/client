@@ -23,7 +23,7 @@ type responseType = {
   ok: boolean;
   msg: string;
 }
-const UnSuspendUserButton: React.FC<SuspendUserButtonProps> = ({ userId }) => {
+const UnSuspendUserButton= ({ userId }:SuspendUserButtonProps) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [reason, setReason] = useState('');

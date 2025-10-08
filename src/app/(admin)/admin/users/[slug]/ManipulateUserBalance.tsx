@@ -25,15 +25,15 @@ type Response = {
 
 interface Props {
   email?: string;
-  amount: number
 }
 
-const ManipulateUserBalance = ({ email}: Props) => {
+const ManipulateUserBalance = ({ email }: Props) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [type, setType] = useState('');
   const [remarks, setRemarks] = useState('');
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState<number | ''>('');
+  const [open, setOpen] = useState(false); // ✅ to control dialog state
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,11 +44,16 @@ const ManipulateUserBalance = ({ email}: Props) => {
       return;
     }
 
+    if (!type || !amount || !remarks) {
+      toast.error('Please fill in all fields');
+      return;
+    }
+
     setLoading(true);
     try {
       const { data } = await axios.post<Response>(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/user-balance`,
-        { type, amount, remarks, email },
+        { type, amount: Number(amount), remarks, email },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -62,6 +67,16 @@ const ManipulateUserBalance = ({ email}: Props) => {
       }
 
       toast.success(data.msg);
+
+      // ✅ Reset form fields
+      setType('');
+      setRemarks('');
+      setAmount('');
+
+      // ✅ Close modal
+      setOpen(false);
+
+      // ✅ Refresh user balance display
       router.refresh();
     } catch (error) {
       const err = error as AxiosError;
@@ -79,7 +94,7 @@ const ManipulateUserBalance = ({ email}: Props) => {
     <div className="flex space-x-3 my-1">
       <Toaster richColors duration={3000} position="top-center" />
 
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button className="bg-teal-700 hover:bg-teal-800 hover:text-gray-100 text-white">
             Credit/Debit
@@ -105,6 +120,7 @@ const ManipulateUserBalance = ({ email}: Props) => {
               <option value="credit">Credit</option>
               <option value="debit">Debit</option>
             </select>
+
             <div>
               <label htmlFor="amount" className="block mb-1">
                 Amount
@@ -115,11 +131,17 @@ const ManipulateUserBalance = ({ email}: Props) => {
                 name="amount"
                 placeholder="Enter amount..."
                 required
+                min="1" // ✅ prevents starting with 0
                 value={amount}
-                onChange={(e) => setAmount(Number(e.target.value))}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  // prevent 0 or negative numbers
+                  setAmount(val === '' ? '' : Math.max(1, Number(val)));
+                }}
                 className="w-full p-2 rounded-md bg-zinc-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
             </div>
+
             <div>
               <label htmlFor="remarks" className="block mb-1">
                 Remarks
@@ -141,7 +163,7 @@ const ManipulateUserBalance = ({ email}: Props) => {
               </DialogClose>
               <Button
                 type="submit"
-                disabled={loading}
+                disabled={loading || !type || !amount || !remarks}
                 className={`bg-teal-700 hover:bg-teal-800 text-white ${
                   loading && 'bg-teal-500 cursor-not-allowed'
                 }`}

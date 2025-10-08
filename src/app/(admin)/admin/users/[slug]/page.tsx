@@ -156,7 +156,7 @@ const UserDetailPage = async ({
       {user.isSuspended}
       <div className='mt-2 flex items-center gap-4 '>
       {user.isSuspended ? <UnSuspendUserButton userId={id}/> : <SuspendUserButton userId={id}/>}
-        <ManipulateUserBalance amount={3264} email={user.email} />
+        <ManipulateUserBalance email={user.email} />
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ interface NavItemProps {
   icon: React.ReactNode;
   label: string;
   active: boolean;
-  toggleSidebar: () => void;
+  toggleSidebar?: () => void;
 }
 
 
