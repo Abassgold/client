@@ -86,10 +86,11 @@ interface ServiceResponse {
   result: ServiceType[];
 }
 
-const VirtualNumberServices = () => {
+const  VirtualNumberServices = () => {
   const router = useRouter();
   const pathname = usePathname();
   const isFirstLoad = useRef(true);
+  const [isCancelling, setIsCancelling] = useState(false)
   const [loading, setLoading] = useState(false);
   const [numberInfo, setNumberInfo] = useState<NumberInfo | null>(null);
   const otpRef = useRef<string | null>(null);
@@ -164,6 +165,7 @@ const VirtualNumberServices = () => {
 
 
   const cancelRental = async (activationId: string, provider: string) => {
+    setIsCancelling(!isCancelling)
     const { data } = await axios.get<rentalCancelType>(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/cancelRental/${activationId}`,
       {
@@ -179,6 +181,7 @@ const VirtualNumberServices = () => {
     } else {
       toast.error(data.msg);
     }
+    setIsCancelling(!isCancelling)
   }
 
 
@@ -465,6 +468,7 @@ const VirtualNumberServices = () => {
           onClose={() => clearInfo()}
           markAsDone={() => markAsDone()}
           canCel={() => cancelRental(numberInfo?.activationId ?? '', numberInfo?.provider ?? '')}
+        isCancelling={isCancelling}
         />}
         <div className="border border-zinc-200 rounded-md mb-2">
           <CardHeader className="bg-teal-50 dark:bg-teal-900 rounded-t-md border-b border-teal-100 dark:border-teal-800/30">

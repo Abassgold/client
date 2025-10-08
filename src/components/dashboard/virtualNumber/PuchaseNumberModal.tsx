@@ -10,6 +10,7 @@ interface PurchaseNumberModalProps {
   onClose: () => void;
   markAsDone:()=>void;
   canCel:()=>void
+  isCancelling: boolean;
 }
 const PurchaseNumberModal = (
   {
@@ -20,7 +21,8 @@ const PurchaseNumberModal = (
     timeout,
     onClose,
     markAsDone,
-    canCel
+    canCel,
+    isCancelling
   }: PurchaseNumberModalProps
 ) => {
   const [copiedField, setCopiedField] = useState('');
@@ -116,6 +118,7 @@ const PurchaseNumberModal = (
           </div>
           {!otp || otp === '' ? <button className='mt-6 text-[13px] w-full cursor-pointer bg-red-800 text-white py-2 rounded-md'
           onClick={canCel}
+          disabled={isCancelling}
           >Cancel</button>: <button
             onClick={done}
             className={`mt-6 text-[13px] w-full cursor-pointer bg-teal-800 text-white py-2 rounded-md`}

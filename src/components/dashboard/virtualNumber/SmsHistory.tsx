@@ -89,7 +89,7 @@ const SmsHistory: React.FC = async () => {
                     <small className="block">{item.name}</small>
                   </td>
                   <td className="px-4 py-4 text-sm font-medium text-slate-900 dark:text-white">
-                    +{item.number}
+                    {item.number}
                   </td>
                   <td className="px-4 py-4 text-sm text-slate-700 dark:text-slate-300">
                     {item.code ? item.code : ''}

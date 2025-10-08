@@ -53,7 +53,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: sidebarType) => {
   >
     <nav className="space-y-1">
       {navItems.map(item => (
-        <NavItem key={item.to} to={item.to} icon={item.icon} label={item.label} active={pathName === item.to} onClick={toggleSidebar} />
+        <NavItem key={item.to} to={item.to} icon={item.icon} label={item.label} active={pathName === item.to} toggleSidebar={toggleSidebar} />
       ))}
     </nav>
   </div>
@@ -62,7 +62,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: sidebarType) => {
   <div className="border-t border-teal-800 dark:border-slate-800 px-3 py-4 ">
     <nav className="space-y-1">
       {bottomNavItems.map(item => (
-        <NavItem key={item.to} to={item.to} icon={item.icon} label={item.label} active={pathName === item.to} onClick={toggleSidebar} />
+        <NavItem key={item.to} to={item.to} icon={item.icon} label={item.label} active={pathName === item.to} toggleSidebar={toggleSidebar} />
       ))}
       <Link
         href="#"

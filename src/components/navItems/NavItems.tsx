@@ -5,7 +5,7 @@ interface NavItemProps {
   icon: React.ReactNode;
   label: string;
   active: boolean;
-  onClick?: () => void;
+  toggleSidebar: () => void;
 }
 
 
@@ -14,12 +14,12 @@ const NavItem: React.FC<NavItemProps> = ({
   icon,
   label,
   active,
-  onClick
+  toggleSidebar
 }) => {
-  return <Link href={to} className={`flex items-center px-4 py-3 mb-1 rounded-lg transition-all ${active ? 'bg-teal-900 text-white' : 'text-[#5e677b] dark:text-[#c4cde1] hover:bg-[#ebeef5] dark:hover:bg-[#3f4552]'}`}>
-    <div className="flex items-center"
-    onClick={onClick}
-    >
+  return <Link href={to} className={`flex items-center px-4 py-3 mb-1 rounded-lg transition-all ${active ? 'bg-teal-900 text-white' : 'text-[#5e677b] dark:text-[#c4cde1] hover:bg-[#ebeef5] dark:hover:bg-[#3f4552]'}`}
+  onClick={toggleSidebar}
+  >
+    <div className="flex items-center">
       <span className="w-5 h-5">{icon}</span>
       <span className="ml-3 text-sm font-medium whitespace-nowrap">
         {label}
