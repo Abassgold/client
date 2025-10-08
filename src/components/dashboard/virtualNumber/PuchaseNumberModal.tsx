@@ -119,7 +119,9 @@ const PurchaseNumberModal = (
           {!otp || otp === '' ? <button className='mt-6 text-[13px] w-full cursor-pointer bg-red-800 text-white py-2 rounded-md'
           onClick={canCel}
           disabled={isCancelling}
-          >Cancel</button>: <button
+          >
+            {isCancelling ? 'Cancelling...' : 'Cancel'}
+          </button>: <button
             onClick={done}
             className={`mt-6 text-[13px] w-full cursor-pointer bg-teal-800 text-white py-2 rounded-md`}
           >
