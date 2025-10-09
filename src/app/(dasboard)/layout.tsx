@@ -7,7 +7,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
      <ResponsiveSidebar />
         <div className="flex flex-col flex-1 overflow-hidden">
           <OverviwHeader />
-          <main className="flex-1 overflow-y-auto p-6 ">
+          <main className="flex-1 overflow-y-auto p-6">
             <div className="max-w-7xl mx-auto">{children}</div>
           </main>
       </div>

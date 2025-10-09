@@ -109,7 +109,7 @@ const PurchaseNumberModal = (
                 </div>
               </div>
             ) : (
-              <div className="flex justify-between items-center animate-pulse">
+              <div className="flex justify-between items-center animate-pulse text-gray-900">
                 <span className=" h-4 w-fit rounded">OTP:</span>
                 <span className="bg-gray-700 h-4 w-32 rounded"></span>
               </div>
