@@ -15,7 +15,7 @@ const NavHeader = () => {
 
 
   return (
-    <header className="bg-white dark:bg-secondary-900 sticky top-0 z-50 shadow-sm border-b border-secondary-200 dark:border-secondary-800">
+    <header className="bg-transparent sticky top-0 z-50 shadow-sm border-b border-secondary-200 dark:border-secondary-800">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
@@ -23,7 +23,7 @@ const NavHeader = () => {
               <div className="w-10 h-10 bg-teal-900 rounded-md flex items-center justify-center">
                 <span className="text-white font-bold text-lg">F</span>
               </div>
-              <span className="ml-3 font-bold text-xl text-secondary-900 dark:text-white">
+              <span className="ml-3 font-bold text-xl text-gray-700 hover:text-gray-800">
                 FloZap
               </span>
             </Link>
