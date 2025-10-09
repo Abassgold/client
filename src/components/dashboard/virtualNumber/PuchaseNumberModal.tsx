@@ -50,20 +50,17 @@ const PurchaseNumberModal = (
           <h2 className="text-teal-800 text-lg font-bold mb-6 text-center">
             Number Purchase Details
           </h2>
-
           <div className="space-y-4 text-sm">
             {/* Service */}
             <div className="flex justify-between text-gray-900">
               <span className="">Service:</span>
               <span className="font-medium">{service}</span>
             </div>
-
             {/* Country */}
             <div className="flex justify-between text-gray-900">
               <span className="">Country:</span>
               <span className="font-medium">{country}</span>
             </div>
-
             <div className="flex justify-between text-gray-900">
               <span className="">Time-left:</span>
               <span className="font-medium">{timeout}</span>
@@ -113,7 +110,6 @@ const PurchaseNumberModal = (
                 <span className=" h-4 w-fit rounded">OTP:</span>
                 <span className="bg-gray-700 h-4 w-32 rounded"></span>
               </div>
-
             )}
           </div>
           {!otp || otp === '' ? <button className='mt-6 text-[13px] w-full cursor-pointer bg-red-800 text-white py-2 rounded-md'
@@ -128,7 +124,6 @@ const PurchaseNumberModal = (
             Done
           </button>
           }
-          
         </div>
       </div>
     </div>

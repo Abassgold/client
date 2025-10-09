@@ -26,7 +26,11 @@ type TransactionType = {
   reference: string;
   serviceType: string;
   amount: number;
+  _id: string;
+  updatedAt: Date
   type: 'credit' | 'debit';
+  status: "pending" | "completed" | "failed" | "refunded";
+  remarks: string;
 };
 
 export interface WalletResponse {
@@ -206,7 +210,10 @@ const UserDashboard: React.FC = () => {
                   serviceType={t.serviceType}
                   amount={t.amount}
                   type={t.type}
-                  status="successful"
+                  status={t.status}
+                  id={t._id}
+                  updatedAt={t.updatedAt}
+                  remarks={t.remarks}
                 />
               </div>
             ))
