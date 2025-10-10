@@ -37,7 +37,7 @@ interface smsResponse {
 }
 
 const SMSPage = () => {
-    const params = useParams<{slug: string}>()
+    const params = useParams<{ slug: string }>()
     const userId = params.slug
     const router = useRouter();
     const [smsData, setSmsData] = useState<SMS[]>([]);
@@ -128,7 +128,7 @@ const SMSPage = () => {
                         <table className="min-w-full bg-white rounded-lg shadow-lg overflow-hidden">
                             <thead className="bg-teal-800">
                                 <tr>
-                                    {['ID','Country', 'Number', 'Code', 'Price', 'Status', 'balB4', 'balAF', 'Date'].map((header) => (
+                                    {['ID', 'Country', 'Number', 'Code', 'Price', 'Status', 'balB4', 'balAF', 'Date'].map((header) => (
                                         <th key={header} className="px-4 py-3 text-left text-white uppercase tracking-wider">
                                             {header}
                                         </th>
@@ -147,17 +147,17 @@ const SMSPage = () => {
                                             <p className="whitespace-nowrap">{tx.country}</p>
                                             <small className="text-[12px] whitespace-nowrap">{tx.name}</small>
                                         </td>
-                                        <td className="px-4 py-2 whitespace-nowrap">+{tx.number}</td>
+                                        <td className="px-4 py-2 whitespace-nowrap">{tx.number}</td>
                                         <td className="px-4 py-2  whitespace-nowrap">{tx.code || '-'}</td>
                                         <td className="px-4 py-2  whitespace-nowrap">₦{tx.cost}</td>
                                         <td
                                             className={`px-4 py-1 whitespace-nowrap font-medium ${tx.status === 'completed'
-                                                    ? 'text-green-600'
-                                                    : tx.status === 'pending'
-                                                        ? 'text-yellow-600'
-                                                        : tx.status === 'refunded'
-                                                            ? 'text-blue-600'
-                                                            : 'text-red-600'
+                                                ? 'text-green-600'
+                                                : tx.status === 'pending'
+                                                    ? 'text-yellow-600'
+                                                    : tx.status === 'refunded'
+                                                        ? 'text-blue-600'
+                                                        : 'text-red-600'
                                                 }`}
                                         >
                                             {tx.status}

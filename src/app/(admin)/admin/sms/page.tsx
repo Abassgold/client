@@ -104,7 +104,7 @@ const SmsPage = () => {
                     <p className="whitespace-nowrap">{item.country}</p>
                     <small className="text-[12px]">{item.name}</small>
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-gray-800">+{item.number}</td>
+                  <td className="px-4 py-3 whitespace-nowrap text-gray-800">{item.number}</td>
                   <td className="px-4 py-3 whitespace-nowrap text-gray-800">₦{item.cost.toFixed(2)}</td>
                   <td className="px-4 py-3 whitespace-nowrap text-gray-800">{item.code}</td>
                   <td className="px-4 py-3 whitespace-nowrap text-gray-800">{item.status}</td>

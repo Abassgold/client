@@ -21,13 +21,13 @@ function DatePicker({ setDate, date, select }: DatePickerType) {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <div className="flex flex-col gap-3 w-fit border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600">
+    <div className="flex flex-col gap-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             id="date"
-            className="w-fit justify-between font-normal focus:outline-none focus:ring-2 focus:ring-teal-600"
+            className="justify-between font-normal focus:outline-none focus:ring-2 focus:ring-teal-600 w-full dark:text-gray-100"
           >
             {date ? date.toLocaleDateString() : select}
             <ChevronDownIcon />
