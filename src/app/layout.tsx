@@ -10,13 +10,18 @@ import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "FloZap",
-  description: "FloZap is your all-in-one platform for virtual numbers, eSIMs, and more. Get everything you need to stay connected and secure, all in one easy place.",
+  description:
+    "FloZap is your all-in-one platform for virtual numbers, eSIMs, and more. Get everything you need to stay connected and secure, all in one easy place.",
   icons: {
-  icon: '/myflozap_logo.png',
-  shortcut: '/myflozap_logo.png',
-  apple: '/myflozap_logo.png',
-}
+    icon: "/myflozap_logo.png",
+    shortcut: "/myflozap_logo.png",
+    apple: "/myflozap_logo.png",
+  },
+  other: {
+    cryptomus: "8e611e74",
+  },
 };
+
 const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({
