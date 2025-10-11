@@ -265,7 +265,7 @@ const Transactions = () => {
                       <td className="px-4 py-4 text-sm text-secondary-900 dark:text-white">
                         {transaction.reference}
                       </td>
-                      <td className="px-4 py-4 text-sm">
+                      <td className="px-4 py-4 text-sm whitespace-nowrap">
                         <span
                           className={`flex items-center ${transaction.type === 'credit' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
                         >
