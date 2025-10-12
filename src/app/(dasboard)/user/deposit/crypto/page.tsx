@@ -1,9 +1,10 @@
 interface walletDetails {
-wallet: {
-          address: string;
-          qrCode: string;
-          network: string
-        }
+      ok: boolean,
+      wallet: {
+        address: string;
+        qrCode: string;
+        network: string;
+      }
 }
 import {
   ArrowLeftIcon,
