@@ -78,7 +78,7 @@ export default function AccountDetailsPage() {
             {error && <p className="text-center text-red-600">{error}</p>}
 
             {!loading &&
-              bankAccounts.slice(0,1).map((acc, index) => (
+              bankAccounts.map((acc, index) => (
                 <div
                   key={index}
                   className="mb-4 border border-gray-200 rounded-lg p-3 bg-gray-50 shadow-sm"

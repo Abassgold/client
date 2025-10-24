@@ -5,7 +5,6 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../ui
 import { Button } from '../ui copy/Button';
 import { Input } from '../ui copy/Input';
 import { Select } from '../ui copy/Select';
-import ComingSoon from '../cominSoon/ComingSoon';
 export const DataBundles: React.FC = () => {
   const networks = [{
     value: '',
@@ -67,7 +66,6 @@ export const DataBundles: React.FC = () => {
     popular: false
   }];
   return <div>
-    <ComingSoon/>
       <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
         Data Bundles
       </h1>

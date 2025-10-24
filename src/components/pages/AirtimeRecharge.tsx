@@ -5,11 +5,20 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Input } from '../ui copy/Input';
 import { Select } from '../ui copy/Select';
 import { Button } from '../ui copy/Button';
+import axios, { AxiosError } from 'axios';
+import { getToken } from '@/lib/Token';
+import { useRouter } from 'next/navigation';
+interface airtimeResponse {
+  ok: boolean;
+  msg?: string
+}
 export const AirtimeRecharge: React.FC = () => {
+  const router = useRouter()
   const [step, setStep] = useState<'form' | 'confirm' | 'success' | 'error'>('form');
+  const [error, setError] = useState<string>('')
   const [formData, setFormData] = useState({
     network: '',
-    phoneNumber: '',
+    mobile_number: '',
     amount: '',
     paymentMethod: 'Wallet Balance'
   });
@@ -17,17 +26,21 @@ export const AirtimeRecharge: React.FC = () => {
     value: '',
     label: 'Select Network'
   }, {
-    value: 'mtn',
+    value: '1',
     label: 'MTN'
   }, {
-    value: 'airtel',
-    label: 'Airtel'
-  }, {
-    value: 'glo',
+    value: '2',
     label: 'Glo'
   }, {
-    value: '9mobile',
+    value: '3',
+    label: 'Airtel'
+  }, {
+    value: '4',
     label: '9mobile'
+  },
+ {
+    value: '5',
+    label: 'Smile'
   }];
 
   const handleChange = (field: string, value: string) => {
@@ -40,18 +53,37 @@ export const AirtimeRecharge: React.FC = () => {
     e.preventDefault();
     setStep('confirm');
   };
-  const handleConfirm = () => {
-    // Simulate API call
-    setTimeout(() => {
-      // For demo purposes, randomly show success or error
-      const isSuccess = Math.random() > 0.2;
-      setStep(isSuccess ? 'success' : 'error');
-    }, 1500);
+  const handleConfirm = async() => {
+    try {
+      const response = await axios.post<airtimeResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/airtimes/buy-airtime`,
+        formData,
+        {
+          headers:{
+            Authorization: `Bearer ${getToken()}`,
+            "Content-Type": "application/json"
+          }
+        }
+      )
+      if(response.data && response.data.ok){
+        console.log(response.data.ok)
+      setStep('success');
+      return;
+      } 
+      setError(response.data.msg || 'Network error')
+      setStep('error');
+    } catch(error) {
+      const err = error as AxiosError
+      if (err.response?.status === 401) return router.push('/login');
+      setError('Airtime purchase can not be completed')
+      setStep('error');
+    }
   };
+
+
   const handleReset = () => {
     setFormData({
       network: '',
-      phoneNumber: '',
+      mobile_number: '',
       amount: '',
       paymentMethod: 'Wallet Balance'
     });
@@ -60,7 +92,7 @@ export const AirtimeRecharge: React.FC = () => {
   const renderForm = () => <form onSubmit={handleSubmit}>
     <div className="space-y-4">
       <Select label="Network Provider" options={networks} value={formData.network} onChange={value => handleChange('network', value)} fullWidth required />
-      <Input label="Phone Number" type="tel" placeholder="Enter phone number" value={formData.phoneNumber} onChange={e => handleChange('phoneNumber', e.target.value)} leftIcon={<PhoneIcon size={16} />} fullWidth required />
+      <Input label="Phone Number" type="tel" placeholder="Enter phone number" value={formData.mobile_number} onChange={e => handleChange('mobile_number', e.target.value)} leftIcon={<PhoneIcon size={16} />} fullWidth required />
       <Input label="Amount (₦)" type="number" placeholder="Enter amount" value={formData.amount} onChange={e => handleChange('amount', e.target.value)} leftIcon={<span className="text-slate-500">₦</span>} fullWidth required />
     </div>
     <div className="mt-6">
@@ -88,7 +120,7 @@ export const AirtimeRecharge: React.FC = () => {
             Phone Number:
           </span>
           <span className="text-sm font-medium text-slate-900 dark:text-white">
-            {formData.phoneNumber}
+            {formData.mobile_number}
           </span>
         </div>
         <div className="flex justify-between">
@@ -144,7 +176,7 @@ export const AirtimeRecharge: React.FC = () => {
       Recharge Successful
     </h3>
     <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
-      Your airtime recharge of ₦{formData.amount} to {formData.phoneNumber}{' '}
+      Your airtime recharge of ₦{formData.amount} to {formData.mobile_number}{' '}
       was successful.
     </p>
     <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-4 mb-6">
@@ -195,7 +227,7 @@ export const AirtimeRecharge: React.FC = () => {
         Error Details
       </h4>
       <p className="text-sm text-red-600 dark:text-red-400">
-        Network error. Please check your connection and try again.
+        {error}
       </p>
     </div>
     <div className="flex space-x-3">

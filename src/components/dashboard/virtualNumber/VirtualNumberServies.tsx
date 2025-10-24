@@ -408,7 +408,10 @@ const VirtualNumberServices = () => {
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/services/price`,
-        { serviceID, countryCode: selectedCountry?.cca2 }
+        { serviceID, 
+          countryCode: selectedCountry?.cca2,
+          serviceName
+        }
       );
 
       if (res.status === 200 && res.data && Array.isArray(res.data.prices)) {
