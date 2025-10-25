@@ -475,13 +475,15 @@ const VirtualNumberServices = () => {
           isCancelling={isCancelling}
         />}
         <div className="border border-zinc-200 rounded-md mb-2">
-          <CardHeader className="bg-teal-50 dark:bg-teal-900 rounded-t-md border-b border-teal-100 dark:border-teal-800/30">
+          <CardHeader className="bg-[#0f172b] rounded-t-md border-b border-teal-100 dark:border-teal-800/30">
             <CardTitle className="flex items-center mt-2">
               <GlobeIcon
                 className="mr-2 text-teal-600 dark:text-teal-400"
                 size={20}
               />
+              <p className='text-white'> 
               Get a Virtual Number
+            </p>
             </CardTitle>
             <CardDescription>
               Select your preferences to find available numbers
