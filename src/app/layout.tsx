@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 };
 
 const barlow = Barlow_Condensed({
-  weight: '400',
+  weight: '600',
   subsets: ["latin"],
 });
 
