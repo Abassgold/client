@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Inter } from 'next/font/google';
+import { Barlow_Condensed } from 'next/font/google';
 
 import StoreProvider from "@/redux/StoreProvider";
 import Image from "next/image";
@@ -22,7 +22,10 @@ export const metadata: Metadata = {
   },
 };
 
-const inter = Inter({ subsets: ['latin'] });
+const barlow = Barlow_Condensed({
+  weight: '400',
+  subsets: ["latin"],
+});
 
 export default function RootLayout({
   children,
@@ -30,8 +33,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} antialiased`}>
+    <html lang="en" className={`${barlow.className}`}>
+      <body>
          <ToastContainer
                 position="top-center"
                 autoClose={3000}
