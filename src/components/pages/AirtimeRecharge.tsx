@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { PhoneIcon, CheckCircleIcon, XCircleIcon } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../ui copy/Card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../ui copy/Card';
 import { Input } from '../ui copy/Input';
 import { Select } from '../ui copy/Select';
 import { Button } from '../ui copy/Button';
@@ -13,6 +13,7 @@ interface airtimeResponse {
   msg?: string
 }
 export const AirtimeRecharge: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const [step, setStep] = useState<'form' | 'confirm' | 'success' | 'error'>('form');
   const [error, setError] = useState<string>('')
@@ -54,6 +55,7 @@ export const AirtimeRecharge: React.FC = () => {
     setStep('confirm');
   };
   const handleConfirm = async() => {
+    setIsLoading(true)
     try {
       const response = await axios.post<airtimeResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/airtimes/buy-airtime`,
         formData,
@@ -71,11 +73,14 @@ export const AirtimeRecharge: React.FC = () => {
       } 
       setError(response.data.msg || 'Network error')
       setStep('error');
+      
     } catch(error) {
       const err = error as AxiosError
       if (err.response?.status === 401) return router.push('/login');
-      setError('Airtime purchase can not be completed')
+      setError('Airtime purchase could not be completed')
       setStep('error');
+    } finally{
+      setIsLoading(false)
     }
   };
 
@@ -164,7 +169,7 @@ export const AirtimeRecharge: React.FC = () => {
         Back
       </Button>
       <Button onClick={handleConfirm} fullWidth>
-        Confirm Payment
+        {isLoading ? 'Wait...' : 'Confirm Payment'}
       </Button>
     </div>
   </div>;
@@ -266,44 +271,5 @@ export const AirtimeRecharge: React.FC = () => {
       </CardHeader>
       <CardContent>{renderStep()}</CardContent>
     </Card>
-    <div className="mt-8">
-      <h2 className="text-lg font-medium text-slate-900 dark:text-white mb-4">
-        Recent Recharges
-      </h2>
-      <Card>
-        <CardContent className="p-0">
-          <div className="divide-y divide-slate-200 dark:divide-slate-800">
-            {[1, 2, 3].map(item => <div key={item} className="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-              <div className="flex items-center">
-                <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-700 dark:text-blue-400 mr-3">
-                  <PhoneIcon size={16} />
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-slate-900 dark:text-white">
-                    +234 812 345 {6780 + item}
-                  </p>
-                  <p className="text-xs text-slate-500">
-                    {item === 1 ? '2 hours ago' : item === 2 ? 'Yesterday' : '3 days ago'}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm font-medium text-slate-900 dark:text-white">
-                    ₦{1000 * item},000
-                  </p>
-                  <p className="text-xs text-green-600 dark:text-green-400">
-                    Successful
-                  </p>
-                </div>
-              </div>
-            </div>)}
-          </div>
-        </CardContent>
-        <CardFooter className="flex justify-center border-t border-slate-200 dark:border-slate-800">
-          <Button variant="ghost" size="sm">
-            View All Transactions
-          </Button>
-        </CardFooter>
-      </Card>
-    </div>
   </div>;
 };
