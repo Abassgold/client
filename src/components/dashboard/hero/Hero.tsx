@@ -48,31 +48,31 @@ const Hero = () => {
                 </div>
               </div>
               <div className="mt-8 grid grid-cols-2 gap-4">
-              <div className="flex items-center">
-                <CheckIcon size={20} className="text-primary-700 mr-2" />
-                <span className="text-secondary-700 dark:text-secondary-300">
-                  Instant Recharges
-                </span>
+                <div className="flex items-center">
+                  <CheckIcon size={20} className="text-primary-700 mr-2" />
+                  <span className="text-secondary-700 dark:text-secondary-300">
+                    Instant Recharges
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <CheckIcon size={20} className="text-primary-700 mr-2" />
+                  <span className="text-secondary-700 dark:text-secondary-300">
+                    Secure Payments
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <CheckIcon size={20} className="text-primary-700 mr-2" />
+                  <span className="text-secondary-700 dark:text-secondary-300">
+                    24/7 Support
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <CheckIcon size={20} className="text-primary-700 mr-2" />
+                  <span className="text-secondary-700 dark:text-secondary-300">
+                    Best Rates
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center">
-                <CheckIcon size={20} className="text-primary-700 mr-2" />
-                <span className="text-secondary-700 dark:text-secondary-300">
-                  Secure Payments
-                </span>
-              </div>
-              <div className="flex items-center">
-                <CheckIcon size={20} className="text-primary-700 mr-2" />
-                <span className="text-secondary-700 dark:text-secondary-300">
-                  24/7 Support
-                </span>
-              </div>
-              <div className="flex items-center">
-                <CheckIcon size={20} className="text-primary-700 mr-2" />
-                <span className="text-secondary-700 dark:text-secondary-300">
-                  Best Rates
-                </span>
-              </div>
-            </div>
             </div>
           </main>
         </div>
@@ -83,7 +83,7 @@ const Hero = () => {
           src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"
           alt="Digital connectivity and mobile technology"
         />
-      </div>
+      </div> 
     </div>
   );
 };

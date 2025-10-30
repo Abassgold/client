@@ -585,9 +585,9 @@ const VirtualNumberServices = () => {
                             Stock: {item.stock ?? 0}
                           </p>
                           <div className="flex gap-1 items-center">
-                            <p>₦{item.cost.toLocaleString()}</p>
+                             <p>₦{item.cost.toLocaleString()}</p>
                             <ShoppingCart size={16} />
-                          </div>
+                          </div> 
                         </button>
                       ))}
                       <div className="bg-yellow-100 my-3 text-yellow-800 p-3 rounded-md text-sm">
