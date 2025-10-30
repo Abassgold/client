@@ -4,6 +4,7 @@ export interface IUser {
     email: string;
     password: string;
     telephone: string;
+    confirmPassword: string;
 }
 export interface findUser {
     ok: boolean;

@@ -18,7 +18,8 @@ const Register = () => {
             lastName: '',
             email: '',
             password: '',
-            telephone: ''
+            telephone: '',
+            confirmPassword: ''
         },
         validationSchema: Yup.object({
             firstName: Yup.string().required('Please enter your first name'),
@@ -34,6 +35,9 @@ const Register = () => {
                 .matches(/[^a-zA-Z0-9]/, "Must contain at least one special character.")
                 .matches(/\d/, "Must contain at least one number.")
                 .required('Please enter your password'),
+            confirmPassword: Yup.string()
+                .oneOf([Yup.ref('password')], 'Passwords must match') // ✅ Added this line
+                .required('Please confirm your password'),
         }),
         onSubmit: async (values: IUser): Promise<findUser | void> => {
             setLoader(true)
@@ -61,7 +65,7 @@ const Register = () => {
 
     return (
         <section className="p-4 h-screen bg-zinc-100">
-           
+
             <div className="max-w-xl mx-auto h-full flex items-center">
                 <div className="w-full">
                     <Image
@@ -153,6 +157,28 @@ const Register = () => {
                                 : <EyeOff size={20} className="absolute right-2 top-10 cursor-pointer" onClick={() => setShow(true)} />}
                             {formik.touched.password && formik.errors.password && (
                                 <p className="text-sm text-red-600">{formik.errors.password}</p>
+                            )}
+                        </div>
+
+                        <div className="mb-4 relative">
+                            <div className="flex justify-between items-center">
+                                <label htmlFor="" className="mb-1 block text-gray-800">Confirm Password</label>
+
+                            </div>
+                            <input
+                                required
+                                type={show ? "text" : "password"}
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                placeholder="Enter your Password"
+                                className="block  text-gray-600 text-sm md:text-base outline-none border-[0.5px] border-zinc-300 p-2 w-full rounded-md" />
+                            {show
+                                ? <Eye size={20} className="absolute right-2 top-10 cursor-pointer" onClick={() => setShow(false)} />
+                                : <EyeOff size={20} className="absolute right-2 top-10 cursor-pointer" onClick={() => setShow(true)} />}
+                            {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+                                <p className="text-sm text-red-600">{formik.errors.confirmPassword}</p>
                             )}
                         </div>
                         <div>
