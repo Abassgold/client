@@ -3,12 +3,12 @@
 import axios, { AxiosError } from "axios";
 import { GlobeIcon, ShoppingCart } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import PurchaseNumberModal from "./PuchaseNumberModal";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from 'react-toastify'
 import { getToken } from "@/lib/Token";
 import { CardDescription, CardHeader } from "@/components/ui/card";
 import { CardTitle } from "@/components/ui copy/Card";
+import PurchaseNumberModal from "../PuchaseNumberModal";
 
 interface NumberInfo {
   number: string;
@@ -408,8 +408,7 @@ const VirtualNumberServices = () => {
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/services/price`,
-        {
-          serviceID,
+        { serviceID, 
           countryCode: selectedCountry?.cca2,
           serviceName
         }
@@ -482,9 +481,9 @@ const VirtualNumberServices = () => {
                 className="mr-2 text-teal-600 dark:text-teal-400"
                 size={20}
               />
-              <p className='text-white'>
-                Get a Virtual Number
-              </p>
+              <p className='text-white'> 
+              Get a Virtual Number
+            </p>
             </CardTitle>
             <CardDescription>
               Select your preferences to find available numbers
@@ -581,9 +580,6 @@ const VirtualNumberServices = () => {
                           className="flex w-full items-center justify-between text-[14px] cursor-pointer text-white gap-3 bg-teal-800 rounded-lg py-2 px-3 mb-2"
                         >
                           <h2 className='text-[12px] font-semibold'>{selectedService.name}</h2>
-                          <p className="text-[11px] text-gray-200">
-                            Stock: {item.stock ?? 0}
-                          </p>
                           <div className="flex gap-1 items-center">
                             <p>₦{item.cost.toLocaleString()}</p>
                             <ShoppingCart size={16} />
@@ -605,9 +601,6 @@ const VirtualNumberServices = () => {
                       className="flex w-full items-center justify-between text-[14px] cursor-pointer text-white gap-3 bg-teal-800 rounded-lg py-2 px-3"
                     >
                       <h2 className='text-[12px] font-semibold'>{selectedService.name}</h2>
-                      <p className="text-[11px] text-gray-200">
-                        Stock: {price.count ?? 0}
-                      </p>
                       <div className="flex gap-1 items-center">
                         <p>₦{price.cost.toLocaleString()}</p>
                         <ShoppingCart size={16} />
