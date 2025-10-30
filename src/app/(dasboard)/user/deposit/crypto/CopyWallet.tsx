@@ -14,7 +14,7 @@ const CopyWallet = ({ currentAddress }: { currentAddress: string }) => {
     return (
         <button
             onClick={handleCopy}
-            className="flex items-center justify-center px-3 border border-l-0 border-slate-200 dark:border-slate-700 rounded-r-md bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+            className="flex items-center cursor-pointer justify-center px-3 border border-l-0 border-slate-200 dark:border-slate-700 rounded-r-md bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
         >
             {copied ? (
                 <CheckIcon size={18} className="text-green-600" />

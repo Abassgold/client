@@ -7,10 +7,8 @@ interface walletDetails {
       }
 }
 import {
-  ArrowLeftIcon,
   AlertCircleIcon,
   InfoIcon,
-  Link,
 } from 'lucide-react'
 import { Button } from '@/components/ui copy/Button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui copy/Card';
@@ -35,16 +33,6 @@ const data: walletDetails = await res.json()
   return (
     <div className="max-w-3xl mx-auto">
       <div className="flex items-center mb-6">
-        <Link href='/deposit' className='text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800'> 
-        <Button
-          variant="ghost"
-          size="sm"
-          className="mr-2"
-        >
-          <ArrowLeftIcon size={16} className="mr-1" />
-          Back
-        </Button>
-        </Link>
         <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
           Deposit USDT
         </h1>
@@ -57,8 +45,6 @@ const data: walletDetails = await res.json()
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Network Selector */}
-          {/* QR Code */}
           <div className="flex flex-col items-center py-4">
             <div className="bg-white p-4 rounded-lg mb-4">
               <img src={data.wallet.qrCode} alt="" />
