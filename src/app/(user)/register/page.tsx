@@ -187,7 +187,7 @@ const Register = () => {
                             </button>
                         </div>
                     </form>
-                    <div className="py-4 text-center text-[14px] text-gray-600">
+                    <div className="py-4 text-center text-[14px] text-gray-600 mb-4">
                         Already have an account? <Link href='/login' className="text-red-600">Login</Link>
                     </div>
                 </div>
