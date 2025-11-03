@@ -7,10 +7,10 @@ export default function IsDarkModeWrapper({
     children: React.ReactNode
 }) {
     const isDarkMode = useAppSelector((state) => state.darkMode);
-    
+
     return (
         <div className={`h-full w-full ${isDarkMode ? 'dark' : ''}`}>
-                {children}
+            {children}
         </div>
     )
 }
