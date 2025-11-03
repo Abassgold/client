@@ -8,10 +8,66 @@ import Link from "next/link";
 import { ToastContainer } from "react-toastify";
 import { Toaster } from "@/components/ui/sonner";
 
+
 export const metadata: Metadata = {
-  title: "FloZap",
+  title: "FloZap | Smart Digital Services for Everyone",
   description:
-    "FloZap is your all-in-one platform for virtual numbers, eSIMs, and more. Get everything you need to stay connected and secure, all in one easy place.",
+    "FloZap is your all-in-one digital platform for virtual numbers, eSIMs, airtime, data, utility bill payments, and crypto services. Stay connected, secure, and in control — all from one powerful app designed for speed, simplicity, and growth.",
+  keywords: [
+    "FloZap",
+    "virtual numbers",
+    'Verification numbers',
+    'USA WhatsApp numbers',
+    "eSIM",
+    "airtime top-up",
+    "data subscription",
+    "utility payments",
+    "crypto services USDT",
+    "digital platform",
+    "bill payments",
+    "Fintech Nigeria",
+  ],
+  authors: [{ name: "Azeez Abass" }],
+  creator: "Azeez Abass",
+  publisher: "FloZap",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://www.flozap.com.ng/",
+    siteName: "FloZap",
+    title: "FloZap | Stay Connected, Powered, and in Control",
+    description:
+      "Experience FloZap — the ultimate platform for managing your digital life. Buy virtual numbers, eSIMs, airtime, data, pay bills, and access crypto services — all in one seamless app.",
+    images: [
+      {
+        url: "/myflozap_logo.png",
+        width: 1200,
+        height: 630,
+        alt: "FloZap — Your all-in-one digital platform",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "FloZap | Smart Digital Services for Everyone",
+    description:
+      "Manage your digital needs in one place — from eSIMs and virtual numbers to airtime, data, and utility payments. FloZap keeps you connected and in control.",
+    creator: "@FloZapofficial",
+    images: ["/myflozap_logo.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  themeColor: "#0d9488",
+  manifest: "/manifest.json",
   icons: {
     icon: "/myflozap_logo.png",
     shortcut: "/myflozap_logo.png",
@@ -21,6 +77,7 @@ export const metadata: Metadata = {
     cryptomus: "8e611e74",
   },
 };
+
 
 const barlow = Barlow_Condensed({
   weight: '600',
@@ -35,23 +92,23 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${barlow.className}`}>
       <body>
-         <ToastContainer
-                position="top-center"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick={false}
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="colored"
-              />
-           <Toaster
-           duration={3000}
-           richColors
-           position='top-center'
-           />
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
+        <Toaster
+          duration={3000}
+          richColors
+          position='top-center'
+        />
         <StoreProvider>
           {children}
         </StoreProvider>
