@@ -163,7 +163,7 @@ export const TransactionHistory: React.FC<TransactionType> = ({
                   className="mr-1 text-red-600 dark:text-red-400"
                 />
               )}
-              {type === 'credit' ? '+' : '-'}₦{amount}
+              {type === 'credit' ? '+' : '-'}₦{amount.toFixed(2)}
             </p>
             <p className="text-xs text-slate-500">
               {new Date(updatedAt).toLocaleDateString()}

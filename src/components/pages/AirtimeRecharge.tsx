@@ -8,6 +8,7 @@ import { Button } from '../ui copy/Button';
 import axios, { AxiosError } from 'axios';
 import { getToken } from '@/lib/Token';
 import { useRouter } from 'next/navigation';
+import { getNetworkByRegex } from '../verifyNetwork/verifyNextwork';
 interface airtimeResponse {
   ok: boolean;
   msg?: string
@@ -39,7 +40,7 @@ export const AirtimeRecharge: React.FC = () => {
     value: '4',
     label: '9mobile'
   },
- {
+  {
     value: '5',
     label: 'Smile'
   }];
@@ -54,32 +55,38 @@ export const AirtimeRecharge: React.FC = () => {
     e.preventDefault();
     setStep('confirm');
   };
-  const handleConfirm = async() => {
+  const handleConfirm = async () => {
     setIsLoading(true)
+    const confirmNetwork = getNetworkByRegex(formData.mobile_number)
+    if (confirmNetwork === 'UNKNOWN') {
+      setError('Invalid number or network selection')
+      setStep('error');
+      return
+    }
     try {
       const response = await axios.post<airtimeResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/airtimes/buy-airtime`,
         formData,
         {
-          headers:{
+          headers: {
             Authorization: `Bearer ${getToken()}`,
             "Content-Type": "application/json"
           }
         }
       )
-      if(response.data && response.data.ok){
+      if (response.data && response.data.ok) {
         console.log(response.data.ok)
-      setStep('success');
-      return;
-      } 
+        setStep('success');
+        return;
+      }
       setError(response.data.msg || 'Network error')
       setStep('error');
-      
-    } catch(error) {
+
+    } catch (error) {
       const err = error as AxiosError
       if (err.response?.status === 401) return router.push('/login');
       setError('Airtime purchase could not be completed')
       setStep('error');
-    } finally{
+    } finally {
       setIsLoading(false)
     }
   };
@@ -98,6 +105,7 @@ export const AirtimeRecharge: React.FC = () => {
     <div className="space-y-4">
       <Select label="Network Provider" options={networks} value={formData.network} onChange={value => handleChange('network', value)} fullWidth required />
       <Input label="Phone Number" type="tel" placeholder="Enter phone number" value={formData.mobile_number} onChange={e => handleChange('mobile_number', e.target.value)} leftIcon={<PhoneIcon size={16} />} fullWidth required />
+      <div className='dark:text-slate-100 text-slate-800'>Identified Network: MTN</div>
       <Input label="Amount (₦)" type="number" placeholder="Enter amount" value={formData.amount} onChange={e => handleChange('amount', e.target.value)} leftIcon={<span className="text-slate-500">₦</span>} fullWidth required />
     </div>
     <div className="mt-6">
@@ -117,7 +125,8 @@ export const AirtimeRecharge: React.FC = () => {
             Network:
           </span>
           <span className="text-sm font-medium text-slate-900 dark:text-white">
-            {networks.find(n => n.value === formData.network)?.label}
+            {getNetworkByRegex(formData.mobile_number)}
+            {/* {networks.find(n => n.value === formData.network)?.label} */}
           </span>
         </div>
         <div className="flex justify-between">
