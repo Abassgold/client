@@ -1,4 +1,4 @@
-export function getNetworkByRegex(phoneNumber: string): string {
+export function getNetworkByRegex(phoneNumber: string) {
   phoneNumber = phoneNumber.replace('+234', '0').trim();
 if(phoneNumber.length < 11 || phoneNumber.length > 14 ) return 'UNKNOWN'
   const patterns = {

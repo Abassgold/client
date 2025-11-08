@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Barlow_Condensed } from 'next/font/google';
+import { Barlow_Condensed } from "next/font/google";
 
 import StoreProvider from "@/redux/StoreProvider";
 import Image from "next/image";
@@ -8,7 +8,12 @@ import Link from "next/link";
 import { ToastContainer } from "react-toastify";
 import { Toaster } from "@/components/ui/sonner";
 
+const barlow = Barlow_Condensed({
+  weight: "600",
+  subsets: ["latin"],
+});
 
+// Metadata for SEO, Open Graph & Twitter
 export const metadata: Metadata = {
   title: "FloZap | Smart Digital Services for Everyone",
   description:
@@ -16,8 +21,8 @@ export const metadata: Metadata = {
   keywords: [
     "FloZap",
     "virtual numbers",
-    'Verification numbers',
-    'USA WhatsApp numbers',
+    "Verification numbers",
+    "USA WhatsApp numbers",
     "eSIM",
     "airtime top-up",
     "data subscription",
@@ -40,7 +45,7 @@ export const metadata: Metadata = {
       "Experience FloZap — the ultimate platform for managing your digital life. Buy virtual numbers, eSIMs, airtime, data, pay bills, and access crypto services — all in one seamless app.",
     images: [
       {
-        url: "/myflozap_logo.png",
+        url: "https://www.flozap.com.ng/myflozap_logo.png",
         width: 1200,
         height: 630,
         alt: "FloZap — Your all-in-one digital platform",
@@ -53,7 +58,7 @@ export const metadata: Metadata = {
     description:
       "Manage your digital needs in one place — from eSIMs and virtual numbers to airtime, data, and utility payments. FloZap keeps you connected and in control.",
     creator: "@FloZapofficial",
-    images: ["/myflozap_logo.png"],
+    images: ["https://www.flozap.com.ng/myflozap_logo.png"],
   },
   robots: {
     index: true,
@@ -78,20 +83,22 @@ export const metadata: Metadata = {
   },
 };
 
-
-const barlow = Barlow_Condensed({
-  weight: '600',
-  subsets: ["latin"],
-});
+// Viewport configuration
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0d9488",
+};
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en" className={`${barlow.className}`}>
+    <html lang="en" className={barlow.className}>
       <body>
+        {/* React Toastify */}
         <ToastContainer
           position="top-center"
           autoClose={3000}
@@ -104,14 +111,14 @@ export default function RootLayout({
           pauseOnHover
           theme="colored"
         />
-        <Toaster
-          duration={3000}
-          richColors
-          position='top-center'
-        />
-        <StoreProvider>
-          {children}
-        </StoreProvider>
+
+        {/* Sonner Toaster */}
+        <Toaster duration={3000} richColors position="top-center" />
+
+        {/* Redux Store Provider */}
+        <StoreProvider>{children}</StoreProvider>
+
+        {/* Telegram Floating Link */}
         <Link
           className="fixed bottom-2 right-2 z-50 bg-white p-2 rounded-full shadow-lg hover:shadow-xl transition animate-bounce duration-500"
           target="_blank"
@@ -128,4 +135,3 @@ export default function RootLayout({
     </html>
   );
 }
-

@@ -1,4 +1,4 @@
-type NetworkType = 'MTN' | 'Airtel' | 'Glo' | '9Mobile';
+type NetworkType = 'MTN' | 'AIRTEL' | 'GLO' | '9MOBILE';
 
 type DataType = {
   size: string;
@@ -17,7 +17,7 @@ const dataPlans: Record<NetworkType, DataType[]> = {
     { size: "10GB", price: 4365, validity: "30 days", plan_id: 351 },
     { size: "20GB", price: 7275, validity: "30 days", plan_id: 369 },
   ],
-  Airtel: [
+  AIRTEL: [
     { size: "500MB", price: 514, validity: "7 days", plan_id: 372 },
     { size: "1GB", price: 814, validity: "7 days", plan_id: 373 },
     { size: "2GB", price: 1514, validity: "30 days", plan_id: 375 },
@@ -25,7 +25,7 @@ const dataPlans: Record<NetworkType, DataType[]> = {
     { size: "5GB", price: 2514, validity: "30 days", plan_id: 377 },
     { size: "10GB", price: 3014, validity: "30 days", plan_id: 379 },
   ],
-  Glo: [
+  GLO: [
     { size: "500MB", price: 200, validity: "30 days", plan_id: 203 },
     { size: "1GB", price: 400, validity: "30 days", plan_id: 194 },
     { size: "2GB", price: 800, validity: "30 days", plan_id: 195 },
@@ -33,7 +33,7 @@ const dataPlans: Record<NetworkType, DataType[]> = {
     { size: "5GB", price: 2000, validity: "30 days", plan_id: 197 },
     { size: "10GB", price: 4000, validity: "30 days", plan_id: 200 },
   ],
-  '9Mobile': [
+  '9MOBILE': [
     { size: "500MB", price: 150, validity: "30 days", plan_id: 221 },
     { size: "1GB", price: 300, validity: "30 days", plan_id: 183 },
     { size: "2GB", price: 600, validity: "30 days", plan_id: 185 },

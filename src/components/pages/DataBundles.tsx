@@ -1,154 +1,370 @@
-'use client';
-import React, { useState } from 'react';
-import { WifiIcon } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../ui copy/Card';
-import { Button } from '../ui copy/Button';
-import { Input } from '../ui copy/Input';
-import dataPlans from '@/lib/dataplan/dataplans';
+"use client";
 
-type NetworkType = 'MTN' | 'Airtel' | 'Glo' | '9Mobile' | '';
+import React, { useState } from "react";
+import { CheckCircleIcon, WifiIcon, XCircleIcon } from "lucide-react";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../ui copy/Card";
+import { Button } from "../ui copy/Button";
+import { Input } from "../ui copy/Input";
+import dataPlans from "@/lib/dataplan/dataplans";
+import { getNetworkByRegex } from '../verifyNetwork/verifyNextwork';
+import axios, { AxiosError } from "axios";
+import { getToken } from "@/lib/Token";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-interface networksType {
-  value: NetworkType;
-  label: string;
+
+type NetworkType = "MTN" | "AIRTEL" | "GLO" | "9MOBILE" | "";
+type dataResponse = {
+  ok: boolean;
+  msg: string;
 }
-
 type DataType = {
   size: string;
   price: number;
   validity: string;
   plan_id: number;
 };
-
+type payloadType = {
+  size: string;
+  price: number;
+  validity: string;
+  plan_id: number;
+  mobile_number: string;
+}
 export const DataBundles = () => {
-  const [selectPlan, setSelectPlan] = useState<DataType[] | undefined>(undefined);
-  const [selectedNetwork, setSelectedNetwork] = useState<NetworkType>('');
+  const router = useRouter();
+  const [step, setStep] = useState('')
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [selectedNetwork, setSelectedNetwork] = useState<NetworkType>("");
+  const [selectedPlanId, setSelectedPlanId] = useState<number | undefined>(undefined);
+  const [payload, setPayload] = useState<payloadType>({
+    size: '',
+    price: 0,
+    validity: '',
+    plan_id: 0,
+    mobile_number: ''
+  });
+  console.log(payload)
+  // const handleConfirm = () => {
+  //   try {
 
-  const networks: networksType[] = [
-    { value: '', label: 'Select Network' },
-    { value: 'MTN', label: 'MTN' },
-    { value: 'Airtel', label: 'Airtel' },
-    { value: 'Glo', label: 'Glo' },
-    { value: '9Mobile', label: '9Mobile' },
-  ];
+  //   } catch (error) {
 
-  const selectNetWork = (network: NetworkType) => {
+  //   }
+  // }
+  const handleReset = () => {
+    setStep('form');
+  }
+  const handleNetworkChange = (network: NetworkType) => {
     setSelectedNetwork(network);
-    if (network && dataPlans[network]) {
-      setSelectPlan(dataPlans[network]);
-    } else {
-      setSelectPlan(undefined);
+    setSelectedPlanId(undefined);
+  };
+  const handleSubmit = async () => {
+    setIsLoading(true)
+    try {
+      const res = await axios.post<dataResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/data/buy-data`,
+        {
+          ...payload,
+          network: selectedNetwork
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+            "Content-Type": "application/json"
+          }
+        })
+        console.log(res)
+      setStep('success')
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.status === 401 || err.status === 404) return router.push('/login')
+      console.log(err.status)
+      const errorResponse = err.response?.data as dataResponse;
+
+      setError(errorResponse.msg || 'Data purchase could not be completed')
+      setStep('error');
+    } finally {
+      setIsLoading(false)
+    }
+
+  }
+  const renderConfirmation = () =>
+    <div className="fixed inset-0 bg-black opacity-95  flex items-center justify-center z-50">
+      <div className=" rounded-xl shadow-xl max-w-sm w-full relative">
+        <div className="space-y-4">
+          <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-4">
+            <h3 className="text-sm font-medium text-slate-900 dark:text-white mb-3">
+              Transaction Details
+            </h3>
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <span className="text-sm text-slate-600 dark:text-slate-400">
+                  Network:
+                </span>
+                <span className="text-sm font-medium text-slate-900 dark:text-white">
+                  {getNetworkByRegex(payload.mobile_number)}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm text-slate-600 dark:text-slate-400">
+                  Phone Number:
+                </span>
+                <span className="text-sm font-medium text-slate-900 dark:text-white">
+                  {payload.mobile_number}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm text-slate-600 dark:text-slate-400">
+                  Amount:
+                </span>
+                <span className="text-sm font-medium text-slate-900 dark:text-white">
+                  ₦{payload.price}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm text-slate-600 dark:text-slate-400">
+                  Payment Method:
+                </span>
+                <span className="text-sm font-medium text-slate-900 dark:text-white">
+                  Wallet Balance
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm text-slate-600 dark:text-slate-400">
+                  Fee:
+                </span>
+                <span className="text-sm font-medium text-slate-900 dark:text-white">
+                  ₦0.00
+                </span>
+              </div>
+              <div className="border-t border-slate-200 dark:border-slate-700 pt-2 mt-2">
+                <div className="flex justify-between">
+                  <span className="text-sm font-medium text-slate-900 dark:text-white">
+                    Total:
+                  </span>
+                  <span className="text-sm font-medium text-slate-900 dark:text-white">
+                    ₦{payload.price}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="flex space-x-3">
+            <Button variant="slate" onClick={() => setStep('form')} fullWidth>
+              Back
+            </Button>
+            <Button onClick={handleSubmit} fullWidth>
+              {isLoading ? 'Wait...' : 'Confirm Payment'}
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  const renderSuccess = () =>
+    <div className="fixed inset-0 bg-black opacity-95  flex items-center justify-center z-50">
+      <div className=" rounded-xl shadow-xl max-w-sm w-full relative">
+        <div className="text-center bg-slate-100 dark:bg-slate-800 p-2 rounded-md">
+          <div className="mx-auto flex items-center justify-center w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 mb-4">
+            <CheckCircleIcon size={32} />
+          </div>
+          <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">
+            Data Activated
+          </h3>
+
+          <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            Data delivered to {payload.mobile_number}.
+          </p>
+
+          <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-4 mb-6">
+            <h4 className="text-sm font-medium text-slate-900 dark:text-white mb-2">
+              Transaction Details
+            </h4>
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <span className="text-sm text-slate-600 dark:text-slate-400">
+                  Transaction ID:
+                </span>
+                <span className="text-sm font-medium text-slate-900 dark:text-white">
+                  TRX{Math.floor(Math.random() * 10000000)}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm text-slate-600 dark:text-slate-400">
+                  Date:
+                </span>
+                <span className="text-sm font-medium text-slate-900 dark:text-white">
+                  {new Date().toLocaleString()}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="flex space-x-3">
+            <Button variant="outline" onClick={handleReset} fullWidth>
+              New Transaction
+            </Button>
+            <Button fullWidth>
+              Download Receipt
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  const renderError = () =>
+    <div className="fixed inset-0 bg-black opacity-95  flex items-center justify-center z-50">
+      <div className=" rounded-xl shadow-xl max-w-sm w-full relative">
+        <div className="text-center bg-slate-100 dark:bg-slate-800 p-2 rounded-md">
+          <div className="mx-auto flex items-center justify-center w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 mb-4">
+            <XCircleIcon size={32} />
+          </div>
+          <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">
+            Transaction Failed
+          </h3>
+          <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            Your data subscription could not be completed. Please try
+            again.
+          </p>
+          <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-4 mb-6">
+            <h4 className="text-sm font-medium text-slate-900 dark:text-white mb-2">
+              Error Details
+            </h4>
+            <p className="text-sm text-red-600 dark:text-red-400">
+              {error}
+            </p>
+          </div>
+          <div className="flex space-x-3">
+            <Button variant="outline" onClick={handleReset} fullWidth>
+              Try Again
+            </Button>
+
+            <Button variant="outline" fullWidth>
+              <Link
+                className="w-full h-full"
+                target="_blank"
+                href="https://wa.me/qr/BHKITMXTHP2PE1"
+              >
+                Contact Support
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  const renderStep = (step: string) => {
+    switch (step) {
+
+      case 'confirm':
+        return renderConfirmation();
+      case 'success':
+        return renderSuccess();
+      case 'error':
+        return renderError();
+      default:
+        return '';
     }
   };
 
   return (
     <div>
+      {renderStep(step)}
       <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Data Bundles</h1>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="">
         {/* LEFT SIDE FORM */}
-        <div className="lg:col-span-1">
+        <div className="">
           <Card>
             <CardHeader>
               <CardTitle>Purchase Data</CardTitle>
-              <CardDescription>Select a network and enter details</CardDescription>
+              <CardDescription>Select a network and data plan</CardDescription>
             </CardHeader>
             <CardContent>
-              <form className="space-y-4">
-                {/* NETWORK SELECT */}
+              <form className="space-y-4" onSubmit={(e) => {
+                e.preventDefault();
+                setStep("confirm");
+              }}
+              >
+                {/* SELECT NETWORK */}
                 <div>
-                  <label
-                    htmlFor="network"
-                    className="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-1"
-                  >
+                  <label className="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-1">
                     Network Provider
                   </label>
-                  <div className="relative">
-                    <select
-                      id="network"
-                      name="network"
-                      value={selectedNetwork}
-                      onChange={(e) => selectNetWork(e.target.value as NetworkType)}
-                      className="block w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 
-                        focus:ring-teal-500 focus:border-teal-500 dark:focus:ring-teal-600 dark:focus:border-teal-600 
-                        rounded-md shadow-sm py-2 pl-3 pr-10 text-slate-900 dark:text-white sm:text-sm appearance-none"
-                      required
-                    >
-                      {networks.map((item) => (
-                        <option key={item.value} value={item.value}>
-                          {item.label}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4 text-slate-500"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                  <p className="mt-1 text-sm text-slate-500">Please select your network provider.</p>
+                  <select
+                    value={selectedNetwork}
+                    onChange={(e) => handleNetworkChange(e.target.value as NetworkType)}
+                    className="block w-full px-3 py-2 border rounded-md bg-white dark:bg-slate-900 dark:text-white"
+                  >
+
+                    <option value="">Select Network</option>
+                    <option value="MTN">MTN</option>
+                    <option value="AIRTEL">AIRTEL</option>
+                    <option value="GLO">GLO</option>
+                    <option value="9MOBILE">9MOBILE</option>
+                  </select>
                 </div>
 
-                {/* PHONE INPUT */}
+                {/* PHONE NUMBER INPUT */}
                 <Input
                   label="Phone Number"
                   type="tel"
-                  placeholder="Enter phone number"
+                  placeholder="Enter mobile number"
                   leftIcon={<WifiIcon size={16} />}
                   fullWidth
                   required
+                  onChange={(e) => {
+                    setPayload((prev) => ({
+                      ...prev,
+                      mobile_number: e.target.value,
+                    }))
+                  }}
                 />
-                <Button fullWidth>Continue</Button>
+                {/* SELECT PLAN */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-1">
+                    Select Plan
+                  </label>
+                  <select
+                    disabled={!selectedNetwork || isLoading}
+                    value={selectedPlanId}
+                    onChange={(e) => {
+                      const id = Number(e.target.value);
+                      setSelectedPlanId(id);
+
+                      if (selectedNetwork) {
+                        const selectedPlan = dataPlans[selectedNetwork].find(
+                          (plan) => plan.plan_id === id
+                        );
+                        if (selectedPlan) {
+                          setPayload((prev) => ({
+                            ...prev,
+                            size: selectedPlan.size,
+                            price: selectedPlan.price,
+                            validity: selectedPlan.validity,
+                            plan_id: selectedPlan.plan_id,
+                          }));
+                        }
+                      }
+                    }}
+                    className="block w-full px-3 py-2 border rounded-md bg-white dark:bg-slate-900 dark:text-white"
+                  >
+                    <option value="">Select Plan</option>
+                    {selectedNetwork &&
+                      dataPlans[selectedNetwork].map((plan: DataType) => (
+                        <option key={plan.plan_id} value={plan.plan_id}>
+                          {plan.size} - ₦{plan.price} ({plan.validity})
+                        </option>
+                      ))}
+                  </select>
+                </div>
+                <Button type="submit" fullWidth disabled={!selectedPlanId}>Continue</Button>
               </form>
             </CardContent>
           </Card>
         </div>
 
-        {/* RIGHT SIDE PLANS */}
-        <div className="lg:col-span-2">
-          <h2 className="text-lg font-medium text-slate-900 dark:text-white mb-4">
-            Available Data Plans
-          </h2>
+        {/* RIGHT SIDE DISPLAY OF PLANS */}
 
-          {!selectPlan ? (
-            <p className="text-slate-500 text-sm">Select a network to view available plans.</p>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {selectPlan.map((bundle) => (
-                <Card
-                  key={bundle.plan_id}
-                  className="border-teal-500 dark:border-teal-600 border-2"
-                >
-                  <CardContent className="p-4">
-                    <div className="flex flex-col items-center text-center">
-                      <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-700 dark:text-green-400 mb-3">
-                        <WifiIcon size={24} />
-                      </div>
-                      <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-1">
-                        {bundle.size}
-                      </h3>
-                      <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
-                        Valid for {bundle.validity}
-                      </p>
-                      <p className="text-lg font-medium text-teal-700 dark:text-teal-400 mb-4">
-                        ₦{bundle.price}
-                      </p>
-                      <Button fullWidth>Select Plan</Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
-        </div>
       </div>
     </div>
   );
