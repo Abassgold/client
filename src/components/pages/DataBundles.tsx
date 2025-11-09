@@ -14,9 +14,14 @@ import Link from "next/link";
 
 
 type NetworkType = "MTN" | "AIRTEL" | "GLO" | "9MOBILE" | "";
+type dataRes ={
+    msg: string;
+    ref: string;
+  }
 type dataResponse = {
   ok: boolean;
-  msg: string;
+  msg?: string;
+  result?: dataRes
 }
 type DataType = {
   size: string;
@@ -33,6 +38,7 @@ type payloadType = {
 }
 export const DataBundles = () => {
   const router = useRouter();
+  const [message, setMessage] = useState<dataRes>()
   const [step, setStep] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -46,13 +52,7 @@ export const DataBundles = () => {
     mobile_number: ''
   });
   console.log(payload)
-  // const handleConfirm = () => {
-  //   try {
-
-  //   } catch (error) {
-
-  //   }
-  // }
+  
   const handleReset = () => {
     setStep('form');
   }
@@ -74,14 +74,13 @@ export const DataBundles = () => {
             "Content-Type": "application/json"
           }
         })
-        console.log(res)
+      setMessage(res.data.result ?? undefined)
       setStep('success')
     } catch (error) {
       const err = error as AxiosError;
       if (err.status === 401 || err.status === 404) return router.push('/login')
       console.log(err.status)
       const errorResponse = err.response?.data as dataResponse;
-
       setError(errorResponse.msg || 'Data purchase could not be completed')
       setStep('error');
     } finally {
@@ -174,7 +173,7 @@ export const DataBundles = () => {
           </h3>
 
           <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
-            Data delivered to {payload.mobile_number}.
+            {message?.msg}
           </p>
 
           <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-4 mb-6">
@@ -187,7 +186,7 @@ export const DataBundles = () => {
                   Transaction ID:
                 </span>
                 <span className="text-sm font-medium text-slate-900 dark:text-white">
-                  TRX{Math.floor(Math.random() * 10000000)}
+                  {message?.ref}
                 </span>
               </div>
               <div className="flex justify-between">
