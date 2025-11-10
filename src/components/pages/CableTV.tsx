@@ -1,125 +1,197 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { TvIcon } from 'lucide-react';
 import { Card } from '../ui/card';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '../ui copy/Card';
-import { Select } from '../ui copy/Select';
 import { Input } from '../ui copy/Input';
 import { Button } from '../ui copy/Button';
-import ComingSoon from '../cominSoon/ComingSoon';
+import axios, { AxiosError } from 'axios';
+import { getToken } from '@/lib/Token';
+
+import { CableType, tvPlans } from '../tv/tvplans';
+type packageType =
+  | "GOTV"
+  | "DSTV"
+  | "STARTIMES"
+  | ''
+type Verify = {
+  ok: boolean;
+  invalid: boolean;
+  msg: string;
+};
+
+
+
 
 export const CableTV: React.FC = () => {
-  const providers = [{
-    value: '',
-    label: 'Select Provider'
-  }, {
-    value: 'dstv',
-    label: 'DSTV'
-  }, {
-    value: 'gotv',
-    label: 'GOTV'
-  }, {
-    value: 'startimes',
-    label: 'StarTimes'
-  }];
-  const packages = [{
-    id: 1,
-    name: 'DSTV Premium',
-    price: '₦24,500',
-    provider: 'dstv',
-    features: ['All Sports Channels', 'Movies', 'Kids', 'News']
-  }, {
-    id: 2,
-    name: 'DSTV Compact Plus',
-    price: '₦16,600',
-    provider: 'dstv',
-    features: ['Selected Sports', 'Movies', 'Kids', 'News']
-  }, {
-    id: 3,
-    name: 'DSTV Compact',
-    price: '₦10,500',
-    provider: 'dstv',
-    features: ['Selected Sports', 'Movies', 'Kids', 'News']
-  }, {
-    id: 4,
-    name: 'GOTV Max',
-    price: '₦4,850',
-    provider: 'gotv',
-    features: ['Selected Sports', 'Movies', 'Kids', 'News']
-  }, {
-    id: 5,
-    name: 'GOTV Jinja',
-    price: '₦2,250',
-    provider: 'gotv',
-    features: ['Limited Sports', 'Selected Movies', 'Kids', 'News']
-  }, {
-    id: 6,
-    name: 'StarTimes Classic',
-    price: '₦2,600',
-    provider: 'startimes',
-    features: ['News', 'Movies', 'Kids', 'Documentaries']
-  }];
-  return <div>
-    <ComingSoon/>
-      <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
-        Cable TV Subscription
-      </h1>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-1">
-          <Card>
-            <CardHeader>
-              <CardTitle>Renew Subscription</CardTitle>
-              <CardDescription>Enter your decoder details</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form className="space-y-4">
-                <Select label="TV Provider" options={providers} fullWidth required />
-                <Input label="Smart Card / IUC Number" type="text" placeholder="Enter decoder number" leftIcon={<TvIcon size={16} />} fullWidth required />
-                <Input label="Phone Number" type="tel" placeholder="Enter phone number" fullWidth required />
-                <Button fullWidth>Verify</Button>
-              </form>
-            </CardContent>
-          </Card>
-        </div>
-        <div className="lg:col-span-2">
-          <h2 className="text-lg font-medium text-slate-900 dark:text-white mb-4">
-            Popular Packages
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {packages.map(pkg => <Card key={pkg.id}>
-                <CardContent className="p-4">
-                  <div className="flex items-start">
-                    <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-700 dark:text-purple-400 mr-4">
-                      <TvIcon size={24} />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-1">
-                        {pkg.name}
-                      </h3>
-                      <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
-                        {providers.find(p => p.value === pkg.provider)?.label}
-                      </p>
-                      <p className="text-lg font-medium text-teal-700 dark:text-teal-400 mb-3">
-                        {pkg.price}{' '}
-                        <span className="text-sm text-slate-500">
-                          / month
-                        </span>
-                      </p>
-                      <div className="mb-4">
-                        <ul className="text-sm text-slate-600 dark:text-slate-400">
-                          {pkg.features.map((feature, index) => <li key={index} className="flex items-center mb-1">
-                              <span className="w-1 h-1 bg-slate-400 dark:bg-slate-600 rounded-full mr-2"></span>
-                              {feature}
-                            </li>)}
-                        </ul>
-                      </div>
-                      <Button fullWidth>Select Package</Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>)}
-          </div>
-        </div>
+  const [isLoading, setIsLoading] = useState(false)
+  const [cable, setCable] = useState<CableType | null>(null)
+  console.log(cable)
+  const [plan, setPlan] = useState<packageType>('')
+  const [IUC, setIUC] = useState('')
+  const [verify, setVerify] = useState<Verify>({
+    ok: false,
+    invalid: true,
+    msg: ''
+  })
+  const providers = [
+    {
+      value: '',
+      label: 'Select Plan'
+    }, {
+      value: 'DSTV',
+      label: 'DSTV'
+    }, {
+      value: 'GOTV',
+      label: 'GOTV'
+    }, {
+      value: 'STARTIME',
+      label: 'StarTimes'
+    }];
+  const verifyIUC = async (input: string) => {
+    if (!input || !plan) return;
+    setIsLoading(true)
+    try {
+      const response = await axios.post<Verify>(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cable/validate`,
+        {
+          IUC: input,
+          plan
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      setVerify(prev => ({
+        ...prev,
+        ok: response.data.ok,
+        invalid: response.data.invalid,
+        msg: response.data.msg
+      }));
+
+    } catch (error) {
+      console.log(error);
+      const err = error as AxiosError;
+      const errorResponse = err.response?.data as Verify
+      setVerify(prev => ({
+        ...prev,
+        ok: errorResponse.ok,
+        invalid: errorResponse.invalid,
+        msg: errorResponse.msg
+      }));
+    } finally {
+      setIsLoading(false)
+    }
+  };
+
+  const handleSubmit = async () => {
+    setIsLoading(true)
+    try {
+      const response = await axios.post<Verify>(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cable/subscribe`,
+        {
+          
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      console.log(response)
+    } catch (error) {
+      console.log(error);
+      const err = error as AxiosError;
+      const errorResponse = err.response?.data as Verify
+      alert(errorResponse ?? 'Something went wrong')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const chosePlan = (input: string) => {
+    const result = tvPlans[plan].find(item => item.id === input)
+    setCable(result ?? null)
+  }
+  return <div className='max-w-2xl mx-auto'>
+    {/* <ComingSoon/> */}
+    <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
+      Cable TV Subscription
+    </h1>
+    <div className="">
+      <div className="">
+        <Card>
+          <CardHeader>
+            <CardTitle>Renew Subscription</CardTitle>
+            <CardDescription>Enter your decoder details</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form className="space-y-4" onSubmit={handleSubmit}>
+              <div>
+                <label className="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-1">
+                  TV Provider
+                </label>
+                <select
+                  value={plan}
+                  onChange={(e) => setPlan(e.target.value as packageType)}
+                  className="block sm:text-sm w-full px-3 py-2 border rounded-md bg-white dark:bg-slate-900 dark:text-white"
+                >
+                  {providers.map(item => (
+                    <option value={item.value} key={item.value}>{item.label}</option>
+                  ))}
+                </select>
+              </div>
+              <Input
+                disabled={!plan}
+                label="Smart Card / IUC Number"
+                type="text"
+                placeholder="Enter decoder number"
+                leftIcon={<TvIcon size={16} />}
+                fullWidth
+                onChange={e => setIUC(e.target.value)}
+                required />
+              <div>
+                <label className="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-1">
+                  Plan
+                </label>
+                <select
+                  value={plan}
+                  onChange={(e) => chosePlan(e.target.value)}
+                  className="block sm:text-sm w-full px-3 py-2 border rounded-md bg-white dark:bg-slate-900 dark:text-white"
+                >
+                  {plan && tvPlans[plan]?.map((item) => (
+                    <option value={item.id} key={item.id}>{item.package}, ₦{item.price}</option>
+                  ))}
+                </select>
+              </div>
+              {verify && verify.ok && (
+                <Input className={`${verify.invalid && 'bg-red-200 text-red-600'} bg-red-700`} label='Customer Name' type="tel" placeholder={verify.msg} fullWidth required disabled />
+              )}
+              {!verify.ok || verify.invalid ? (
+                <Button
+                  disabled={isLoading || !IUC || !plan}
+                  fullWidth
+                  onClick={() => verifyIUC(IUC)}
+                >
+                  {isLoading ? 'Verifying...' : 'Verify'}
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  fullWidth
+                >
+                  {isLoading ? 'Wait...' : 'Submit Order'}
+                </Button>
+              )}
+            </form>
+          </CardContent>
+        </Card>
       </div>
-    </div>;
+    </div>
+  </div>;
 };
