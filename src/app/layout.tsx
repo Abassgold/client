@@ -97,6 +97,40 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={barlow.className}>
+        <head>
+        {/* ✅ Manual OpenGraph Tags for Twitter/X and other crawlers */}
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content="FloZap | Smart Digital Services for Everyone"
+        />
+        <meta
+          property="og:description"
+          content="FloZap is your all-in-one platform for virtual numbers, eSIMs, airtime, data, utility bills and more."
+        />
+        <meta
+          property="og:image"
+          content="https://www.flozap.com.ng/myflozap_logo.png"
+        />
+        <meta property="og:url" content="https://www.flozap.com.ng" />
+        <meta property="og:site_name" content="FloZap" />
+
+        {/* ✅ Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:creator" content="@FloZapofficial" />
+        <meta
+          name="twitter:title"
+          content="FloZap | Smart Digital Services for Everyone"
+        />
+        <meta
+          name="twitter:description"
+          content="Manage virtual numbers, eSIMs, airtime, data and utility payments — all in one place."
+        />
+        <meta
+          name="twitter:image"
+          content="https://www.flozap.com.ng/myflozap_logo.png"
+        />
+      </head>
       <body>
         {/* React Toastify */}
         <ToastContainer
