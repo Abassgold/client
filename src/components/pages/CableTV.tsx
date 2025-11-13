@@ -117,6 +117,39 @@ export const CableTV: React.FC = () => {
     const result = tvPlans[plan].find(item => item.id === input)
     setCable(result ?? null)
   }
+
+  // const renderPassword = () => <div className="fixed inset-0 bg-black opacity-95  flex items-center justify-center z-50">
+  //   <div className=" rounded-xl shadow-xl max-w-sm w-full relative">
+  //     <div className="space-y-4">
+  //       <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-4">
+  //         <form onSubmit={handleConfirm}>
+  //           <div className="space-y-4">
+  //             <Input
+  //               label="Transaction PIN"
+  //               type="tel"
+  //               placeholder="Enter your PIN"
+  //               value={formData.pin}
+  //               onChange={(e) => handleChange('pin', e.target.value)}
+  //               leftIcon={<Lock size={16} />}
+  //               fullWidth
+  //               required
+  //               minLength={4}
+  //               maxLength={4}
+  //             />
+  //             <div className="flex space-x-3">
+  //               <Button variant="outline" onClick={() => setStep('form')} fullWidth>
+  //                 Cancel
+  //               </Button>
+  //               <Button type='submit' fullWidth>
+  //                 {isLoading ? 'Wait...' : 'Submit'}
+  //               </Button>
+  //             </div>
+  //           </div>
+  //         </form>
+  //       </div>
+  //     </div>
+  //   </div>
+  // </div>
   return <div className='max-w-2xl mx-auto'>
     {/* <ComingSoon/> */}
     <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
@@ -185,7 +218,7 @@ export const CableTV: React.FC = () => {
                   disabled={isLoading}
                   fullWidth
                 >
-                  {isLoading ? 'Wait...' : 'Submit Order'}
+                  {'Continue'}
                 </Button>
               )}
             </form>

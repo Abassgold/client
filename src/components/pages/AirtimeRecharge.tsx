@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { PhoneIcon, CheckCircleIcon, XCircleIcon } from 'lucide-react';
+import { PhoneIcon, CheckCircleIcon, XCircleIcon, Lock } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../ui copy/Card';
 import { Input } from '../ui copy/Input';
 import { Select } from '../ui copy/Select';
@@ -25,13 +25,14 @@ export const AirtimeRecharge: React.FC = () => {
   const [ref, setRef] = useState<RefObject | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const [step, setStep] = useState<'form' | 'confirm' | 'success' | 'error'>('form');
+  const [step, setStep] = useState<'form' | 'confirm' | 'success' | 'error' | 'password'>('form');
   const [error, setError] = useState('');
 
   const [formData, setFormData] = useState({
     network: '',
     mobile_number: '',
     amount: '',
+    pin: '',
     paymentMethod: 'Wallet Balance'
   });
 
@@ -62,7 +63,8 @@ export const AirtimeRecharge: React.FC = () => {
     setStep('confirm');
   };
 
-  const handleConfirm = async () => {
+  const handleConfirm = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setIsLoading(true);
     const detectedNetwork = getNetworkByRegex(formData.mobile_number);
 
@@ -110,7 +112,7 @@ export const AirtimeRecharge: React.FC = () => {
   };
 
   const handleReset = () => {
-    setFormData({ network: '', mobile_number: '', amount: '', paymentMethod: 'Wallet Balance' });
+    setFormData({ network: '', mobile_number: '', amount: '', pin: '', paymentMethod: 'Wallet Balance' });
     setStep('form');
   };
 
@@ -191,13 +193,45 @@ export const AirtimeRecharge: React.FC = () => {
         <Button variant="outline" onClick={() => setStep('form')} fullWidth>
           Back
         </Button>
-        <Button onClick={handleConfirm} fullWidth>
+        <Button onClick={() => setStep('password')} fullWidth>
           {isLoading ? 'Wait...' : 'Confirm Payment'}
         </Button>
       </div>
     </div>
   );
 
+  const renderPassword = () => <div className="fixed inset-0 bg-black opacity-95  flex items-center justify-center z-50">
+    <div className=" rounded-xl shadow-xl max-w-sm w-full relative">
+      <div className="space-y-4">
+        <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-4">
+          <form onSubmit={handleConfirm}>
+            <div className="space-y-4">
+              <Input
+                label="Transaction PIN"
+                type="tel"
+                placeholder="Enter your PIN"
+                value={formData.pin}
+                onChange={(e) => handleChange('pin', e.target.value)}
+                leftIcon={<Lock size={16} />}
+                fullWidth
+                required
+                minLength={4}
+                maxLength={4}
+              />
+              <div className="flex space-x-3">
+                <Button variant="outline" onClick={() => setStep('form')} fullWidth>
+                  Cancel
+                </Button>
+                <Button type='submit' fullWidth>
+                  {isLoading ? 'Wait...' : 'Submit'}
+                </Button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
   const renderSuccess = () => (
     <div className="text-center">
       <div className="mx-auto flex items-center justify-center w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 mb-4">
@@ -276,6 +310,8 @@ export const AirtimeRecharge: React.FC = () => {
         return renderSuccess();
       case 'error':
         return renderError();
+      case 'password':
+        return renderPassword();
       default:
         return renderForm();
     }

@@ -7,7 +7,6 @@ import { Input } from '../ui copy/Input';
 import { Select } from '../ui copy/Select';
 import { Badge } from '../ui copy/Badge';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import ComingSoon from '../cominSoon/ComingSoon';
 export const USDT: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'buy' | 'sell' | 'history'>('buy');
   const [paymentMethod, setPaymentMethod] = useState<'bank' | 'card'>('bank');
@@ -191,7 +190,7 @@ export const USDT: React.FC = () => {
     }
   };
   const renderBuyTab = () => <>
-  <ComingSoon/>
+  {/* <ComingSoon/> */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <div className="lg:col-span-2">
           <Card>
@@ -424,7 +423,6 @@ export const USDT: React.FC = () => {
       </Card>
     </>;
   const renderSellTab = () => <>
-  <ComingSoon/>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <div className="lg:col-span-2">
           <Card>

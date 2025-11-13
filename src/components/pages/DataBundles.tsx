@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { CheckCircleIcon, WifiIcon, XCircleIcon } from "lucide-react";
+import { CheckCircleIcon, Lock, WifiIcon, XCircleIcon } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../ui copy/Card";
 import { Button } from "../ui copy/Button";
 import { Input } from "../ui copy/Input";
@@ -35,6 +35,7 @@ type payloadType = {
   validity: string;
   plan_id: number;
   mobile_number: string;
+  pin: string;
 }
 export const DataBundles = () => {
   const router = useRouter();
@@ -49,7 +50,8 @@ export const DataBundles = () => {
     price: 0,
     validity: '',
     plan_id: 0,
-    mobile_number: ''
+    mobile_number: '',
+    pin: ''
   });
   console.log(payload)
   
@@ -60,7 +62,8 @@ export const DataBundles = () => {
     setSelectedNetwork(network);
     setSelectedPlanId(undefined);
   };
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setIsLoading(true)
     try {
       const res = await axios.post<dataResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/data/buy-data`,
@@ -153,14 +156,50 @@ export const DataBundles = () => {
             <Button variant="slate" onClick={() => setStep('form')} fullWidth>
               Back
             </Button>
-            <Button onClick={handleSubmit} fullWidth>
-              {isLoading ? 'Wait...' : 'Confirm Payment'}
+            <Button onClick={()=>setStep('password')} fullWidth>
+              {'Confirm Payment'}
             </Button>
           </div>
         </div>
       </div>
     </div>
-
+const renderPassword = () => <div className="fixed inset-0 bg-black opacity-95  flex items-center justify-center z-50">
+    <div className=" rounded-xl shadow-xl max-w-sm w-full relative">
+      <div className="space-y-4">
+        <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-4">
+          <form onSubmit={handleSubmit}>
+            <div className="space-y-4">
+              <Input
+                label="Transaction PIN"
+                type="tel"
+                placeholder="Enter your PIN"
+                value={payload.pin}
+                 onChange={(e) => {
+                    setPayload((prev) => ({
+                      ...prev,
+                      pin: e.target.value,
+                    }))
+                  }}
+                leftIcon={<Lock size={16} />}
+                fullWidth
+                required
+                minLength={4}
+                maxLength={4}
+              />
+              <div className="flex space-x-3">
+                <Button variant="outline" onClick={() => setStep('form')} fullWidth>
+                  Cancel
+                </Button>
+                <Button type='submit' fullWidth>
+                  {isLoading ? 'Wait...' : 'Submit'}
+                </Button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
   const renderSuccess = () =>
     <div className="fixed inset-0 bg-black opacity-95  flex items-center justify-center z-50">
       <div className=" rounded-xl shadow-xl max-w-sm w-full relative">
@@ -261,6 +300,8 @@ export const DataBundles = () => {
         return renderSuccess();
       case 'error':
         return renderError();
+              case 'password':
+        return renderPassword();
       default:
         return '';
     }

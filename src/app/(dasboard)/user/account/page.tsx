@@ -1,9 +1,13 @@
 'use client'
+import AccountProgress from "@/components/setting/AccountProgress"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui copy/Card"
+import { Input } from "@/components/ui copy/Input"
 import { getToken } from "@/lib/Token"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { addUser } from "@/redux/slice/auth"
 import { findUser } from "@/redux/type"
 import axios from "axios"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 const Account = () => {
@@ -17,9 +21,9 @@ const Account = () => {
                 const { data } = await axios.get<findUser>(
                     `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/me`,
                     {
-                       headers: {
-                        Authorization: `Bearer ${getToken()}`
-                       },
+                        headers: {
+                            Authorization: `Bearer ${getToken()}`
+                        },
                     }
                 )
                 if (!data.ok) {
@@ -31,8 +35,8 @@ const Account = () => {
                 }
             } catch (err: unknown) {
                 if (axios.isAxiosError(err)) {
-                    if(err.response?.status === 403) return router.push('/account-suspended')
-                    if(err.response?.status === 401) return router.push('/login')
+                    if (err.response?.status === 403) return router.push('/account-suspended')
+                    if (err.response?.status === 401) return router.push('/login')
                 } else {
                     console.error('Unknown error:', err);
                 }
@@ -45,43 +49,29 @@ const Account = () => {
 
 
 
-
+ 
     return (
-        <section className="min-h-full text-gray-800">
-            <div className="py-4">
-                <h1>Your Profile</h1>
-            </div>
-            <div className="border-y border-slate-400 py-4 ">
-                <h1>Full Name</h1>
-                <input
-                    type="text" required disabled placeholder={user?.firstName + ' ' + user?.lastName} className={`capitalize focus:border-[blue] outline-none border-[1px] bg-none py-2 px-8 text-gray-400 rounded-xl`} />
-            </div>
-            <div className="border-b border-slate-400 py-4 ">
-                <h1>Email Address</h1>
-                <input type="text" disabled value={user?.email} className=" bg-none py-2 px-8 text-gray-400 rounded-xl" />
-            </div>
-            {/* Edit */}
-            {/* <div className="text-center p-4 font-[600]">
-                    {!show && (
-                        <button type="button" className="p-3 border border-[#DADBDD] rounded-2xl" onClick={() => setShow(true)}>Edit</button>
-                    )}
-                    {show && (
-                        <div className="flex justify-center items-center gap-2">
-                            <button type="button" className="p-3 flex items-center gap-1  border border-[#DADBDD] rounded-2xl" onClick={() => setShow(false)}>Cancel <X size={16} /></button>
-                            <button
-                                disabled={loading}
-                                type="submit"
-                                className={`p-3 flex items-center gap-1 border bg-gray-800 text-white border-[#DADBDD] rounded-2xl transition-opacity duration-300
-    ${loading ? "opacity-50 cursor-not-allowed" : ""}
-  `}
-                            >
-                                {loading ? "Saving..." : <>Save <Check size={16} /></>}
-                            </button>
+        <section>
+            <Card>
+                <CardHeader>
+                    <div className='flex items-center gap-2 p-4'>
+                        <CardTitle><Link href='/user/account' className="focus:underline focus:underline-offset-2">Profile</Link></CardTitle>
+                        <CardTitle><Link href='/user/account/security' className="focus:underline focus:underline-offset-2">Security</Link></CardTitle>
+                    </div>
 
-                        </div>
-                    )}
-                </div> */}
+                    <CardDescription>Your Profile</CardDescription>
+                </CardHeader>
+                 <CardContent>
+            <form className="space-y-4" >
+                <Input label="Full Name" type="text" disabled placeholder={user?.firstName + ' ' + user?.lastName} fullWidth />
+                <Input disabled label="Email Address" type="text" fullWidth placeholder={user?.email} />
+            </form>
+        </CardContent>
+
+            </Card>
+            <AccountProgress tier={3}/>
         </section>
+       
     )
 }
 
