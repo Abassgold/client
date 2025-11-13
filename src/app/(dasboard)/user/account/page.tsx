@@ -7,10 +7,13 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { addUser } from "@/redux/slice/auth"
 import { findUser } from "@/redux/type"
 import axios from "axios"
+import { ArrowRight } from "lucide-react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { useEffect } from "react"
 const Account = () => {
+    const path = usePathname();
+    console.log(path)
     const router = useRouter()
     const user = useAppSelector((state) => state.auth.user.user)
     const dispatch = useAppDispatch();
@@ -47,31 +50,42 @@ const Account = () => {
         fetchUser()
     }, [router])
 
-
-
- 
     return (
         <section>
             <Card>
+                <div className='flex items-center gap-4 p-4'>
+                    <CardTitle>
+                        <Link
+                            href='/user/account'
+                            className={`${path === '/user/account' ? 'text-red-600' : 'text-blue-600'} hover:underline cursor-pointer flex items-center gap-1`}
+                        >
+                            Profile <ArrowRight size={16} />
+                        </Link>
+                    </CardTitle>
+                    <CardTitle>
+                        <Link
+                            href='/user/account/security'
+                            className={`${path === '/user/account/security' ? 'text-red-600' : 'text-blue-600'} hover:underline cursor-pointer flex items-center gap-1`}
+                        >
+                            Security <ArrowRight size={16} />
+                        </Link>
+                    </CardTitle>
+                </div>
                 <CardHeader>
-                    <div className='flex items-center gap-2 p-4'>
-                        <CardTitle><Link href='/user/account' className="focus:underline focus:underline-offset-2">Profile</Link></CardTitle>
-                        <CardTitle><Link href='/user/account/security' className="focus:underline focus:underline-offset-2">Security</Link></CardTitle>
-                    </div>
-
                     <CardDescription>Your Profile</CardDescription>
                 </CardHeader>
-                 <CardContent>
-            <form className="space-y-4" >
-                <Input label="Full Name" type="text" disabled placeholder={user?.firstName + ' ' + user?.lastName} fullWidth />
-                <Input disabled label="Email Address" type="text" fullWidth placeholder={user?.email} />
-            </form>
-        </CardContent>
-
+                <CardContent>
+                    <form className="space-y-4" >
+                        <Input className=" capitalize" label="Full Name" type="text" disabled placeholder={user?.firstName + ' ' + user?.lastName} fullWidth />
+                        <Input disabled label="Email Address" type="text" fullWidth placeholder={user?.email
+                            ? user.email.charAt(0).toUpperCase() + user.email.slice(1)
+                            : ''} />
+                    </form>
+                </CardContent>
             </Card>
-            <AccountProgress tier={3}/>
+            <AccountProgress tier={3} />
         </section>
-       
+
     )
 }
 

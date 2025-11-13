@@ -1,6 +1,6 @@
 'use client'
 import { useState } from "react"
-import { Check, X } from "lucide-react"
+import { ArrowRight, Check, X } from "lucide-react"
 import { useFormik } from "formik"
 import { useAppDispatch } from "@/redux/hooks"
 import { addUser } from "@/redux/slice/auth"
@@ -14,12 +14,14 @@ import { Input } from "@/components/ui copy/Input"
 import { Button } from "@/components/ui copy/Button"
 import Link from "next/link"
 import TransactionPin from "@/components/setting/PIN/TransactionPin"
+import { usePathname } from "next/navigation"
 interface changePassword {
     oldPassword: string;
     newPassword: string;
     confirmNewPassword: string;
 }
 const Security = () => {
+    const path = usePathname();
     const [show, setShow] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(false)
     const dispatch = useAppDispatch()
@@ -78,72 +80,85 @@ const Security = () => {
 
     return (
         <section className="space-y-4">
-             <Card>
-                <CardHeader>
-                    <div className='flex items-center gap-2 p-4'>
-                        <CardTitle><Link href='/user/account' className="focus:underline focus:underline-offset-2">Profile</Link></CardTitle>
-                        <CardTitle><Link href='/user/account/security' className="focus:underline focus:underline-offset-2">Security</Link></CardTitle>
+            <Card>
+                <div className='flex items-center gap-4 p-4'>
+                        <CardTitle>
+                            <Link
+                                href='/user/account'
+                                className={`${path === '/user/account' ? 'text-red-600' : 'text-blue-600'} hover:underline cursor-pointer flex items-center gap-1`}
+                            >
+                                Profile <ArrowRight size={16} />
+                            </Link>
+                        </CardTitle>
+                        <CardTitle>
+                            <Link
+                                href='/user/account/security'
+                                className={`${path === '/user/account/security' ? 'text-red-600' : 'text-blue-600'} hover:underline cursor-pointer flex items-center gap-1`}
+                            >
+                                Security <ArrowRight size={16} />
+                            </Link>
+                        </CardTitle>
                     </div>
-
+                <CardHeader>
                     <CardDescription>Your Profile</CardDescription>
-                     <p className="text-[14px] mt-2 text-gray-500">Please update your profile settings here</p>
+                    <p className="text-[14px] mt-2 text-gray-500">Please update your profile settings here</p>
                 </CardHeader>
-            <CardContent>
+                <CardContent>
 
-                <form className="space-y-4" onSubmit={formik.handleSubmit}>
-                    <Input
-                        label="Current Password"
-                        type="text"
-                        disabled={!show}
-                        placeholder="Enter"
-                        fullWidth
-                        required
-                        name="oldPassword"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                    />
+                    <form className="space-y-4" onSubmit={formik.handleSubmit}>
+                        <Input
+                            label="Current Password"
+                            type="text"
+                            disabled={!show}
+                            placeholder="Enter"
+                            fullWidth
+                            required
+                            name="oldPassword"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                        />
 
-                    <Input
-                        label="New Password"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        type="text" disabled={!show} placeholder="Enter"
-                        fullWidth
-                        required
-                        name="newPassword"
-                        error={
-                            formik.touched.newPassword && formik.errors.newPassword
-                                ? formik.errors.newPassword
-                                : undefined
+                        <Input
+                            label="New Password"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            type="text" disabled={!show} placeholder="Enter"
+                            fullWidth
+                            required
+                            name="newPassword"
+                            error={
+                                formik.touched.newPassword && formik.errors.newPassword
+                                    ? formik.errors.newPassword
+                                    : undefined
+                            }
+                        />
+                        <Input
+                            error={
+                                formik.touched.confirmNewPassword && formik.errors.confirmNewPassword
+                                    ? formik.errors.confirmNewPassword
+                                    : undefined
+                            }
+
+                            name='confirmNewPassword'
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            type="text" disabled={!show} placeholder="Enter"
+                            label="Email Address"
+                            fullWidth
+                        />
+                        {!show && <div className="text-center"><Button type='button' onClick={() => setShow(true)}>Edit</Button></div>}
+                        {show && (
+                            <div className="flex justify-center items-center gap-2">
+                                <Button type='button' onClick={() => setShow(false)}>Cancel <X size={16} /></Button>
+                                <Button disabled={loading} type='button' >{loading ? "Saving..." : <>Save <Check size={16} /></>}</Button>
+                            </div>
+                        )
                         }
-                    />
-                    <Input
-                        error={
-                            formik.touched.confirmNewPassword && formik.errors.confirmNewPassword
-                                ? formik.errors.confirmNewPassword
-                                : undefined
-                        }
-
-                        name='confirmNewPassword'
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        type="text" disabled={!show} placeholder="Enter"
-                        label="Email Address"
-                        fullWidth
-                    />
-                    {!show && <div className="text-center"><Button type='button' onClick={() => setShow(true)}>Edit</Button></div>}
-                    {show && (
-                        <div className="flex justify-center items-center gap-2">
-                            <Button type='button' onClick={() => setShow(false)}>Cancel <X size={16} /></Button>
-                            <Button disabled={loading} type='button' >{loading ? "Saving..." : <>Save <Check size={16} /></>}</Button>
-                        </div>
-                    )
-                    }
-                </form>
-            </CardContent>
+                    </form>
+                </CardContent>
             </Card>
-            <TransactionPin/>
-             
+            <TransactionPin />
+
         </section >
     )
 }
