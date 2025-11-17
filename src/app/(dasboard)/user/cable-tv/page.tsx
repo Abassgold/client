@@ -1,11 +1,11 @@
-import ComingSoon from '@/components/cominSoon/ComingSoon';
+// import ComingSoon from '@/components/cominSoon/ComingSoon';
 import { CableTV } from '@/components/pages/CableTV';
 import React from 'react'
 
 const Cable = () => {
   return (
     <>
-    <ComingSoon/>
+    {/* <ComingSoon/> */}
     <CableTV />
     </>
   )

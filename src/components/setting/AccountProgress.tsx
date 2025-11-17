@@ -18,7 +18,7 @@ const AccountProgress = ({tier}:{tier: number}) => {
 
 <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
   You&apos;re currently on <span className="font-medium text-blue-700 dark:text-blue-300">Tier {tier}</span>.
-  Upgrade to Tier {tier + 2} to increase your wallet limit and unlock more features.
+  Upgrade to Tier {tier + 1} to increase your wallet limit and unlock more features.
 </p>
 
 
@@ -27,7 +27,7 @@ const AccountProgress = ({tier}:{tier: number}) => {
     </div>
 
     <p className="text-xs text-blue-600 dark:text-blue-300 font-medium text-right">
-        {tier*(33.3)}% Completed
+        {(tier * (100 / 3)).toFixed(0)}% Completed
     </p>
         <Link
         href="/user/kyc"

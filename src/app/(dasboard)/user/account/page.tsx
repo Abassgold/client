@@ -43,7 +43,6 @@ const Account = () => {
                 } else {
                     console.error('Unknown error:', err);
                 }
-
             }
         }
 
@@ -83,7 +82,7 @@ const Account = () => {
                     </form>
                 </CardContent>
             </Card>
-            <AccountProgress tier={3} />
+            <AccountProgress tier={user?.accountProgress ?? 0} />
         </section>
 
     )
