@@ -44,7 +44,9 @@ export const CableTV: React.FC = () => {
     { value: 'GOTV', label: 'GOTV' },
     { value: 'STARTIMES', label: 'StarTimes' }
   ];
-
+const handleSteps = (input: string) =>{
+setStep(input)
+}
   const verifyIUC = async (input: string) => {
     if (!input || !provider) return;
     setIsLoading(true);
@@ -164,7 +166,7 @@ const renderPassword = () => <div className="fixed inset-0 bg-black opacity-95  
         </CardHeader>
 
         <CardContent>
-          <form className="space-y-4" onSubmit={handleSubmit}>
+          <form className="space-y-4" onSubmit={()=>handleSteps('password')}>
 
             {/* TV Provider */}
             <div>
@@ -246,7 +248,7 @@ const renderPassword = () => <div className="fixed inset-0 bg-black opacity-95  
                 {isLoading ? 'Verifying...' : 'Verify'}
               </Button>
             ) : (
-              <Button type="submit" disabled={isLoading} fullWidth>
+              <Button onClick={()=>setStep('password')} fullWidth>
                 Continue
               </Button>
             )}

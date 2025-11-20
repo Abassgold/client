@@ -1,12 +1,13 @@
 'use client';
 import React, { useState } from 'react';
-import { ZapIcon } from 'lucide-react';
+import { CheckCircleIcon, Lock, XCircleIcon, ZapIcon } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../ui copy/Card';
 import { Button } from '../ui copy/Button';
 import { Input } from '../ui copy/Input';
 import { Select } from '../ui copy/Select';
 import axios, { AxiosError } from 'axios';
 import { getToken } from '@/lib/Token';
+import Link from 'next/link';
 type Verify = {
   invalid: boolean,
   name: string;
@@ -15,6 +16,8 @@ type Verify = {
 
 
 export const ElectricityBill: React.FC = () => {
+  const [step, setStep] = useState('form')
+  const [pin, setPin] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [amount, setAmount] = useState('')
   const [meter_number, setMeter_number] = useState('')
@@ -141,13 +144,15 @@ export const ElectricityBill: React.FC = () => {
       setIsLoading(false)
     }
   };
-  const handleSubmit = async() =>{
-     if (!meter_number || !disco_name) return;
+  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) =>{
+    e.preventDefault();
+     if (!meter_number || !disco_name || !amount || !pin) return;
     setIsLoading(true)
     try {
       const response = await axios.post<Verify>(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/electricity/buy-electricity`,
         {
+          pin,
           meter_number: meter_number.replace(/\s+/g, ''),
           disco_name,
           meter_type,
@@ -182,38 +187,40 @@ export const ElectricityBill: React.FC = () => {
       setIsLoading(false)
     }
   }
-//  const renderPassword = () => <div className="fixed inset-0 bg-black opacity-95  flex items-center justify-center z-50">
-//     <div className=" rounded-xl shadow-xl max-w-sm w-full relative">
-//       <div className="space-y-4">
-//         <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-4">
-//           <form onSubmit={handleConfirm}>
-//             <div className="space-y-4">
-//               <Input
-//                 label="Transaction PIN"
-//                 type="tel"
-//                 placeholder="Enter your PIN"
-//                 value={formData.pin}
-//                 onChange={(e) => handleChange('pin', e.target.value)}
-//                 leftIcon={<Lock size={16} />}
-//                 fullWidth
-//                 required
-//                 minLength={4}
-//                 maxLength={4}
-//               />
-//               <div className="flex space-x-3">
-//                 <Button variant="outline" onClick={() => setStep('form')} fullWidth>
-//                   Cancel
-//                 </Button>
-//                 <Button type='submit' fullWidth>
-//                   {isLoading ? 'Wait...' : 'Submit'}
-//                 </Button>
-//               </div>
-//             </div>
-//           </form>
-//         </div>
-//       </div>
-//     </div>
-//   </div>
+ const renderPassword = () => <div className="fixed inset-0 bg-black opacity-95  flex items-center justify-center z-50">
+    <div className=" rounded-xl shadow-xl max-w-sm w-full relative">
+      <div className="space-y-4">
+        <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-4">
+          <form onSubmit={handleSubmit}>
+            <div className="space-y-4">
+              <Input
+                label="Transaction PIN"
+                type="tel"
+                placeholder="Enter your PIN"
+                value={pin}
+                onChange={(e) => setPin(e.target.value)}
+                leftIcon={<Lock size={16} />}
+                fullWidth
+                required
+                minLength={4}
+                maxLength={4}
+              />
+              <div className="flex space-x-3">
+                <Button variant="outline" onClick={() => setStep('form')} fullWidth>
+                  Cancel
+                </Button>
+                <Button type='submit' fullWidth>
+                  {isLoading ? 'Wait...' : 'Submit'}
+                </Button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+const renderForm = ()=>{
   return <div className='max-w-2xl mx-auto'>
     <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
       Electricity Bill Payment
@@ -226,7 +233,7 @@ export const ElectricityBill: React.FC = () => {
             <CardDescription>Enter your meter details</CardDescription>
           </CardHeader>
           <CardContent>
-            <form className="space-y-4" onSubmit={handleSubmit}>
+            <form className="space-y-4">
               <Select
                 label="Electricity Provider"
                 options={providers}
@@ -243,7 +250,7 @@ export const ElectricityBill: React.FC = () => {
                 fullWidth
                 required
               />
-              <Input label="Meter Number" type="tel" placeholder="Enter meter number" leftIcon={<ZapIcon size={16} />} fullWidth required onChange={e => setMeter_number(e.target.value)} />
+              <Input label="Meter Number" type="tel" placeholder="Enter meter number" leftIcon={<ZapIcon size={16} />} value={meter_number} fullWidth required onChange={e => setMeter_number(e.target.value)} />
               {verify.name && (
                 <div className='space-y-4'>
                   <Input disabled label="Customer Name" type="text" placeholder={verify.name} fullWidth />
@@ -253,13 +260,13 @@ export const ElectricityBill: React.FC = () => {
               {!verify.invalid && (
                 <div className='space-y-4'>
                   {/* <Input label="Phone Number" type="tel" placeholder="Enter phone number" fullWidth required /> */}
-                  <Input label="Amount (₦)" type="number" placeholder="Enter amount" leftIcon={<span className="text-slate-500">₦</span>} fullWidth required onChange={e=>setAmount(e.target.value)}/>
+                  <Input label="Amount (₦)" value={amount} type="number" placeholder="Enter amount" leftIcon={<span className="text-slate-500">₦</span>} fullWidth required onChange={e=>setAmount(e.target.value)}/>
                 </div>
               )}
               {verify.invalid ? (
-                <Button disabled={isLoading} type='button' fullWidth onClick={() => verifyMeter()}>{isLoading ? 'Verifying...' : 'Verify Meter'}</Button>
+                <Button disabled={isLoading} type='button' fullWidth onClick={()=>verifyMeter()}>{isLoading ? 'Verifying...' : 'Verify Meter'}</Button>
               ) : (
-                <Button type='submit' disabled={isLoading} fullWidth>{'Submit Order'}</Button>
+                <Button disabled={isLoading} fullWidth onClick={()=>setStep('password')}>{'Continue'}</Button>
               )}
             </form>
           </CardContent>
@@ -300,5 +307,130 @@ export const ElectricityBill: React.FC = () => {
         </Card>
       </div>
     </div>
-  </div>;
+  </div>; 
+}
+ const renderConfirmation = () => (
+    <div className="space-y-4">
+      <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-4">
+        <h3 className="text-sm font-medium text-slate-900 dark:text-white mb-3">
+          Transaction Details
+        </h3>
+        <div className="space-y-2">
+          <div className="flex justify-between">
+            <span className="text-sm text-slate-600 dark:text-slate-400">Network:</span>
+            <span className="text-sm font-medium text-slate-900 dark:text-white"></span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-slate-600 dark:text-slate-400">Phone Number:</span>
+            <span className="text-sm font-medium text-slate-900 dark:text-white"></span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-slate-600 dark:text-slate-400">Amount:</span>
+            <span className="text-sm font-medium text-slate-900 dark:text-white">₦</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-slate-600 dark:text-slate-400">Payment Method:</span>
+            <span className="text-sm font-medium text-slate-900 dark:text-white">Wallet Balance</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex space-x-3">
+        <Button variant="outline" onClick={() => setStep('form')} fullWidth>
+          Back
+        </Button>
+        <Button onClick={() => setStep('password')} fullWidth>
+          {isLoading ? 'Wait...' : 'Confirm Payment'}
+        </Button>
+      </div>
+    </div>
+  );
+
+  
+  const renderSuccess = () => (
+    <div className="text-center">
+      <div className="mx-auto flex items-center justify-center w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 mb-4">
+        <CheckCircleIcon size={32} />
+      </div>
+      <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">Recharge Successful</h3>
+      <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
+      </p>
+      <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-4 mb-6">
+        <h4 className="text-sm font-medium text-slate-900 dark:text-white mb-2">
+          Transaction Details
+        </h4>
+        <div className="space-y-2">
+          <div className="flex justify-between">
+            <span className="text-sm text-slate-600 dark:text-slate-400">
+              Transaction ID:
+            </span>
+            <span className="text-sm font-medium text-slate-900 dark:text-white">
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-slate-600 dark:text-slate-400">
+              Date:
+            </span>
+            <span className="text-sm font-medium text-slate-900 dark:text-white">
+              {new Date().toLocaleString()}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="flex space-x-3">
+        <Button variant="outline"  fullWidth>
+          New Transaction
+        </Button>
+        <Button fullWidth>Download Receipt</Button>
+      </div>
+    </div>
+  );
+
+  const renderError = () => (
+    <div className="text-center">
+      <div className="mx-auto flex items-center justify-center w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 mb-4">
+        <XCircleIcon size={32} />
+      </div>
+      <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">Transaction Failed</h3>
+      <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
+        Your airtime recharge transaction could not be completed. Please try again.
+      </p>
+      <p className="text-sm text-red-600 dark:text-red-400"></p>
+      <div className="flex space-x-3 mt-4">
+        <Button variant="outline"  fullWidth>
+          Try Again
+        </Button>
+        <Button variant="teal" fullWidth>
+          <Link
+            className="w-full h-full"
+            target="_blank"
+            href="https://wa.me/qr/BHKITMXTHP2PE1"
+          >
+            Contact Support
+          </Link>
+        </Button>
+      </div>
+    </div>
+  );
+const renderStep = () => {
+    switch (step) {
+      case 'form':
+        return renderForm();
+      case 'confirm':
+        return renderConfirmation();
+      case 'success':
+        return renderSuccess();
+      case 'error':
+        return renderError();
+      case 'password':
+        return renderPassword();
+      default:
+        return renderForm();
+    }
+  };
+  return (
+    <>
+    {renderStep()}
+    </>
+  )
 };
