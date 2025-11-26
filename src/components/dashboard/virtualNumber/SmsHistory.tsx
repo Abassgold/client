@@ -46,7 +46,9 @@ const SmsHistory: React.FC = async () => {
         </div>
       </CardHeader>
       <CardContent>
+        <p className='text-center  text-slate-500 dark:text-slate-400 '>
         {data.msg}
+        </p>
       </CardContent>
     </Card>
   )
