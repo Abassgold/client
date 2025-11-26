@@ -36,7 +36,7 @@ const Register = () => {
                 .matches(/\d/, "Must contain at least one number.")
                 .required('Please enter your password'),
             confirmPassword: Yup.string()
-                .oneOf([Yup.ref('password')], 'Passwords must match') // ✅ Added this line
+                .oneOf([Yup.ref('password')], 'Passwords must match') 
                 .required('Please confirm your password'),
         }),
         onSubmit: async (values: IUser): Promise<findUser | void> => {
