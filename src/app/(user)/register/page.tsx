@@ -25,7 +25,23 @@ const Register = () => {
             firstName: Yup.string().required('Please enter your first name'),
             lastName: Yup.string().required('Please enter your last name'),
             email: Yup.string().email('Invalid email').test('no-spaces', 'Spaces are not allowed', (value) => !/\s/.test(value || '')).required('Please enter your email').lowercase(),
-            telephone: Yup.string().required('Please enter your phone number'),
+            telephone: Yup.string()
+                .required("Please enter your phone number")
+                .transform((value) => {
+                    if (!value) return value;
+                    let cleaned = value.replace(/[\s\-()]/g, "");
+                    if (cleaned.startsWith("+234")) {
+                        cleaned = "0" + cleaned.slice(4);
+                    }
+                    if (cleaned.startsWith("234")) {
+                        cleaned = "0" + cleaned.slice(3);
+                    }
+                    return cleaned;
+                })
+                .matches(
+                    /^0[7-9]\d{9}$/,
+                    "Please enter a valid Nigerian phone number"
+                ),
             password: Yup.string()
                 .test('no-spaces', 'Spaces are not allowed', (value) => !/\s/.test(value || ''))
                 .min(8, 'Password must not be less than 8 characters')
@@ -36,7 +52,7 @@ const Register = () => {
                 .matches(/\d/, "Must contain at least one number.")
                 .required('Please enter your password'),
             confirmPassword: Yup.string()
-                .oneOf([Yup.ref('password')], 'Passwords must match') 
+                .oneOf([Yup.ref('password')], 'Passwords must match')
                 .required('Please confirm your password'),
         }),
         onSubmit: async (values: IUser): Promise<findUser | void> => {
@@ -85,8 +101,8 @@ const Register = () => {
                     <h1 className="text-gray-600 text-xl font-semibold md:text-3xl mb-3 capitalize">welcome onboard!</h1>
                     <div className="h-1 bg-teal-800 w-[48px] mb-6"></div>
                     <form onSubmit={formik.handleSubmit}>
-                        <div className="md:flex md:justify-between md:items-center">
-                            <div className="mb-4">
+                        <div className="md:flex md:justify-between md:items-center gap-3">
+                            <div className="mb-4 flex-1">
                                 <label htmlFor="" className="mb-1 block text-gray-800">First Name</label>
                                 <input
                                     required
@@ -98,7 +114,7 @@ const Register = () => {
                                     <p className="text-sm text-red-600">{formik.errors.firstName}</p>
                                 )}
                             </div>
-                            <div className="mb-4">
+                            <div className="mb-4 flex-1">
                                 <label htmlFor="" className="mb-1 block text-gray-800">Last Name</label>
                                 <input
                                     required
