@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { toast } from 'sonner';
 
-const Forgotpassword = () => {
+const ForgotPassword = () => {
     const [email, setEmail] = useState('')
     const [loading, setLoading] = useState(false);
     const router = useRouter()
@@ -76,4 +76,4 @@ const Forgotpassword = () => {
     )
 }
 
-export default Forgotpassword;
+export default ForgotPassword;

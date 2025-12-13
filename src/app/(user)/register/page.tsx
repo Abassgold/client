@@ -81,23 +81,24 @@ const Register = () => {
 
     return (
         <section className="p-4 h-screen bg-zinc-100">
-
             <div className="max-w-xl mx-auto h-full flex items-center">
                 <div className="w-full">
-                    <Image
-                        src="/myflozap_logo.png"
-                        alt="floZap-logo"
-                        width={250}
-                        height={100}
-                        className="mx-auto bg-none md:hidden block"
-                    />
-                    <Image
-                        src="/myflozap_logo.png"
-                        alt="floZap-logo"
-                        width={350}
-                        height={100}
-                        className="mx-auto bg-none hidden md:block"
-                    />
+                    <Link href='/'>
+                        <Image
+                            src="/myflozap_logo.png"
+                            alt="floZap-logo"
+                            width={250}
+                            height={100}
+                            className="mx-auto bg-none md:hidden block"
+                        />
+                        <Image
+                            src="/myflozap_logo.png"
+                            alt="floZap-logo"
+                            width={350}
+                            height={100}
+                            className="mx-auto bg-none hidden md:block"
+                        />
+                    </Link>
                     <h1 className="text-gray-600 text-xl font-semibold md:text-3xl mb-3 capitalize">welcome onboard!</h1>
                     <div className="h-1 bg-teal-800 w-[48px] mb-6"></div>
                     <form onSubmit={formik.handleSubmit}>

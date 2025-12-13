@@ -9,7 +9,7 @@ import { useAppDispatch } from "@/redux/hooks";
 import { addUser } from "@/redux/slice/auth";
 import { findUser } from "@/redux/type";
 import Image from "next/image";
-import {  setToken } from "@/lib/Token";
+import { setToken } from "@/lib/Token";
 import { toast } from "sonner";
 
 
@@ -73,6 +73,7 @@ const Login = () => {
         <section className="p-4 h-screen bg-zinc-100">
             <div className="max-w-xl mx-auto h-full flex items-center">
                 <div className="w-full">
+                    <Link href='/'>
                         <Image
                             src="/myflozap_logo.png"
                             alt="floZap-logo"
@@ -80,13 +81,14 @@ const Login = () => {
                             height={100}
                             className="mx-auto bg-none md:hidden block"
                         />
-                         <Image
+                        <Image
                             src="/myflozap_logo.png"
                             alt="floZap-logo"
                             width={350}
                             height={100}
                             className="mx-auto bg-none hidden md:block"
                         />
+                    </Link>
                     <h1 className="text-gray-600 text-xl font-semibold md:text-3xl mb-3">Welcome Back!</h1>
                     <div className="h-1 bg-teal-800 w-[48px] mb-6"></div>
                     <form onSubmit={formik.handleSubmit}>
