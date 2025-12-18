@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui copy/C
 const Deposit = () => {
     const router = useRouter()
 
-    const handleSelect = (method: 'usa' | 'others') => {
+    const handleSelect = (method: 'usa' | 'all-countries') => {
         router.push(`/user/virtual-numb/${method}`)
     }
 
@@ -50,14 +50,14 @@ const Deposit = () => {
 
                         {/* Others Option */}
                         <div
-                            onClick={() => handleSelect('others')}
+                            onClick={() => handleSelect('all-countries')}
                             className="w-full border border-slate-200 dark:border-slate-700 rounded-lg p-6 hover:border-teal-500 dark:hover:border-teal-600 transition cursor-pointer bg-white dark:bg-slate-800 text-center"
                         >
                             <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-                                🌍 Others
+                                🌍 All Countries
                             </h2>
                             <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                                Choose this if you want numbers from other countries outside the U.S.
+                                Choose this if you want numbers from USA and other countries.
                             </p>
                         </div>
                     </div>
