@@ -1,7 +1,7 @@
 'use client'
 import Link from "next/link";
 import { Home, Bitcoin,  File, Settings, Barcode, FileDigit, History, PhoneCall,
- RefreshCcwIcon, ZapIcon, TvIcon, DollarSignIcon, GlobeIcon, WifiIcon, PhoneIcon, LogOutIcon, HelpCircleIcon, SettingsIcon } from "lucide-react";
+ RefreshCcwIcon, ZapIcon, TvIcon, CreditCard, DollarSignIcon, GlobeIcon, WifiIcon, PhoneIcon, LogOutIcon, HelpCircleIcon, SettingsIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { deleteToken } from "@/lib/Token";
 import NavItem from "../navItems/NavItems";
@@ -23,7 +23,7 @@ export const navItems = [{
     label: 'Virtual Number'
   }, {
     to: '/user/esim',
-    // icon: <div size={18} />,
+    icon: <CreditCard size={18} />,
     label: 'eSIM'
   }, {
     to: '/user/usdt',

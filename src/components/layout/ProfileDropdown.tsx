@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState, useRef } from 'react';
-import { UserIcon, SettingsIcon, HelpCircleIcon, LogOutIcon, ChevronDownIcon } from 'lucide-react';
+import { UserIcon, SettingsIcon, UserStar, LogOutIcon, ChevronDownIcon } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import axios from 'axios';
 import { findUser } from '@/redux/type';
@@ -96,7 +96,7 @@ export const ProfileDropdown: React.FC = () => {
         </Link>
         {user?.role === 'admin' && (
           <Link href="/admin" className="flex items-center px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
-            <HelpCircleIcon size={16} className="mr-2" />
+            <UserStar size={16} className="mr-2" />
             Admin
           </Link>
         )}

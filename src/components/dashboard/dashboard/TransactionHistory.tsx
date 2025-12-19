@@ -5,10 +5,13 @@ import {
   WifiIcon,
   TvIcon,
   ZapIcon,
+  GlobeIcon,
+  DollarSignIcon,
   RefreshCcwIcon,
   MessageSquareIcon,
   ArrowDownLeftIcon,
   ArrowUpRightIcon,
+  CardSim
 } from 'lucide-react';
 import { Badge } from '@/components/ui copy/Badge';
 import Link from 'next/link';
@@ -54,11 +57,11 @@ export const TransactionHistory: React.FC<TransactionType> = ({
       case 'Data':
         return <WifiIcon size={16} />;
       case 'Virtual Number':
-        return <TvIcon size={16} />;
+        return <GlobeIcon size={16} />;
       case 'eSIM':
-        return <ZapIcon size={16} />;
+        return <CardSim size={16} />;
       case 'USDT':
-        return <MessageSquareIcon size={16} />;
+        return <DollarSignIcon size={16} />;
       case 'Cable TV':
         return <TvIcon size={16} />;
       case 'Electricity':

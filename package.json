@@ -27,7 +27,7 @@
     "etegram-pay": "^1.1.5",
     "formik": "^2.4.6",
     "html2pdf.js": "^0.10.3",
-    "lucide-react": "^0.510.0",
+    "lucide-react": "^0.562.0",
     "mongoose": "^8.15.1",
     "motion": "^12.19.2",
     "next": "15.3.8",
