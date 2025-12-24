@@ -152,7 +152,7 @@ const VirtualNumberServices = () => {
   };
   const markAsDone = async (activation?: string) => {
     const activationId = numberInfo?.activationId ?? activation;
-    if (numberInfo?.provider.toLocaleLowerCase() === 'daisy') {
+    if (numberInfo?.provider.toLocaleLowerCase() === 'PN_USA') {
       await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/virtual-numbers/markAsDone`, { activationId });
     }
     setLoading(false);
